@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.db import models
 #completar opciones
 OPCIONES_ANIOS_EXPERIENCIA = (
@@ -59,26 +60,6 @@ class AniosExperiencia(models.Model):
 	def __unicode__(self):
 		return self.etiqueta
 
-
-#completar configuracion de campos. Poner nombres descriptivos a los campos
-class Cargo(models.Model):
-	nombre = models.CharField(max_length=256)
-	descripcion = models.CharField(max_length=1024)
-	#anios_experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
-	nivel_jerarquia = models.IntegerField(choices=OPCIONES_NIVEL_JERARQUIA)
-	rango = models.ForeignKey(Clasificacion, verbose_name='Rango')
-	otros_requisitos = models.CharField(max_length=512)
-	activo = models.BooleanField(default=True)
-	cargo_critico = models.BooleanField(default=False)
-	zona = models.ForeignKey(Zona, verbose_name='Ubicación geográfica')
-	anios_experiencia = models.ForeignKey(AniosExperiencia, verbose_name='años de experiencia')
-	requisitos = models.ManyToManyField(Requisito, blank=True)
-	cargo_clave = models.ManyToManyField('self',symmetrical=False,blank=True)
-	siguientes = models.ManyToManyField('self',symmetrical=False, blank=True)
-	def __unicode__(self):
-		return self.nombre
-
-
 class Zona(models.Model):
 	nombre = models.CharField(max_length=256)
 	def __unicode__(self):
@@ -90,8 +71,27 @@ class Clasificacion(models.Model):
 	def __unicode__(self):
 		return self.nombre
 
-class Departamento(models.Model)
-	nombre = models.CharField(max_legth=256)
+class Departamento(models.Model):
+	nombre = models.CharField(max_length=256)
+	def __unicode__(self):
+		return self.nombre
+
+#completar configuracion de campos. Poner nombres descriptivos a los campos
+class Cargo(models.Model):
+	nombre = models.CharField(max_length=256)
+	descripcion = models.CharField(max_length=1024)
+	#anios_experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
+	nivel_jerarquia = models.IntegerField(choices=OPCIONES_NIVEL_JERARQUIA)
+	otros_requisitos = models.CharField(max_length=512)
+	activo = models.BooleanField(default=True)
+	cargo_critico = models.BooleanField(default=False)
+	departamento = models.ForeignKey(Departamento, verbose_name='Vicepresidencia')
+	rango = models.ForeignKey(Clasificacion, verbose_name='Rango')
+	zona = models.ForeignKey(Zona, verbose_name='Ubicación geográfica')
+	anios_experiencia = models.ForeignKey(AniosExperiencia, verbose_name='años de experiencia')
+	requisitos = models.ManyToManyField(Requisito, blank=True)
+	cargo_clave = models.ManyToManyField('self',symmetrical=False,blank=True, related_name='cargo_clave_set')
+	siguientes = models.ManyToManyField('self',symmetrical=False, blank=True, related_name='siguiente_set')
 	def __unicode__(self):
 		return self.nombre
 	
