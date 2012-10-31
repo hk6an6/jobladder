@@ -4,7 +4,7 @@ import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladderf')
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -157,4 +157,6 @@ LOGGING = {
         },
     }
 }
-DATABASES['default'] = dj_database_url.config()
+
+if not DEBUG:
+	DATABASES['default'] = dj_database_url.config()
