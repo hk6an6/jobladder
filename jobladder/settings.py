@@ -3,7 +3,7 @@ import dj_database_url
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-PROJECT_DIR = PROJECT_ROOT
+PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladderf')
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
