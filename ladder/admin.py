@@ -13,6 +13,7 @@ class RequisitoAdmin(admin.ModelAdmin):
 	list_display = ('nombre',)
 	search_fields = ('nombre','descripcion',)
 	ordering = ('nombre',)
+	list_filter = ('categoria',)
 
 admin.site.register(Cargo,CargoAdmin)
 admin.site.register(Zona)
@@ -20,3 +21,4 @@ admin.site.register(Clasificacion)
 admin.site.register(Requisito,RequisitoAdmin)
 admin.site.register(AniosExperiencia)
 admin.site.register(Departamento)
+admin.site.register(Categoria)

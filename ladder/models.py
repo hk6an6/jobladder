@@ -47,10 +47,15 @@ OPCIONES_NIVEL_JERARQUIA = (
 	(15,'15'),
 )
 
+class Categoria(models.Model):
+	nombre = models.CharField(max_length=256)
+	def __unicode__(self):
+		return self.nombre
 
 class Requisito(models.Model):
 	nombre = models.CharField(max_length=256)
 	descripcion = models.CharField(max_length=512)
+	categoria = models.ForeignKey(Categoria)
 	def __unicode__(self):
 		return self.nombre
 	
@@ -82,7 +87,7 @@ class Cargo(models.Model):
 	descripcion = models.CharField(max_length=1024)
 	#anios_experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
 	nivel_jerarquia = models.IntegerField(choices=OPCIONES_NIVEL_JERARQUIA)
-	otros_requisitos = models.CharField(max_length=512)
+	#otros_requisitos = models.CharField(max_length=512)
 	activo = models.BooleanField(default=True)
 	cargo_critico = models.BooleanField(default=False)
 	departamento = models.ForeignKey(Departamento, verbose_name='Vicepresidencia')
