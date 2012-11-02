@@ -3,7 +3,7 @@ import dj_database_url
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladderf')
+PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladder')
 DEBUG = True
 USING_FOREMAN = False
 USE_POSGRES_USER = False
@@ -172,5 +172,13 @@ LOGGING = {
     }
 }
 
+#this adds necessary settings for database to work properly when deployed to heroku
 if not USING_FOREMAN:
 	DATABASES['default'] = dj_database_url.config()
+
+#the lines bellow make AWS S3 storage work
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID');
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY');
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME');
