@@ -7,7 +7,7 @@ PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladder')
 DEBUG = True
 USING_FOREMAN = False
 USE_POSGRES_USER = False
-USE_AWS_S3_STORAGE = False
+USE_AWS_S3_STORAGE = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'gunicorn',
     'ladder',
+    'storages',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -184,3 +185,6 @@ if USE_AWS_S3_STORAGE:
 	AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID');
 	AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY');
 	AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME');
+	S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+	STATIC_URL = S3_URL
+

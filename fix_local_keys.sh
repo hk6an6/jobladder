@@ -1,8 +1,11 @@
 #!/bin/bash
 
 echo "AWS_ACCESS_KEY_ID='AKIAJ7JRXK43OVKXUM7A'" >> ~/.bash_profile
+echo "export AWS_ACCESS_KEY_ID" >> ~/.bash_profile
 echo "AWS_SECRET_ACCESS_KEY='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'" >> ~/.bash_profile
+echo "export AWS_SECRET_ACCESS_KEY" >> ~/.bash_profile
 echo "AWS_STORAGE_BUCKET_NAME='pacific_energy'" >> ~/.bash_profile
+echo "export AWS_STORAGE_BUCKET_NAME" >> ~/.bash_profile
 echo "JOBLADDER_GIT=https://serempre.repositoryhosting.com/git/serempre/jobladder.git" >> ~/.bash_profile
 git config --global user.name 'nicolasaragon'
 git config --global user.email 'nico.diaz.aragon@gmail.com'
