@@ -49,6 +49,8 @@ OPCIONES_NIVEL_JERARQUIA = (
 
 class Categoria(models.Model):
 	nombre = models.CharField(max_length=256)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	icono = models.ImageField(upload_to='storages.backends.s3boto')
 	def __unicode__(self):
 		return self.nombre
 
