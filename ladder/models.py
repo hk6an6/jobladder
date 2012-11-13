@@ -69,6 +69,8 @@ class AniosExperiencia(models.Model):
 
 class Zona(models.Model):
 	nombre = models.CharField(max_length=256)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	fondo = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.nombre
 
@@ -101,4 +103,63 @@ class Cargo(models.Model):
 	siguientes = models.ManyToManyField('self',symmetrical=False, blank=True, related_name='siguiente_set')
 	def __unicode__(self):
 		return self.nombre
+
+
+class CuerpoAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	
+class RopaAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	
+class ZapatosAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	
+class CaraAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	
+class AccesoriosAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	
+class SombreroAvatar(models.Model):
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	
+class Avatar(models.Model):
+	cuerpo = models.ForeignKey(CuerpoAvatar, verbose_name='Cuerpo')
+	cara   = models.ForeignKey(CaraAvatar, verbose_name='Cara')
+	ropa   = models.ForeignKey(RopaAvatar, verbose_name='Sombrero')
+	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Sombrero')
+	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Sombrero', blank=True, null=True)
+	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Sombrero', blank=True, null=True)
+	
+class Paso(models.Model):
+	numero = models.IntegerField()
+	anios_ejercidos = models.IntegerField()
+	cargo = models.ForeignKey(Cargo)
+	siguiente = models.ForeignKey('self', blank=True, null=True, related_name='pasos anteriores')
+	avatar = models.ForeignKey(Avatar, blank=True, null=True, related_name='pasos')
+	def __unicode__(self):
+		return self.numero
+
+class Ruta(models.Model):
+	pasos = models.IntegerField()
+	cargo_actual = models.ForeignKey(Paso, related_name='rutas_actuales')
+	cargo_inicial = models.ForeignKey(Paso, related_name='rutas_inician')
+	cargo_meta = models.ForeignKey(Cargo, related_name='rutas_terminan')
+	requisitos_cumplidos = models.ManyToManyField(Requisito, symmetrical=False, blank=True, null=True, related_name="rutas_dependientes")
+	def __unicode__(self):
+		return self.cargo_actual.nombre + ' , ' + self.pasos
+
+class Jugador(models.Model):
+	nombre = models.CharField(max_length=255, verbose_name='Nombre completo')
+	sexo = models.IntegerField(choices=((1,'h',),(2,'m',),), default=1)
+	correo = models.EmailField(verbose_name='Correo electronico')
+	ruta = models.ForeignKey(Ruta, related_name='jugadores', blank=True, null=True)
+	def __unicode__(self):
+		return self.correo
+		
