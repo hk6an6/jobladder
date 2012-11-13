@@ -16,7 +16,7 @@ class RequisitoAdmin(admin.ModelAdmin):
 	list_filter = ('categoria',)
 	
 class AvatarAdmin(admin.ModelAdmin):
-	filter_horizontal = ('cuerpo','cara','ropa','zapatos','accesorios','sombrero',)
+	raw_id_fields = ('cuerpo','cara','ropa','zapatos','accesorios','sombrero',)
 	
 class JugadorAdmin(admin.ModelAdmin):
 	list_display = ('nombre','correo',)
