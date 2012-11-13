@@ -15,6 +15,9 @@ class RequisitoAdmin(admin.ModelAdmin):
 	ordering = ('nombre',)
 	list_filter = ('categoria',)
 	
+class AvatarAdmin(admin.ModelAdmin):
+	filter_horizontal = ('cuerpo','cara','ropa','zapatos','accesorios','sombrero',)
+	
 class JugadorAdmin(admin.ModelAdmin):
 	list_display = ('nombre','correo',)
 	search_fields = ('nombre','correo',)
@@ -34,7 +37,7 @@ admin.site.register(ZapatosAvatar)
 admin.site.register(CaraAvatar)
 admin.site.register(AccesoriosAvatar)
 admin.site.register(SombreroAvatar)
-admin.site.register(Avatar)
+admin.site.register(Avatar, AvatarAdmin)
 admin.site.register(Paso)
 admin.site.register(Ruta)
-admin.site.register(Jugador)
+admin.site.register(Jugador, JugadorAdmin)
