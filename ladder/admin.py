@@ -6,7 +6,7 @@ class CargoAdmin(admin.ModelAdmin):
 	search_fields = ('nombre','descripcion',)
 	ordering = ('nombre',)
 	filter_horizontal = ('requisitos','siguientes','cargo_clave')
-	raw_id_fields = ('rango','zona','anios_experiencia',)
+	raw_id_fields = ('rango','zona','anios_experiencia','avatar_hombre','avatar_mujer')
 	list_filter = ('departamento','cargo_critico','activo','anios_experiencia',)
 	
 class RequisitoAdmin(admin.ModelAdmin):

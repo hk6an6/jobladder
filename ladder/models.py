@@ -94,6 +94,8 @@ class Cargo(models.Model):
 	#otros_requisitos = models.CharField(max_length=512)
 	activo = models.BooleanField(default=True)
 	cargo_critico = models.BooleanField(default=False)
+	avatar_hombre = models.ForeignKey('Avatar', blank=True, null=True, related_name='cargos_hombre', verbose_name='avatar hombre')
+	avatar_mujer = models.ForeignKey('Avatar', blank=True, null=True, related_name='cargos_mujer', verbose_name='avatar mujer')
 	departamento = models.ForeignKey(Departamento, verbose_name='Vicepresidencia')
 	rango = models.ForeignKey(Clasificacion, verbose_name='Rango', blank=True, null=True)
 	zona = models.ForeignKey(Zona, verbose_name='Ubicación geográfica', blank=True, null=True)
@@ -106,43 +108,63 @@ class Cargo(models.Model):
 
 
 class CuerpoAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class RopaAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class ZapatosAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class CaraAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class AccesoriosAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class SombreroAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class Avatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
 	cuerpo = models.ForeignKey(CuerpoAvatar, verbose_name='Cuerpo')
 	cara   = models.ForeignKey(CaraAvatar, verbose_name='Cara')
 	ropa   = models.ForeignKey(RopaAvatar, verbose_name='Sombrero')
 	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Sombrero')
 	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Sombrero', blank=True, null=True)
 	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Sombrero', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
 class Paso(models.Model):
 	numero = models.IntegerField()
 	anios_ejercidos = models.IntegerField()
 	cargo = models.ForeignKey(Cargo)
 	siguiente = models.ForeignKey('self', blank=True, null=True, related_name='pasos anteriores')
-	avatar = models.ForeignKey(Avatar, blank=True, null=True, related_name='pasos')
 	def __unicode__(self):
 		return self.numero
 
