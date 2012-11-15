@@ -15,6 +15,8 @@ echo "AWS_STORAGE_BUCKET_NAME='pacific_energy'" >> ~/.bash_profile
 echo "export AWS_STORAGE_BUCKET_NAME" >> ~/.bash_profile
 echo "JOBLADDER_GIT=https://serempre.repositoryhosting.com/git/serempre/jobladder.git" >> ~/.bash_profile
 echo "export JOBLADDER_GIT" >> ~/.bash_profile
+echo "USE_FOREMAN='True'" >> ~/.bash_profile
+echo "export export USE_FOREMAN" >> ~/.bash_profile
 echo "fixed environment variables! you are ready to use AWS S3 bucket for static & media files"
 
 #set github configuration
