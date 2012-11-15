@@ -94,6 +94,7 @@ class Cargo(models.Model):
 	#otros_requisitos = models.CharField(max_length=512)
 	activo = models.BooleanField(default=True)
 	cargo_critico = models.BooleanField(default=False)
+	tiempo_permanencia = models.IntegerField(default=0,verbose_name='Tiempo de permanencia en el cargo')
 	avatar_hombre = models.ForeignKey('Avatar', blank=True, null=True, related_name='cargos_hombre', verbose_name='avatar hombre')
 	avatar_mujer = models.ForeignKey('Avatar', blank=True, null=True, related_name='cargos_mujer', verbose_name='avatar mujer')
 	departamento = models.ForeignKey(Departamento, verbose_name='Vicepresidencia')
