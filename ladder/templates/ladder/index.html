@@ -1,10 +1,16 @@
 {% extends "ladder/base.html" %}
-
+{% comment %} This defines comments within a template {% endcomment %}
+{% comment %} OF SEARING IMPORTANCE: the 'extends' tag should be the first to appear
+in order for template inheritance to work! {% endcomment %}
+{% comment %} The following loads the 'static' tag, so that it can be used to load
+static file assets {% endcomment %}
 {% load static from staticfiles %}
 
 {% block pagetitle %}Space Invaders{% endblock %}
 
 {% block includestylesheet %}
+{% comment %} The following tag outputs original text from the parent template
+so that the parent's content for this section isn't completely overridden {% endcomment %}
 		{{ block.super }}
 {% endblock %}
 
@@ -27,5 +33,6 @@
 {% endblock %}
 
 {% block pagefooter %}
+{% comment %} in the following link, the 'static' tag is used to fix the URL for static media assets {% endcomment %}
 	<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
 {% endblock %}
