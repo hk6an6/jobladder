@@ -30,8 +30,22 @@ echo "export AWS_STORAGE_BUCKET_NAME" >> ~/.bash_profile
 echo "JOBLADDER_GIT=https://serempre.repositoryhosting.com/git/serempre/jobladder.git" >> ~/.bash_profile
 echo "export JOBLADDER_GIT" >> ~/.bash_profile
 echo "USE_FOREMAN='True'" >> ~/.bash_profile
-echo "export export USE_FOREMAN" >> ~/.bash_profile
+echo "export USE_FOREMAN" >> ~/.bash_profile
 echo "fixed environment variables! you are ready to use AWS S3 bucket for static & media files"
+#ask user if database credentials are required
+USE_DB_CREDENTIALS='wtf';
+while [[ "$USE_DB_CREDENTIALS" != "yes" && "$USE_DB_CREDENTIALS" != "no" ]]; do 
+	read -p "Use database credentials ?[type 'yes' or 'no']:" USE_DB_CREDENTIALS; 
+done
+#set database credentials environment variable
+if [ "$USE_DB_CREDENTIALS" == "yes" ]; then
+	echo "USE_POSGRES_USER='True'" >> ~/.bash_profile
+	echo "export USE_POSGRES_USER" >> ~/.bash_profile
+else
+	echo "Database connections will won't pass user credentials when negotiating a connection"
+fi
+
+
 
 #set github configuration
 git config --global user.name '$1' #use github username
