@@ -13,7 +13,7 @@ abortOnFailure(){
 	fi
 }
 #make this function available to any subsequent scripts
-export -f abortOnFailure
+#export -f abortOnFailure
 
 echo "if you cloned the project from repositoryhosting, then type:";
 echo "'sh 01_setup_heroku.sh ['add_heroku']'";
