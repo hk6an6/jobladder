@@ -48,9 +48,9 @@ fi
 
 
 #set github configuration
-git config --global user.name '$1' #use github username
+git config --global user.name "$1" #use github username
 echo "using $1 as github username"
-git config --global user.email '$2' #use github email
+git config --global user.email "$2" #use github email
 echo "using $2 as github registered email"
 
 if [ `uname` == 'Darwin' ]; then
