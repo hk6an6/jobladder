@@ -1,25 +1,31 @@
-{% load static from staticfiles %}<!doctype html>
-<html>
-	<head>
-		<meta http-equiv="content-type" content='text/html; charset=utf-8'/>
-		<title>Space Invaders</title>
-		<link href="{% block stylesheet %}{% static "ladder/css/space_invaders.css" %}{% endblock %}" rel="stylesheet">
-		<style>
+{% extends "ladder/base.html" %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Space Invaders{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+{% endblock %}
+
+{% block includejavascript %}
 		
-			
-		</style>
-	</head>
-	<body>
-		<header>
-		
-		</header>
-		<div id="main" role="main">
-			<canvas id="game" width="600" height="400">
-				get a better browser!
-			</canvas>
-		</div>
-		<footer>
-			<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
-		</footer>
-	</body>
-</html>
+{% endblock %}
+
+{% block pagestyle %}
+
+{% endblock %}
+
+{% block pageheader %}
+
+{% endblock %}
+
+{% block pagebody %}
+	<canvas id="game" width="600" height="400">
+		get a better browser!
+	</canvas>
+{% endblock %}
+
+{% block pagefooter %}
+	<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
+{% endblock %}
