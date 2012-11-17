@@ -9,9 +9,13 @@ USING_FOREMAN = os.getenv('USE_FOREMAN', False);
 USE_POSGRES_USER = os.getenv('USE_POSGRES_USER', False);
 USE_AWS_S3_STORAGE = True
 TEMPLATE_DEBUG = DEBUG
+#set the following to true to inspect database queries
+DEBUG_DATABASE_QUERIES = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Nicolas Diaz Aragon', 'ndiaz@serempre.com'),
+    ('David Panesso', 'dpanesso@serempre.com'),
+    ('Billy Camargo', 'bcamargo@serempre.com'),
 )
 
 MANAGERS = ADMINS
@@ -150,29 +154,96 @@ INSTALLED_APPS = (
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
-}
+if DEBUG_DATABASE_QUERIES:
+	LOGGING = {
+		'version': 1,
+		'disable_existing_loggers': False,
+		'formatters': {
+			'verbose': {
+				'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+			},
+			'simple': {
+				'format': '%(levelname)s %(message)s'
+			},
+		},
+		'filters': {
+			'require_debug_false': {
+				'()': 'django.utils.log.RequireDebugFalse'
+			}
+		},
+		'handlers': {
+			'mail_admins': {
+				'level': 'ERROR',
+				'filters': ['require_debug_false'],
+				'class': 'django.utils.log.AdminEmailHandler'
+			}, 
+			'console':{
+				'level':'DEBUG',
+				'class':'logging.StreamHandler',
+				'formatter': 'simple'
+			},
+		},
+		'loggers': {
+			'django.request': {
+				'handlers': ['mail_admins','console'],
+				'level': 'ERROR',
+				'propagate': True,
+			},
+			'console':{
+				'handlers': ['console'],
+				'level': 'DEBUG',
+				'propagate': True,
+			},
+			'django':{
+				'handlers': ['console'],
+				'level': 'DEBUG',
+				'propagate': True,
+			},
+		}
+	}
+else:
+	LOGGING = {
+		'version': 1,
+		'disable_existing_loggers': False,
+		'formatters': {
+			'verbose': {
+				'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+			},
+			'simple': {
+				'format': '%(levelname)s %(message)s'
+			},
+		},
+		'filters': {
+			'require_debug_false': {
+				'()': 'django.utils.log.RequireDebugFalse'
+			}
+		},
+		'handlers': {
+			'mail_admins': {
+				'level': 'ERROR',
+				'filters': ['require_debug_false'],
+				'class': 'django.utils.log.AdminEmailHandler'
+			}, 
+			'console':{
+				'level':'DEBUG',
+				'class':'logging.StreamHandler',
+				'formatter': 'simple'
+			},
+		},
+		'loggers': {
+			'django.request': {
+				'handlers': ['mail_admins','console'],
+				'level': 'ERROR',
+				'propagate': True,
+			},
+			'console':{
+				'handlers': ['console'],
+				'level': 'DEBUG',
+				'propagate': True,
+			},
+		}
+	}
+
 
 #this adds necessary settings for database to work properly when deployed to heroku
 if not USING_FOREMAN:
