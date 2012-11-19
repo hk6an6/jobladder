@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core import serializers
 from models import Cargo
@@ -18,8 +18,15 @@ def home(request):
 def cargo(request,cargo_name_fragment=None):
 	if cargo_name_fragment:
 		logger.debug(cargo_name_fragment)
-		return HttpResponse(serializers.serialize('json',Cargo.objects.filter(nombre__icontains=cargo_name_fragment), fields=('pk','nombre',)), mimetype='application/json')
+		return HttpResponse(serializers.serialize('json',Cargo.objects.filter(nombre__icontains=cargo_name_fragment), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 	else:
 		logger.debug('output everything')
-		return HttpResponse(serializers.serialize('json',Cargo.objects.all(), fields=('pk','nombre',)), mimetype='application/json')
+		return HttpResponse(serializers.serialize('json',Cargo.objects.all(), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 		
+def cargo_destino(request, cargo_origen=None):
+	logger.debug(cargo_origen)
+	if cargo_origen:
+		results = get_object_or_404(Cargo, pk=int(cargo_origen)).cargo_clave_set.all();
+		return HttpResponse(serializers.serialize('json',results, fields=('pk','nombre',)) , mimetype='application/json; charset=utf-8')
+	else:
+		raise Http404

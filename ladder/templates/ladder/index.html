@@ -42,6 +42,25 @@ static file assets {% endcomment %}
         background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
     }
     
+    .ui-combobox {
+        position: relative;
+        display: inline-block;
+    }
+    .ui-combobox-toggle {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin-left: -1px;
+        padding: 0;
+        /* adjust styles for IE 6/7 */
+        *height: 1.7em;
+        *top: 0.1em;
+    }
+    .ui-combobox-input {
+        margin: 0;
+        padding: 0.3em;
+    }
+    
 {% endblock %}
 
 {% block pageheader %}
@@ -49,40 +68,79 @@ static file assets {% endcomment %}
 {% endblock %}
 
 {% block pagebody %}
-	<label for='cargo_inicial'>Cargo Inicial: </label>
-	<input id='cargo_inicial' name='cargo_inicial' type='text'></input>
+	<div>
+		<label for='cargo_inicial_nombre'>Cargo Inicial: </label>
+		<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text'></select>
+	</div>
+	<div>
+		<label for='cargo_destino_nombre'>Cargo Destino: </label>
+		<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
+	</div>
 {% endblock %}
 
 {% block pagefooter %}
 	<script>
 		$(document).ready(function(){
-			$('#cargo_inicial').autocomplete({
+			$.ajax({
+				url: "{% url 'get-cargos' %}"
+				, dataType: "json"
+				, data: {
+					//don't send any data to the service
+				}, success: function(data, textStatus, jqXHR){
+					$.map( data, function( item ) {
+						$('#cargo_inicial_nombre').append(
+							$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
+						);
+					})
+				}, complete: function(jqHXR, textStatus){
+					//done requesting data
+				}, error: function(jqXHR, textStatus, errorThrown){
+					alert(textStatus);
+				}
+			});
+			$('select').combobox();
+			//use autocompletecombobox.getSelectorForComboboxValue( combobox_jquery_selector ) to retrieve selected option
+			/*
+			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
 					$.ajax({
 						url: "{% url 'get-cargos' %}" + request.term
-						, dataType: "jsonp"
+						, dataType: "json"
 						, data: {
 							//don't send any data to the service
-						}, success: function(data){
-							response( $.map( data, function(item){
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
 								return {
-									label: item.fields.nombre
-									, value: item.pk
+									label: item.fields.nombre,
+									value: item.pk
 								}
-							} ) );
+							}));
+						}, complete: function(jqHXR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
 						}
 					});
 				}, minLength: 2,
 				select: function(event, ui){
 					if(ui.item){
 						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
 					}
 				}, open: function(){
 					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
 				}, close: function(){
 					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
 				}
-			});
+			})*//*.data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}*/;
 		});
 	</script>
 {% endblock %}
