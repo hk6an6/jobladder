@@ -15,7 +15,9 @@ so that the parent's content for this section isn't completely overridden {% end
 {% endblock %}
 
 {% block includejavascript %}
-		
+{% comment %} The following tag outputs original text from the parent template
+so that the parent's content for this section isn't completely overridden {% endcomment %}
+		{{ block.super }}
 {% endblock %}
 
 {% block pagestyle %}
