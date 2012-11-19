@@ -100,6 +100,27 @@ static file assets {% endcomment %}
 			});
 			$('select').combobox();
 			//use autocompletecombobox.getSelectorForComboboxValue( combobox_jquery_selector ) to retrieve selected option
+			$('#cargo_inicial_nombre').change(function(){
+				var selected = $('#cargo_inicial_nombre option:selected')[0].value;
+				$.ajax({
+					url: "{% url 'get-cargos-destino' 1 %}".slice(0,-2) + selected + "/"
+					, dataType: "json"
+					, data: {
+						//don't send any data to the service
+					}, success: function(data, textStatus, jqXHR){
+						$('#cargo_destino_nombre').empty();
+						$.map( data, function( item ) {
+							$('#cargo_destino_nombre').append(
+								$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
+							);
+						})
+					}, complete: function(jqHXR, textStatus){
+						//done requesting data
+					}, error: function(jqXHR, textStatus, errorThrown){
+						alert(textStatus);
+					}
+				});
+			});
 			/*
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
