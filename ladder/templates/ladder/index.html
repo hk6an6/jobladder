@@ -23,16 +23,13 @@ so that the parent's content for this section isn't completely overridden {% end
 {% endblock %}
 
 {% block pageheader %}
-
+	<h1>Rutas de carrera</h1>
 {% endblock %}
 
 {% block pagebody %}
-	<canvas id="game" width="600" height="400">
-		get a better browser!
-	</canvas>
+	
 {% endblock %}
 
 {% block pagefooter %}
-{% comment %} in the following link, the 'static' tag is used to fix the URL for static media assets {% endcomment %}
-	<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
+
 {% endblock %}
