@@ -1,4 +1,10 @@
 {% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+{% comment %}
+	when inheriting from another template, the first line in the file should declare the inheritance.
+	This is a must. Otherwise template inheritance will not work
+{% endcomment %}
 {% comment %} This defines comments within a template {% endcomment %}
 {% comment %} OF SEARING IMPORTANCE: the 'extends' tag should be the first to appear
 in order for template inheritance to work! {% endcomment %}
@@ -6,7 +12,7 @@ in order for template inheritance to work! {% endcomment %}
 static file assets {% endcomment %}
 {% load static from staticfiles %}
 
-{% block pagetitle %}Space Invaders{% endblock %}
+{% block pagetitle %}Rutas de Carrera{% endblock %}
 
 {% block includestylesheet %}
 {% comment %} 
@@ -32,6 +38,10 @@ static file assets {% endcomment %}
 
 {% block pagestyle %}
 
+	.ui-autocomplete-loading {
+        background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
+    }
+    
 {% endblock %}
 
 {% block pageheader %}
@@ -39,9 +49,49 @@ static file assets {% endcomment %}
 {% endblock %}
 
 {% block pagebody %}
-	
+	<label for='cargo_inicial'>Cargo Inicial: </label>
+	<input id='cargo_inicial' name='cargo_inicial' type='text'></input>
 {% endblock %}
 
 {% block pagefooter %}
-
+	<script>
+		$(document).ready(function(){
+			$('#cargo_inicial').autocomplete({
+				source: function(request, response){
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "jsonp"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data){
+							response( $.map( data, function(item){
+								return {
+									label: item.fields.nombre
+									, value: item.pk
+								}
+							} ) );
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			});
+		});
+	</script>
 {% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}
