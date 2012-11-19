@@ -9,14 +9,24 @@ static file assets {% endcomment %}
 {% block pagetitle %}Space Invaders{% endblock %}
 
 {% block includestylesheet %}
-{% comment %} The following tag outputs original text from the parent template
-so that the parent's content for this section isn't completely overridden {% endcomment %}
+{% comment %} 
+	The following tag outputs original text from the parent template
+	so that the parent's content for this section isn't completely overridden
+	
+	In this case, CSS from the master form template will be added to this page's
+	html-head
+{% endcomment %}
 		{{ block.super }}
 {% endblock %}
 
 {% block includejavascript %}
-{% comment %} The following tag outputs original text from the parent template
-so that the parent's content for this section isn't completely overridden {% endcomment %}
+{% comment %} 
+	The following tag outputs original text from the parent template
+	so that the parent's content for this section isn't completely overridden 
+	
+	In this case, javascript from the master template will be added to this page's
+	html-head
+{% endcomment %}
 		{{ block.super }}
 {% endblock %}
 
