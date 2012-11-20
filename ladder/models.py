@@ -53,6 +53,9 @@ class Categoria(models.Model):
 	icono = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
 
 class Requisito(models.Model):
 	nombre = models.CharField(max_length=256)
@@ -60,12 +63,19 @@ class Requisito(models.Model):
 	categoria = models.ForeignKey(Categoria)
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
 	
 
 class AniosExperiencia(models.Model):
 	etiqueta = models.CharField(max_length=8)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+
 
 class Zona(models.Model):
 	nombre = models.CharField(max_length=256)
@@ -73,17 +83,29 @@ class Zona(models.Model):
 	fondo = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
 
 	
 class Clasificacion(models.Model):
 	nombre = models.CharField(max_length=256)
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
+		verbose_name_plural = "Clasificaciones"
+
 
 class Departamento(models.Model):
 	nombre = models.CharField(max_length=256)
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
+		
 
 #completar configuracion de campos. Poner nombres descriptivos a los campos
 class Cargo(models.Model):
@@ -106,6 +128,9 @@ class Cargo(models.Model):
 	siguientes = models.ManyToManyField('self',symmetrical=False, blank=True, related_name='siguiente_set')
 	def __unicode__(self):
 		return self.nombre
+		
+	class Meta:
+		ordering = ["nombre"]
 
 
 class CuerpoAvatar(models.Model):
@@ -114,6 +139,11 @@ class CuerpoAvatar(models.Model):
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Cuerpos Avatar";
+	
 	
 class RopaAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -121,6 +151,11 @@ class RopaAvatar(models.Model):
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Ropa Avatar";
+	
 	
 class ZapatosAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -129,12 +164,22 @@ class ZapatosAvatar(models.Model):
 	def __unicode__(self):
 		return self.etiqueta
 	
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Zapatos Avatar";
+		
+	
 class CaraAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Caras Avatar";
+	
 	
 class AccesoriosAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -142,6 +187,11 @@ class AccesoriosAvatar(models.Model):
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Accesorios Avatar";	
+		
 	
 class SombreroAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -149,6 +199,11 @@ class SombreroAvatar(models.Model):
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Sombreros Avatar";	
+		
 	
 class Avatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -161,6 +216,11 @@ class Avatar(models.Model):
 	def __unicode__(self):
 		return self.etiqueta
 	
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Avatares";	
+		
+	
 class Paso(models.Model):
 	numero = models.IntegerField()
 	anios_ejercidos = models.IntegerField()
@@ -168,6 +228,10 @@ class Paso(models.Model):
 	siguiente = models.ForeignKey('self', blank=True, null=True, related_name='pasos anteriores')
 	def __unicode__(self):
 		return self.numero
+		
+	class Meta:
+		ordering = ["numero"]	
+		
 
 class Ruta(models.Model):
 	pasos = models.IntegerField()
@@ -186,3 +250,6 @@ class Jugador(models.Model):
 	def __unicode__(self):
 		return self.correo
 		
+	class Meta:
+		ordering = ["nombre"]
+		verbose_name_plural = "Jugadores";
