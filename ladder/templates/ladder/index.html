@@ -42,6 +42,15 @@ static file assets {% endcomment %}
         background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
     }
     
+    .ui-autocomplete {
+        max-height: 100px;
+        max-width: 250px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 100px;
+        width: 250px;
+    }
+    
     .ui-combobox {
         position: relative;
         display: inline-block;
@@ -69,8 +78,9 @@ static file assets {% endcomment %}
 
 {% block pagebody %}
 	<div>
-		<label for='cargo_inicial_nombre'>Cargo Inicial: </label>
-		<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text'></select>
+		<label for='cargo_inicial_nombre'>Cargo actual: </label>
+		<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+		<span class='help-block'>Elija el cargo que usted ocupa en este momento</span>
 	</div>
 	<div>
 		<label for='cargo_destino_nombre'>Cargo Destino: </label>
