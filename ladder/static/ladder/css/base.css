@@ -5,3 +5,13 @@ Use this file to override anything from bootstrap. This is the last CSS loaded, 
 This styles may only be overridden by using page style or inline styles
 
 */
+header {
+	background-color: black;
+	color: white;
+	padding: 50px 50px;
+	margin-bottom: 50px;
+}
+
+#main{
+	padding: 25px 25px;
+}

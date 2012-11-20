@@ -69,7 +69,7 @@ static file assets {% endcomment %}
         margin: 0;
         padding: 0.3em;
     }
-    
+
 {% endblock %}
 
 {% block pageheader %}
@@ -78,19 +78,79 @@ static file assets {% endcomment %}
 
 {% block pagebody %}
 	<div>
-		<label for='cargo_inicial_nombre'>Cargo actual: </label>
-		<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+		<div class='input-append'>
+			<label for='cargo_inicial_nombre'>Cargo actual: </label>
+			<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+		</div>
 		<span class='help-block'>Elija el cargo que usted ocupa en este momento</span>
 	</div>
-	<div>
-		<label for='cargo_destino_nombre'>Cargo Destino: </label>
-		<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
+	<div class='toggled_by_cargo_inicial'>
+		<div class='input-append'>
+			<label for='cargo_destino_nombre'>Cargo Destino: </label>
+			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
+		</div>
+		<span class='help-block'>Elija el cargo al que quiere llegar</span>
 	</div>
 {% endblock %}
 
 {% block pagefooter %}
 	<script>
-		$(document).ready(function(){
+
+		var destinations = [];
+		var pendingChildren = [];
+		var visitedCollection = [];
+		
+		function calculateRouteEndpoints_inspectChildrenFor(node){
+			visitedCollection = visitedCollection.concat( [ pendingChildren[0] ] );
+			pendingChildren = pendingChildren.slice(1,pendingChildren.length);
+			console.log(pendingChildren.length);
+			$.ajax({
+				url: "{% url 'get-cargo-by-pk' 1 %}".slice(0,-2) + node + "/"
+				, dataType: "json"
+				, success: function(data, textStatus, jqXHR){
+					var children = null;
+					if(data && data[0]){
+						children = data[0].fields.siguientes;
+					}
+					if(children && children.length && children.length > 0){
+						for(var i = 0; i < children.length; i++){
+							var visited = false;
+							for (var j = 0; j < visitedCollection.length && !visited; j++){
+								visited = visited || visitedCollection[j] == children[i];
+							}
+							if(!visited){
+								pendingChildren = pendingChildren.concat( [ children[i] ] );
+							}
+						}
+					}else {
+						var isPresent = false;
+						for(var i =0; i< destinations.length && !isPresent; i++){
+							isPresent = isPresent || destinations[i] == node;
+						}
+						if(!isPresent){
+							destinations = destinations.concat( [node] );
+						}
+					}
+					if(pendingChildren.length>0){
+						calculateRouteEndpoints_inspectChildrenFor(pendingChildren[0]);
+					}
+				}
+				, error: function(jqXHR, textStatus, errorThrown){}
+				, complete: function(jqXHR, textStatus){
+					$('.toggled_by_cargo_inicial').css('visibility','visible');
+				}
+			});
+		}
+		
+		//calculate available career routes
+		function calculateRouteEndpoints(offSet){
+			destinations = [];
+			pendingChildren = [offSet];
+			calculateRouteEndpoints_inspectChildrenFor(offSet, true);
+		}
+		
+		//load all available cargos
+		function loadOffsetCargos(){
 			$.ajax({
 				url: "{% url 'get-cargos' %}"
 				, dataType: "json"
@@ -109,9 +169,18 @@ static file assets {% endcomment %}
 				}
 			});
 			$('select').combobox();
-			//use autocompletecombobox.getSelectorForComboboxValue( combobox_jquery_selector ) to retrieve selected option
+		}
+	
+		$(document).ready(function(){
+			loadOffsetCargos();
+			//fix sizes for input fields
+			$('div.input-append button').css('height','2em');
+			$('div.input-append input').css('height','1.3em');
+			
 			$('#cargo_inicial_nombre').change(function(){
 				var selected = $('#cargo_inicial_nombre option:selected')[0].value;
+				calculateRouteEndpoints(selected);
+				/*
 				$.ajax({
 					url: "{% url 'get-cargos-destino' 1 %}".slice(0,-2) + selected + "/"
 					, dataType: "json"
@@ -124,12 +193,13 @@ static file assets {% endcomment %}
 								$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
 							);
 						})
-					}, complete: function(jqHXR, textStatus){
+					}, complete: function(jqXHR, textStatus){
 						//done requesting data
 					}, error: function(jqXHR, textStatus, errorThrown){
 						alert(textStatus);
 					}
 				});
+				*/
 			});
 			/*
 			$('#cargo_inicial_nombre').autocomplete({
@@ -147,7 +217,7 @@ static file assets {% endcomment %}
 									value: item.pk
 								}
 							}));
-						}, complete: function(jqHXR, textStatus){
+						}, complete: function(jqXHR, textStatus){
 							//done requesting data
 						}, error: function(jqXHR, textStatus, errorThrown){
 							alert(textStatus);
@@ -173,6 +243,10 @@ static file assets {% endcomment %}
                 .appendTo( ul );
 			}*/;
 		});
+	</script>
+	<script>
+		//hide destination cargo until an offset cargo has been chosen
+		$('.toggled_by_cargo_inicial').css('visibility','hidden');
 	</script>
 {% endblock %}
 {% comment %}

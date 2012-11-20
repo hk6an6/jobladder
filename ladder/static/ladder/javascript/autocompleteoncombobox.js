@@ -67,7 +67,7 @@
                                         .appendTo( ul );
                         };
 
-                        this.button = $( "<button type='button'>&nbsp;</button>" )
+                        this.button = $( "<button type='button' class='btn btn-mini'><i class='icon-chevron-down'></i></button>" )
                                 .attr( "tabIndex", -1 )
                                 .attr( "title", "Show All Items" )
                                 .insertAfter( input )
