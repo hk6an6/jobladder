@@ -30,3 +30,11 @@ def cargo_destino(request, cargo_origen=None):
 		return HttpResponse(serializers.serialize('json',results, fields=('pk','nombre',)) , mimetype='application/json; charset=utf-8')
 	else:
 		raise Http404
+
+def cargo_by_pk(request, cargo_pk=0):
+	data = Cargo.objects.all().filter(pk = int(cargo_pk))
+	result = None
+	for o in data:
+		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes',))
+	return HttpResponse(result, mimetype='application/json; charset=utf-8')
+	
