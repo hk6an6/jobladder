@@ -96,43 +96,74 @@ static file assets {% endcomment %}
 {% block pagefooter %}
 	<script>
 
-		var destinations = [];
-		var pendingChildren = [];
-		var visitedCollection = [];
+		var pendingCargos = [];
+		var destinations = {};
+		var futurePaths = {};
 		
-		function calculateRouteEndpoints_inspectChildrenFor(node){
-			visitedCollection = visitedCollection.concat( [ pendingChildren[0] ] );
-			pendingChildren = pendingChildren.slice(1,pendingChildren.length);
-			console.log(pendingChildren.length);
+		function rebuildPaths(){
+			var keys = [];
+			for(var key in futurePaths){
+				keys[keys.length] = key;
+			}
+			//console.log(keys);
+			for(var i = 0; i < keys.length; i++){
+				var node = "futurePaths['" + keys[i] + "']";
+				//console.log(keys[i]);
+				//console.log(node);
+				//console.log(eval(node));
+				node = eval(node);
+				//console.log(node.fields.siguientes);
+				for(var j = 0; j < node.fields.siguientes.length; j++){
+					//console.log('-->'+ node.fields.siguientes[j]);
+					var reference = "futurePaths['" + node.fields.siguientes[j] + "']";
+					reference = eval(reference);
+					node.fields.siguientes[j] = reference;
+					//console.log(reference);
+				}
+			}
+		}
+		
+		function calculateRouteEndpoints_inspectChildrenFor(){
+			//console.log('pending: ' + pendingCargos.length);
+			//if there are no more items left to process, then stop
+			if(pendingCargos.length <= 0)
+				return;
+			//dequeue a node and prevent it from being re-visited
+			var node = pendingCargos[0];
+			//dont re-visit a node
+			while(futurePaths[ node ] && pendingCargos.length > 0){
+				//console.log('already visited: ' + futurePaths[ node ]);
+				pendingCargos = pendingCargos.slice(1, pendingCargos.length);
+				//console.log('still have to check for: ' + pendingCargos.length + ' more node(s)');
+				node = pendingCargos[0];
+				//console.log('skipping to: ' + node);
+			}
+			//stop execution if current node has already been visited
+			if(!node || node == null || node == undefined){
+				rebuildPaths();
+			}
+			if(!node || futurePaths[ node ])
+				return;
+			//mark node being processed as visited
+			futurePaths[ node ] = node;
+			//print this for debugging
+			//console.log('processing: ' + node);
 			$.ajax({
 				url: "{% url 'get-cargo-by-pk' 1 %}".slice(0,-2) + node + "/"
 				, dataType: "json"
 				, success: function(data, textStatus, jqXHR){
-					var children = null;
-					if(data && data[0]){
-						children = data[0].fields.siguientes;
-					}
-					if(children && children.length && children.length > 0){
-						for(var i = 0; i < children.length; i++){
-							var visited = false;
-							for (var j = 0; j < visitedCollection.length && !visited; j++){
-								visited = visited || visitedCollection[j] == children[i];
-							}
-							if(!visited){
-								pendingChildren = pendingChildren.concat( [ children[i] ] );
+					if(data[0] && data[0].fields && data[0].fields.siguientes){
+						for(var i = 0; i < data[0].fields.siguientes.length; i++){
+							if( !futurePaths[ data[0].fields.siguientes[i] ] ){
+								pendingCargos[pendingCargos.length] = data[0].fields.siguientes[i];
 							}
 						}
-					}else {
-						var isPresent = false;
-						for(var i =0; i< destinations.length && !isPresent; i++){
-							isPresent = isPresent || destinations[i] == node;
-						}
-						if(!isPresent){
-							destinations = destinations.concat( [node] );
-						}
+					} else {
+						destinations[ destinations.length ] = node;
 					}
-					if(pendingChildren.length>0){
-						calculateRouteEndpoints_inspectChildrenFor(pendingChildren[0]);
+					futurePaths[ node ] = data[0];
+					if(pendingCargos.length>0){
+						calculateRouteEndpoints_inspectChildrenFor();
 					}
 				}
 				, error: function(jqXHR, textStatus, errorThrown){}
@@ -144,9 +175,11 @@ static file assets {% endcomment %}
 		
 		//calculate available career routes
 		function calculateRouteEndpoints(offSet){
-			destinations = [];
-			pendingChildren = [offSet];
-			calculateRouteEndpoints_inspectChildrenFor(offSet, true);
+			pendingCargos = [];
+			destinations = {};
+			futurePaths = {};
+			pendingCargos[pendingCargos.length] = offSet;
+			calculateRouteEndpoints_inspectChildrenFor();
 		}
 		
 		//load all available cargos
