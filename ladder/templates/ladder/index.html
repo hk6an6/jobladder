@@ -82,14 +82,22 @@ static file assets {% endcomment %}
 			<label for='cargo_inicial_nombre'>Cargo actual: </label>
 			<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
 		</div>
-		<span class='help-block'>Elija el cargo que usted ocupa en este momento</span>
+		<span class='help-block'>Elige el cargo que tienes en este momento</span>
 	</div>
 	<div class='toggled_by_cargo_inicial'>
 		<div class='input-append'>
 			<label for='cargo_destino_nombre'>Cargo Destino: </label>
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
 		</div>
-		<span class='help-block'>Elija el cargo al que quiere llegar</span>
+		<span class='help-block'>Elige el cargo al que quieres llegar</span>
+	</div>
+	<div id='dialog-wait' title='Por favor espera...'>
+		<div class='control-group warning'>
+			<p style='margin-top: 5px;'>
+				<i class='icon-road' style='margin: 3px 7px 0px 7px; float: left;'></i>
+				<span id='msg-content'>Estamos calculando tus planes de carrera</span>
+			<p>
+		</div>
 	</div>
 {% endblock %}
 
@@ -133,6 +141,12 @@ static file assets {% endcomment %}
 					//console.log(reference);
 				}
 			}
+			//populate destination dropdown
+			populateDropdownOptions(futurePaths, '#cargo_destino_nombre');
+			//dismiss wait dialog
+			toggleWaitDialog();
+			//display destination cargos
+			$('.toggled_by_cargo_inicial').css('visibility','visible');
 		}
 		
 		//try to empty  the pendingCargos collection by processing each of it's contents
@@ -196,7 +210,7 @@ static file assets {% endcomment %}
 					alert(textStatus);
 				}
 				, complete: function(jqXHR, textStatus){
-					$('.toggled_by_cargo_inicial').css('visibility','visible');
+					
 				}
 			});
 		}
@@ -213,31 +227,83 @@ static file assets {% endcomment %}
 			pendingCargos[pendingCargos.length] = offSet;
 			//trigger graph walking algorithm
 			calculateRouteEndpoints_inspectChildrenFor();
+			//show please wait dialog
+			toggleWaitDialog('Estamos buscando planes de carrera a partir del cargo que ocupas','icon-filter');
 		}
 		
 		//load all available cargos
 		function loadOffsetCargos(){
+			//show please wait dialog
+			toggleWaitDialog('Estamos cargando los cargos que puedes ocupar en la organización','icon-signal');
 			$.ajax({
 				url: "{% url 'get-cargos' %}"
 				, dataType: "json"
 				, data: {
 					//don't send any data to the service
 				}, success: function(data, textStatus, jqXHR){
-					$.map( data, function( item ) {
-						$('#cargo_inicial_nombre').append(
-							$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
-						);
-					})
+					populateDropdownOptions(data, '#cargo_inicial_nombre');
 				}, complete: function(jqHXR, textStatus){
 					//done requesting data
+					toggleWaitDialog();
 				}, error: function(jqXHR, textStatus, errorThrown){
 					alert(textStatus);
 				}
 			});
 			$('select').combobox();
 		}
+		
+		//prepare wait dialog
+		function setupWaitDialog(){
+			$( "#dialog-wait" ).dialog({
+				resizable: false,
+				height:140,
+				modal: true,
+				autoOpen: false,
+				closeOnEscape: false,
+				show: 'explode',
+				hide: 'explode',
+			});
+		}
+		
+		//hides or shows the please wait dialog
+		//text: text you want displayed by the wait dialog
+		//icon: bootstrap glyphicon style for the dialog image
+		function toggleWaitDialog(text, icon){
+			//find out if dialog is opened up
+			if($("#dialog-wait").dialog( "isOpen" )){
+				//if dialog is opened up, then close it
+				$("#dialog-wait").dialog( "close" );
+			}else {
+				if(text){
+					$('#dialog-wait #msg-content').text(text);
+				}
+				if(icon){
+					var iconImage = $('#dialog-wait i');
+					var currentStyle = iconImage.attr('class');
+					iconImage.removeClass(currentStyle).addClass(icon);
+				}
+				//display dialog
+				$("#dialog-wait").dialog( "open" );
+				//hide the close dialog handle
+				$('a.ui-dialog-titlebar-close', $('#dialog-wait').prev()).hide();
+			}
+		}
+		
+		//iterates trough whatever contents are in the array or object represented by 'data'
+		//data: info to be used when populating a drop down list
+		//jqSelectorForDropown: jquery selector that points to the dropdown where data is to be appended
+		function populateDropdownOptions(data, jqSelectorForDropown){
+			$.map( data, function( item ) {
+				$(jqSelectorForDropown).append(
+					$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
+				);
+			})
+		}
 	
 		$(document).ready(function(){
+			//fix dialogs
+			setupWaitDialog();
+			//load cargo list
 			loadOffsetCargos();
 			//fix sizes for input fields
 			$('div.input-append button').css('height','2em');
