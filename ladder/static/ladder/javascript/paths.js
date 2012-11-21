@@ -1,3 +1,10 @@
+/**
+	Use native browser JSON support by means of:
+	
+	var json_text = JSON.stringify(your_object);
+	var your_object = JSON.parse(json_text);
+
+*/
 var serempre = new function(){
 	this.cargos = new function(){
 		//this is 'work queue'... all objects in this collection are primary keys for objects to be processed
