@@ -117,6 +117,8 @@ static file assets {% endcomment %}
 		var destinations = [];
 		//an object that acts as if it were a hash table to keep track of visited objects
 		var futurePaths = {};
+		//a copy of the traversed graph that can be used in between pages throughout this site
+		var toStringify = "";
 		
 		//use scrap data from futurePaths to calculate all possible routes
 		function rebuildPaths(){
@@ -175,6 +177,9 @@ static file assets {% endcomment %}
 			}
 			//if the work queue is empty, then all nodes are done processing
 			if(!node || node == null || node == undefined){
+				//save acquired data
+				sessionStorage.futurePaths = '{' + toStringify.slice(1,toStringify.length) + '}';
+				sessionStorage.destinations = JSON.stringify(destinations);
 				//use server-side data to rebuild the graph
 				rebuildPaths();
 			}
@@ -209,6 +214,7 @@ static file assets {% endcomment %}
 					//save data about this node. This is the raw server-side data and will be used to rebuild the graph once all
 					//nodes are done processing
 					futurePaths[ node ] = data[0];
+					toStringify += ',"' + node + '":' + JSON.stringify(data[0]);
 					//re-start work on pending items, if any
 					if(pendingCargos.length>0){
 						calculateRouteEndpoints_inspectChildrenFor();
@@ -231,6 +237,7 @@ static file assets {% endcomment %}
 			//clear previous results, if any
 			destinations = [];
 			futurePaths = {};
+			toStringify = "";
 			//queue a graph node for processing
 			pendingCargos[pendingCargos.length] = offSet;
 			//trigger graph walking algorithm
@@ -310,8 +317,36 @@ static file assets {% endcomment %}
 				);
 			})
 		}
+		
+		//returns true if a key native function is missing
+		function No_HTML5(){
+			var user_msg = 'aborting';
+			var log_msg = 'aborting';
+			var abort = false;
+			//make sure this browser can use local storage api
+			if(typeof(Storage)=="undefined"){
+				user_msg = 'Your browser does not support HTML5 storage';
+				log_msg = 'No HTML5 storage API';
+				abort = true;
+			}
+			//make sure this browser can serialize data as json
+			if( (! JSON.parse) || (! JSON.stringify ) ){
+				user_msg = 'Your browser is not supported';
+				log_msg = 'native JSON stringify or parse not available';
+				abort = true;
+			}
+			//if browser lacks required API, then let the user know about it
+			if(abort){
+				alert(user_msg);
+				console.log(log_msg);
+			}
+			return abort;
+		}
 	
 		$(document).ready(function(){
+			if(No_HTML5()){
+				return;
+			}
 			//fix dialogs
 			setupWaitDialog();
 			//load cargo list
@@ -323,28 +358,15 @@ static file assets {% endcomment %}
 			$('#cargo_inicial_nombre').change(function(){
 				var selected = $('#cargo_inicial_nombre option:selected')[0].value;
 				calculateRouteEndpoints(selected);
-				/*
-				$.ajax({
-					url: "{% url 'get-cargos-destino' 1 %}".slice(0,-2) + selected + "/"
-					, dataType: "json"
-					, data: {
-						//don't send any data to the service
-					}, success: function(data, textStatus, jqXHR){
-						$('#cargo_destino_nombre').empty();
-						$.map( data, function( item ) {
-							$('#cargo_destino_nombre').append(
-								$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
-							);
-						})
-					}, complete: function(jqXHR, textStatus){
-						//done requesting data
-					}, error: function(jqXHR, textStatus, errorThrown){
-						alert(textStatus);
-					}
-				});
-				*/
 			});
-			/*
+		});
+	</script>
+	<script>
+		//hide destination cargo until an offset cargo has been chosen
+		$('.toggled_by_cargo_inicial').css('visibility','hidden');
+	</script>
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
 					console.log("{% url 'get-cargos' %}" + request.term + "/");
@@ -379,18 +401,13 @@ static file assets {% endcomment %}
 				}, close: function(){
 					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
 				}
-			})*//*.data("autocomplete")._renderItem = function( ul, item ){
+			}).data("autocomplete")._renderItem = function( ul, item ){
 				return $( "<li>" )
                 .data( "item.autocomplete", item )
                 .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
                 .appendTo( ul );
-			}*/;
-		});
-	</script>
-	<script>
-		//hide destination cargo until an offset cargo has been chosen
-		$('.toggled_by_cargo_inicial').css('visibility','hidden');
-	</script>
+			}
+	-->
 {% endblock %}
 {% comment %}
 	See built in thempalte tags and filters at:
