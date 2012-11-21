@@ -37,47 +37,7 @@ static file assets {% endcomment %}
 {% endblock %}
 
 {% block pagestyle %}
-
-	.ui-autocomplete-loading {
-        background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
-    }
-    
-    .background_jobs_pending {
-    	background: url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') center no-repeat;
-    	width: 16px;
-    	height: 16px;
-    	margin: 3px 3px;
-    	float: left;
-    }
-    
-    .ui-autocomplete {
-        max-height: 100px;
-        max-width: 250px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: 100px;
-        width: 250px;
-    }
-    
-    .ui-combobox {
-        position: relative;
-        display: inline-block;
-    }
-    .ui-combobox-toggle {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        margin-left: -1px;
-        padding: 0;
-        /* adjust styles for IE 6/7 */
-        *height: 1.7em;
-        *top: 0.1em;
-    }
-    .ui-combobox-input {
-        margin: 0;
-        padding: 0.3em;
-    }
-
+	
 {% endblock %}
 
 {% block pageheader %}
@@ -99,265 +59,34 @@ static file assets {% endcomment %}
 		</div>
 		<span class='help-block'>Elige el cargo al que quieres llegar</span>
 	</div>
-	<div id='dialog-wait' title='Por favor espera...'>
-		<div class='control-group warning'>
-			<p style='margin-top: 5px;'>
-				<i class='icon-road' style='margin: 3px 7px 0px 7px; float: left;'></i>
-				<span id='msg-content'>Estamos calculando tus planes de carrera</span>
-			<p>
-		</div>
-	</div>
 {% endblock %}
 
 {% block pagefooter %}
-	<script>
-		//this is 'work queue'... all objects in this collection are primary keys for objects to be processed
-		var pendingCargos = [];
-		//collection of leaf nodes
-		var destinations = [];
-		//an object that acts as if it were a hash table to keep track of visited objects
-		var futurePaths = {};
-		//a copy of the traversed graph that can be used in between pages throughout this site
-		var toStringify = "";
-		
-		//use scrap data from futurePaths to calculate all possible routes
-		function rebuildPaths(){
-			//this will have a pointer for each node visited in the graph
-			var keys = [];
-			//collect pointers for all visited objects
-			for(var key in futurePaths){
-				keys[keys.length] = key;
-			}
-			//console.log(keys);
-			//for each visited object, build a js statement to get a handle on it's data
-			for(var i = 0; i < keys.length; i++){
-				//plain text js statement that points to a graph object
-				var node = "futurePaths['" + keys[i] + "']";
-				//console.log(keys[i]);
-				//console.log(node);
-				//console.log(eval(node));
-				//evaluate js statement to grab the object
-				node = eval(node);
-				//console.log(node.fields.siguientes);
-				//for every node referenced by the current object
-				for(var j = 0; j < node.fields.siguientes.length; j++){
-					//console.log('-->'+ node.fields.siguientes[j]);
-					//plain text js statement that points to the reference target
-					var reference = "futurePaths['" + node.fields.siguientes[j] + "']";
-					//evaluate js statement to grab the reference target
-					reference = eval(reference);
-					//replace target key with actual object reference
-					node.fields.siguientes[j] = reference;
-					//console.log(reference);
-				}
-			}
-			//populate destination dropdown
-			populateDropdownOptions(futurePaths, '#cargo_destino_nombre');
-			//dismiss wait dialog
-			toggleWaitDialog();
-			//display destination cargos
-			$('.toggled_by_cargo_inicial').css('visibility','visible');
-		}
-		
-		//try to empty  the pendingCargos collection by processing each of it's contents
-		function calculateRouteEndpoints_inspectChildrenFor(){
-			//console.log('pending: ' + pendingCargos.length);
-			//if there are no more items left to process, then stop
-			if(pendingCargos.length <= 0)
-				return;
-			//dequeue a node and prevent it from being re-visited
-			var node = pendingCargos[0];
-			//dont re-visit a node... purge redundant items in the work queue
-			while(futurePaths[ node ] && pendingCargos.length > 0){
-				//console.log('already visited: ' + futurePaths[ node ]);
-				pendingCargos = pendingCargos.slice(1, pendingCargos.length);
-				//console.log('still have to check for: ' + pendingCargos.length + ' more node(s)');
-				node = pendingCargos[0];
-				//console.log('skipping to: ' + node);
-			}
-			//if the work queue is empty, then all nodes are done processing
-			if(!node || node == null || node == undefined){
-				//save acquired data
-				sessionStorage.futurePaths = '{' + toStringify.slice(1,toStringify.length) + '}';
-				sessionStorage.destinations = JSON.stringify(destinations);
-				//use server-side data to rebuild the graph
-				rebuildPaths();
-			}
-			//abort work in progress current node has already been visited
-			if(!node || futurePaths[ node ])
-				return;
-			//mark node being processed as visited
-			futurePaths[ node ] = node;
-			//print this for debugging
-			//console.log('processing: ' + node);
-			//request data for the node being processed
-			$.ajax({
-				url: "{% url 'get-cargo-by-pk' 1 %}".slice(0,-2) + node + "/"
-				, dataType: "json"
-				, success: function(data, textStatus, jqXHR){
-					//if the server-side data points to any other graph nodes, then schedule them for future processing
-					if(data[0] && data[0].fields && data[0].fields.siguientes){
-						//for each referenced node in the server-side data
-						for(var i = 0; i < data[0].fields.siguientes.length; i++){
-							//if the referenced node has yet to be processed, queue it for future processing
-							if( !futurePaths[ data[0].fields.siguientes[i] ] ){
-								//add pending node to the work queue
-								pendingCargos[pendingCargos.length] = data[0].fields.siguientes[i];
-							}
-						}
-					} 
-					//if server-side data doesn't point to any other nodes
-					if( data[0].fields.siguientes.length <= 0 ) {
-						//this is a leaf. Save it for later use
-						destinations[ destinations.length ] = node;
-					}
-					//save data about this node. This is the raw server-side data and will be used to rebuild the graph once all
-					//nodes are done processing
-					futurePaths[ node ] = data[0];
-					toStringify += ',"' + node + '":' + JSON.stringify(data[0]);
-					//re-start work on pending items, if any
-					if(pendingCargos.length>0){
-						calculateRouteEndpoints_inspectChildrenFor();
-					}
-				}
-				, error: function(jqXHR, textStatus, errorThrown){
-					alert(textStatus);
-				}
-				, complete: function(jqXHR, textStatus){
-					
-				}
-			});
-		}
-		
-		//calculate available career routes from a given starting point
-		//offSet: stands for a server-side primary key
-		function calculateRouteEndpoints(offSet){
-			//clear work queue
-			pendingCargos = [];
-			//clear previous results, if any
-			destinations = [];
-			futurePaths = {};
-			toStringify = "";
-			//queue a graph node for processing
-			pendingCargos[pendingCargos.length] = offSet;
-			//trigger graph walking algorithm
-			calculateRouteEndpoints_inspectChildrenFor();
-			//show please wait dialog
-			toggleWaitDialog('Estamos buscando planes de carrera a partir del cargo que ocupas','icon-filter');
-		}
-		
-		//load all available cargos
-		function loadOffsetCargos(){
-			//show please wait dialog
-			toggleWaitDialog('Estamos cargando los cargos que puedes ocupar en la organización','icon-signal');
-			$.ajax({
-				url: "{% url 'get-cargos' %}"
-				, dataType: "json"
-				, data: {
-					//don't send any data to the service
-				}, success: function(data, textStatus, jqXHR){
-					populateDropdownOptions(data, '#cargo_inicial_nombre');
-				}, complete: function(jqHXR, textStatus){
-					//done requesting data
-					toggleWaitDialog();
-				}, error: function(jqXHR, textStatus, errorThrown){
-					alert(textStatus);
-				}
-			});
-			$('select').combobox();
-		}
-		
-		//prepare wait dialog
-		function setupWaitDialog(){
-			$( "#dialog-wait" ).dialog({
-				resizable: false,
-				height:140,
-				modal: true,
-				autoOpen: false,
-				closeOnEscape: false,
-				show: 'explode',
-				hide: 'explode',
-			});
-		}
-		
-		//hides or shows the please wait dialog
-		//text: text you want displayed by the wait dialog
-		//icon: bootstrap glyphicon style for the dialog image
-		function toggleWaitDialog(text, icon){
-			//find out if dialog is opened up
-			if($("#dialog-wait").dialog( "isOpen" )){
-				//if dialog is opened up, then close it
-				$("#dialog-wait").dialog( "close" );
-			}else {
-				if(text){
-					$('#dialog-wait #msg-content').text(text);
-				}
-				if(icon){
-					var iconImage = $('#dialog-wait i');
-					var currentStyle = iconImage.attr('class');
-					iconImage.removeClass(currentStyle).addClass(icon);
-				}
-				//display dialog
-				$("#dialog-wait").dialog( "open" );
-				//hide the close dialog handle
-				var closeLink = $('a.ui-dialog-titlebar-close', $('#dialog-wait').prev()).remove();
-				if(closeLink.length>0)
-					$('#dialog-wait').prev().prepend($("<span class='background_jobs_pending'></span>"));
-			}
-		}
-		
-		//iterates trough whatever contents are in the array or object represented by 'data'
-		//data: info to be used when populating a drop down list
-		//jqSelectorForDropown: jquery selector that points to the dropdown where data is to be appended
-		function populateDropdownOptions(data, jqSelectorForDropown){
-			$(jqSelectorForDropown+' option').remove()
-			$.map( data, function( item ) {
-				$(jqSelectorForDropown).append(
-					$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
-				);
-			})
-		}
-		
-		//returns true if a key native function is missing
-		function No_HTML5(){
-			var user_msg = 'aborting';
-			var log_msg = 'aborting';
-			var abort = false;
-			//make sure this browser can use local storage api
-			if(typeof(Storage)=="undefined"){
-				user_msg = 'Your browser does not support HTML5 storage';
-				log_msg = 'No HTML5 storage API';
-				abort = true;
-			}
-			//make sure this browser can serialize data as json
-			if( (! JSON.parse) || (! JSON.stringify ) ){
-				user_msg = 'Your browser is not supported';
-				log_msg = 'native JSON stringify or parse not available';
-				abort = true;
-			}
-			//if browser lacks required API, then let the user know about it
-			if(abort){
-				alert(user_msg);
-				console.log(log_msg);
-			}
-			return abort;
-		}
-	
+	<script>	
 		$(document).ready(function(){
-			if(No_HTML5()){
+			if(serempre.cargos.No_HTML5()){
 				return;
 			}
 			//fix dialogs
-			setupWaitDialog();
+			serempre.cargos.setupWaitDialog();
 			//load cargo list
-			loadOffsetCargos();
+			serempre.cargos.loadOffsetCargos("{% url 'get-cargos' %}", "#cargo_inicial_nombre");
+			//turn combo boxes into autocomplete combo boxes
+			$('select').combobox();
 			//fix sizes for input fields
 			$('div.input-append button').css('height','2em');
 			$('div.input-append input').css('height','1.3em');
 			
 			$('#cargo_inicial_nombre').change(function(){
 				var selected = $('#cargo_inicial_nombre option:selected')[0].value;
-				calculateRouteEndpoints(selected);
+				serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
+					//this code is run after all endpoints have been calculated from server-side data
+					//graph contents are stored at the futurePaths variable
+					//populate destination dropdown
+					serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
+					//display destination cargos
+					$('.toggled_by_cargo_inicial').css('visibility','visible');
+				});
 			});
 		});
 	</script>
