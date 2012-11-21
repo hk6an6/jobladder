@@ -3,9 +3,11 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core import serializers
 from models import Cargo
+from django.db.models import F
 import logging
 
 # Create your views here.
+# see https://docs.djangoproject.com/en/dev/topics/db/queries/
 
 #create a logger that can output content to console. This will be used while in development
 logger = logging.getLogger('console')
@@ -18,10 +20,10 @@ def home(request):
 def cargo(request,cargo_name_fragment=None):
 	if cargo_name_fragment:
 		logger.debug(cargo_name_fragment)
-		return HttpResponse(serializers.serialize('json',Cargo.objects.filter(nombre__icontains=cargo_name_fragment), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
+		return HttpResponse(serializers.serialize('json',Cargo.objects.filter(nombre__icontains=cargo_name_fragment, activo=True), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 	else:
 		logger.debug('output everything')
-		return HttpResponse(serializers.serialize('json',Cargo.objects.all(), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
+		return HttpResponse(serializers.serialize('json',Cargo.objects.all().filter(activo=True), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 		
 def cargo_destino(request, cargo_origen=None):
 	logger.debug(cargo_origen)
@@ -35,6 +37,6 @@ def cargo_by_pk(request, cargo_pk=0):
 	data = Cargo.objects.all().filter(pk = int(cargo_pk))
 	result = None
 	for o in data:
-		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes',))
+		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','cargo_critico'))
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
