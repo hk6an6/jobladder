@@ -43,10 +43,11 @@ static file assets {% endcomment %}
     }
     
     .background_jobs_pending {
-    	background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
+    	background: url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') center no-repeat;
     	width: 16px;
     	height: 16px;
     	margin: 3px 3px;
+    	float: left;
     }
     
     .ui-autocomplete {
@@ -292,7 +293,9 @@ static file assets {% endcomment %}
 				//display dialog
 				$("#dialog-wait").dialog( "open" );
 				//hide the close dialog handle
-				$('a.ui-dialog-titlebar-close', $('#dialog-wait').prev()).hide();
+				var closeLink = $('a.ui-dialog-titlebar-close', $('#dialog-wait').prev()).remove();
+				if(closeLink.length>0)
+					$('#dialog-wait').prev().prepend($("<span class='background_jobs_pending'></span>"));
 			}
 		}
 		
