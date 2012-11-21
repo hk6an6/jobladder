@@ -42,6 +42,13 @@ static file assets {% endcomment %}
         background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
     }
     
+    .background_jobs_pending {
+    	background: white url('{% static "ladder/images/ui-anim_basic_16x16.gif" %}') right center no-repeat;
+    	width: 16px;
+    	height: 16px;
+    	margin: 3px 3px;
+    }
+    
     .ui-autocomplete {
         max-height: 100px;
         max-width: 250px;
@@ -293,6 +300,7 @@ static file assets {% endcomment %}
 		//data: info to be used when populating a drop down list
 		//jqSelectorForDropown: jquery selector that points to the dropdown where data is to be appended
 		function populateDropdownOptions(data, jqSelectorForDropown){
+			$(jqSelectorForDropown+' option').remove()
 			$.map( data, function( item ) {
 				$(jqSelectorForDropown).append(
 					$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
