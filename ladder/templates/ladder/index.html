@@ -95,34 +95,47 @@ static file assets {% endcomment %}
 
 {% block pagefooter %}
 	<script>
-
+		//this is 'work queue'... all objects in this collection are primary keys for objects to be processed
 		var pendingCargos = [];
-		var destinations = {};
+		//collection of leaf nodes
+		var destinations = [];
+		//an object that acts as if it were a hash table to keep track of visited objects
 		var futurePaths = {};
 		
+		//use scrap data from futurePaths to calculate all possible routes
 		function rebuildPaths(){
+			//this will have a pointer for each node visited in the graph
 			var keys = [];
+			//collect pointers for all visited objects
 			for(var key in futurePaths){
 				keys[keys.length] = key;
 			}
 			//console.log(keys);
+			//for each visited object, build a js statement to get a handle on it's data
 			for(var i = 0; i < keys.length; i++){
+				//plain text js statement that points to a graph object
 				var node = "futurePaths['" + keys[i] + "']";
 				//console.log(keys[i]);
 				//console.log(node);
 				//console.log(eval(node));
+				//evaluate js statement to grab the object
 				node = eval(node);
 				//console.log(node.fields.siguientes);
+				//for every node referenced by the current object
 				for(var j = 0; j < node.fields.siguientes.length; j++){
 					//console.log('-->'+ node.fields.siguientes[j]);
+					//plain text js statement that points to the reference target
 					var reference = "futurePaths['" + node.fields.siguientes[j] + "']";
+					//evaluate js statement to grab the reference target
 					reference = eval(reference);
+					//replace target key with actual object reference
 					node.fields.siguientes[j] = reference;
 					//console.log(reference);
 				}
 			}
 		}
 		
+		//try to empty  the pendingCargos collection by processing each of it's contents
 		function calculateRouteEndpoints_inspectChildrenFor(){
 			//console.log('pending: ' + pendingCargos.length);
 			//if there are no more items left to process, then stop
@@ -130,7 +143,7 @@ static file assets {% endcomment %}
 				return;
 			//dequeue a node and prevent it from being re-visited
 			var node = pendingCargos[0];
-			//dont re-visit a node
+			//dont re-visit a node... purge redundant items in the work queue
 			while(futurePaths[ node ] && pendingCargos.length > 0){
 				//console.log('already visited: ' + futurePaths[ node ]);
 				pendingCargos = pendingCargos.slice(1, pendingCargos.length);
@@ -138,47 +151,67 @@ static file assets {% endcomment %}
 				node = pendingCargos[0];
 				//console.log('skipping to: ' + node);
 			}
-			//stop execution if current node has already been visited
+			//if the work queue is empty, then all nodes are done processing
 			if(!node || node == null || node == undefined){
+				//use server-side data to rebuild the graph
 				rebuildPaths();
 			}
+			//abort work in progress current node has already been visited
 			if(!node || futurePaths[ node ])
 				return;
 			//mark node being processed as visited
 			futurePaths[ node ] = node;
 			//print this for debugging
 			//console.log('processing: ' + node);
+			//request data for the node being processed
 			$.ajax({
 				url: "{% url 'get-cargo-by-pk' 1 %}".slice(0,-2) + node + "/"
 				, dataType: "json"
 				, success: function(data, textStatus, jqXHR){
+					//if the server-side data points to any other graph nodes, then schedule them for future processing
 					if(data[0] && data[0].fields && data[0].fields.siguientes){
+						//for each referenced node in the server-side data
 						for(var i = 0; i < data[0].fields.siguientes.length; i++){
+							//if the referenced node has yet to be processed, queue it for future processing
 							if( !futurePaths[ data[0].fields.siguientes[i] ] ){
+								//add pending node to the work queue
 								pendingCargos[pendingCargos.length] = data[0].fields.siguientes[i];
 							}
 						}
-					} else {
+					} 
+					//if server-side data doesn't point to any other nodes
+					if( data[0].fields.siguientes.length <= 0 ) {
+						//this is a leaf. Save it for later use
 						destinations[ destinations.length ] = node;
 					}
+					//save data about this node. This is the raw server-side data and will be used to rebuild the graph once all
+					//nodes are done processing
 					futurePaths[ node ] = data[0];
+					//re-start work on pending items, if any
 					if(pendingCargos.length>0){
 						calculateRouteEndpoints_inspectChildrenFor();
 					}
 				}
-				, error: function(jqXHR, textStatus, errorThrown){}
+				, error: function(jqXHR, textStatus, errorThrown){
+					alert(textStatus);
+				}
 				, complete: function(jqXHR, textStatus){
 					$('.toggled_by_cargo_inicial').css('visibility','visible');
 				}
 			});
 		}
 		
-		//calculate available career routes
+		//calculate available career routes from a given starting point
+		//offSet: stands for a server-side primary key
 		function calculateRouteEndpoints(offSet){
+			//clear work queue
 			pendingCargos = [];
-			destinations = {};
+			//clear previous results, if any
+			destinations = [];
 			futurePaths = {};
+			//queue a graph node for processing
 			pendingCargos[pendingCargos.length] = offSet;
+			//trigger graph walking algorithm
 			calculateRouteEndpoints_inspectChildrenFor();
 		}
 		
