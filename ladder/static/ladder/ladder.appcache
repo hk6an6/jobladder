@@ -1,0 +1,32 @@
+CACHE MANIFEST
+# 2012-02-21 v1.0.0
+# make sure this is served with a mime type of 'text/cache-manifest'
+css/base.css
+css/jqueryui/jquery-ui-1.9.1.min.css
+css/jqueryui/images/ui-bg_flat_30_cccccc_40x100.png
+css/jqueryui/images/ui-bg_flat_50_5c5c5c_40x100.png
+css/jqueryui/images/ui-bg_glass_20_555555_1x400.png
+css/jqueryui/images/ui-bg_glass_40_0078a3_1x400.png
+css/jqueryui/images/ui-bg_glass_40_a83300_1x400.png
+css/jqueryui/images/ui-bg_gloss-wave_25_333333_500x100.png
+css/jqueryui/images/ui-bg_highlight-soft_10_2e7db2_1x100.png
+css/jqueryui/images/ui-bg_inset-soft_25_000000_1x100.png
+css/jqueryui/images/ui-bg_inset-soft_40_0078a3_1x100.png
+css/jqueryui/images/ui-icons_222222_256x240.png
+css/jqueryui/images/ui-icons_cccccc_256x240.png
+css/jqueryui/images/ui-icons_ffb73c_256x240.png
+css/jqueryui/images/ui-icons_ffffff_256x240.png
+javascript/jquery-1.8.3.min.js
+javascript/jquery-ui-1.9.1.min.js
+javascript/autocompleteoncombobox.js
+javascript/paths.js
+bootstrap/js/bootstrap.min.js
+bootstrap/css/bootstrap.min.css
+bootstrap/img/glyphicons-halflings-white.png
+bootstrap/img/glyphicons-halflings.png
+
+NETWORK:
+*
+
+FALLBACK:
+/html/ /offline.html

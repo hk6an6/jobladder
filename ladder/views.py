@@ -40,3 +40,9 @@ def cargo_by_pk(request, cargo_pk=0):
 		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','cargo_critico'))
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
+def simulate(request, origin, sex):
+	if request.POST:
+		return HttpResponse('POST')
+	else:
+		return HttpResponse('GET')
+		
