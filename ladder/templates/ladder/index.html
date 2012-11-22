@@ -58,6 +58,9 @@ static file assets {% endcomment %}
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
 		</div>
 		<span class='help-block'>Elige el cargo al que quieres llegar</span>
+		<div>
+			<button id='btn-start' name='btn-start' class='btn btn-primary' style='visibility: hidden'>Next</button>
+		</div>
 	</div>
 {% endblock %}
 
@@ -78,7 +81,13 @@ static file assets {% endcomment %}
 			$('div.input-append input').css('height','1.3em');
 			
 			$('#cargo_inicial_nombre').change(function(){
-				var selected = $('#cargo_inicial_nombre option:selected')[0].value;
+				//get selected element
+				var selected = $('#cargo_inicial_nombre option:selected');
+				//get selected element label
+				var label = selected.text();
+				//get selected element value
+				selected = selected[0].value;
+				//walk the job ladder
 				serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
 					//this code is run after all endpoints have been calculated from server-side data
 					//graph contents are stored at the futurePaths variable
@@ -87,6 +96,17 @@ static file assets {% endcomment %}
 					//display destination cargos
 					$('.toggled_by_cargo_inicial').css('visibility','visible');
 				});
+			});
+			
+			$('#cargo_destino_nombre').change(function(){
+				//get selected element
+				var selected = $('#cargo_destino_nombre option:selected');
+				//get selected element label
+				var label = selected.text();
+				//get selected element value
+				selected = selected[0].value;
+				//activate NEXT button
+				$('#btn-start').css('visibility','visible').text(label);
 			});
 		});
 	</script>

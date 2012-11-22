@@ -41,8 +41,5 @@ def cargo_by_pk(request, cargo_pk=0):
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
 def simulate(request, origin, sex):
-	if request.POST:
-		return HttpResponse('POST')
-	else:
-		return HttpResponse('GET')
-		
+	logger.debug('origin cargo: ' + origin + '. sex: ' + sex)
+	return render_to_response('ladder/simulation.html', locals(), RequestContext(request))
