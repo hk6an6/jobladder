@@ -49,80 +49,62 @@ var serempre = new function(){
 			}
 		}
 		
-		//try to empty  the pendingCargos collection by processing each of it's contents
-		this.calculateRouteEndpoints_inspectChildrenFor = function(serviceURL, callback){
-			//console.log('pending: ' + pendingCargos.length);
-			//if there are no more items left to process, then stop
-			if(this.pendingCargos.length <= 0)
-				return;
-			//dequeue a node and prevent it from being re-visited
-			var node = this.pendingCargos[0];
-			//dont re-visit a node... purge redundant items in the work queue
-			while(this.futurePaths[ node ] && this.pendingCargos.length > 0){
-				//console.log('already visited: ' + futurePaths[ node ]);
-				this.pendingCargos = this.pendingCargos.slice(1, this.pendingCargos.length);
-				//console.log('still have to check for: ' + this.pendingCargos.length + ' more node(s)');
-				node = this.pendingCargos[0];
-				//console.log('skipping to: ' + node);
-			}
-			//if the work queue is empty, then all nodes are done processing
-			if(!node || node == null || node == undefined){
-				//save acquired data
-				sessionStorage.futurePaths = '{' + this.toStringify.slice(1,this.toStringify.length) + '}';
-				sessionStorage.destinations = JSON.stringify(this.destinations);
-				//use server-side data to rebuild the graph
-				this.rebuildPaths();
-				//trigger callback
-				if(callback){
-					callback();
+		this.startStep = function (serviceURL, callback){
+			//if there are pending nodes to process
+			if(serempre.cargos.pendingCargos.length > 0){
+				//get the first pending node
+				var node_pk = serempre.cargos.pendingCargos[0];
+				var node = serempre.cargos.futurePaths[ node_pk ];
+				serempre.cargos.pendingCargos = serempre.cargos.pendingCargos.slice(1, serempre.cargos.pendingCargos.length);
+				//skip all nodes already available
+				while(node){
+					node_pk = serempre.cargos.pendingCargos[0];
+					node = serempre.cargos.futurePaths[ node_pk ];
+					serempre.cargos.pendingCargos = serempre.cargos.pendingCargos.slice(1, serempre.cargos.pendingCargos.length);
 				}
-				//dismiss wait dialog
-				this.toggleWaitDialog();
-			}
-			//abort work in progress current node has already been visited
-			if(!node || this.futurePaths[ node ])
-				return;
-			//mark node being processed as visited
-			this.futurePaths[ node ] = node;
-			//print this for debugging
-			//console.log('processing: ' + node);
-			//request data for the node being processed
-			$.ajax({
-				url: serviceURL.slice(0,-2) + node + "/"
-				, dataType: "json"
-				, success: function(data, textStatus, jqXHR){
-					//if the server-side data points to any other graph nodes, then schedule them for future processing
-					if(data[0] && data[0].fields && data[0].fields.siguientes){
-						//for each referenced node in the server-side data
-						for(var i = 0; i < data[0].fields.siguientes.length; i++){
-							//if the referenced node has yet to be processed, queue it for future processing
-							if( !serempre.cargos.futurePaths[ data[0].fields.siguientes[i] ] ){
-								//add pending node to the work queue
-								serempre.cargos.pendingCargos[serempre.cargos.pendingCargos.length] = data[0].fields.siguientes[i];
+				//fetch a node from the server. Upon completion trigger this function again
+				if( !node ){
+					$.ajax({
+						url: serviceURL.slice(0,-2) + node_pk + "/"
+						, dataType: "json"
+						, success: function(data, textStatus, jqXHR){
+							//if the server-side data points to any other graph nodes, then schedule them for future processing
+							if(data[0]){
+								serempre.cargos.stopStep(data[0]);
+							} 
+							//if server-side data doesn't point to any other nodes
+							if( data[0].fields.siguientes.length <= 0 ) {
+								//this is a leaf. Save it for later use
+								serempre.cargos.destinations[ serempre.cargos.destinations.length ] = node;
 							}
 						}
-					} 
-					//if server-side data doesn't point to any other nodes
-					if( data[0].fields.siguientes.length <= 0 ) {
-						//this is a leaf. Save it for later use
-						serempre.cargos.destinations[ serempre.cargos.destinations.length ] = node;
-					}
-					//save data about this node. This is the raw server-side data and will be used to rebuild the graph once all
-					//nodes are done processing
-					serempre.cargos.futurePaths[ node ] = data[0];
-					serempre.cargos.toStringify += ',"' + node + '":' + JSON.stringify(data[0]);
-					//re-start work on pending items, if any
-					if(serempre.cargos.pendingCargos.length>0){
-						serempre.cargos.calculateRouteEndpoints_inspectChildrenFor(serviceURL, callback);
-					}
+						, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+						, complete: function(jqXHR, textStatus){
+							serempre.cargos.startStep(serviceURL, callback);
+						}
+					});
 				}
-				, error: function(jqXHR, textStatus, errorThrown){
-					alert(textStatus);
+			} 
+			else{
+				sessionStorage.futurePaths = '{' + serempre.cargos.toStringify.slice(1,this.toStringify.length) + '}';
+				sessionStorage.destinations = JSON.stringify(serempre.cargos.destinations);
+				serempre.cargos.rebuildPaths();
+				callback();
+				serempre.cargos.toggleWaitDialog();
+			}
+		}
+		
+		this.stopStep = function(node){
+			serempre.cargos.futurePaths[ node.pk ] = node;
+			serempre.cargos.toStringify += ',"' + node.pk + '":' + JSON.stringify(node);
+			for(var i = 0; i < node.fields.siguientes.length; i++){
+				var node_pk = node.fields.siguientes[i];
+				if( !serempre.cargos.futurePaths[ node_pk ] ){
+					serempre.cargos.pendingCargos[ serempre.cargos.pendingCargos.length ] = node_pk;
 				}
-				, complete: function(jqXHR, textStatus){
-					
-				}
-			});
+			}
 		}
 		
 		//calculate available career routes from a given starting point
@@ -136,10 +118,11 @@ var serempre = new function(){
 			this.toStringify = "";
 			//queue a graph node for processing
 			this.pendingCargos[this.pendingCargos.length] = offSet;
-			//trigger graph walking algorithm
-			this.calculateRouteEndpoints_inspectChildrenFor(serviceURL, callback);
 			//show please wait dialog
 			this.toggleWaitDialog(wait_message ? wait_message : 'Estamos buscando planes de carrera a partir del cargo que ocupas', wait_icon ? wait_icon : 'icon-filter');
+			//trigger graph walking algorithm
+			serempre.cargos.startStep(serviceURL, callback);
+			//this.calculateRouteEndpoints_inspectChildrenFor(serviceURL, callback);
 		}
 		
 		//load all available cargos
