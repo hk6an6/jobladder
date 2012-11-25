@@ -64,27 +64,32 @@ var serempre = new function(){
 				}
 				//fetch a node from the server. Upon completion trigger this function again
 				if( !node ){
-					$.ajax({
-						url: serviceURL.slice(0,-2) + node_pk + "/"
-						, dataType: "json"
-						, success: function(data, textStatus, jqXHR){
-							//if the server-side data points to any other graph nodes, then schedule them for future processing
-							if(data[0]){
-								serempre.cargos.stopStep(data[0]);
-							} 
-							//if server-side data doesn't point to any other nodes
-							if( data[0].fields.siguientes.length <= 0 ) {
-								//this is a leaf. Save it for later use
-								serempre.cargos.destinations[ serempre.cargos.destinations.length ] = node;
+					if( node_pk ){
+						$.ajax({
+							url: serviceURL.slice(0,-2) + node_pk + "/"
+							, dataType: "json"
+							, success: function(data, textStatus, jqXHR){
+								//if the server-side data points to any other graph nodes, then schedule them for future processing
+								if(data[0]){
+									serempre.cargos.stopStep(data[0]);
+								} 
+								//if server-side data doesn't point to any other nodes
+								if( data[0].fields.siguientes.length <= 0 ) {
+									//this is a leaf. Save it for later use
+									serempre.cargos.destinations[ serempre.cargos.destinations.length ] = node;
+								}
 							}
-						}
-						, error: function(jqXHR, textStatus, errorThrown){
-							alert(textStatus);
-						}
-						, complete: function(jqXHR, textStatus){
-							serempre.cargos.startStep(serviceURL, callback);
-						}
-					});
+							, error: function(jqXHR, textStatus, errorThrown){
+								alert(textStatus);
+							}
+							, complete: function(jqXHR, textStatus){
+								serempre.cargos.startStep(serviceURL, callback);
+							}
+						});
+					}
+					else {
+						serempre.cargos.startStep(serviceURL, callback);
+					}
 				}
 			} 
 			else{
