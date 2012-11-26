@@ -320,6 +320,18 @@ var serempre = new function(){
 			return path;
 		}
 		
+		//finds the vertex 0-based index for a vertex given a fixed vertex comparison function
+		//vertexes: an array of vertexes
+		//filter: a function that takes a vertex as a parameter and returns true if it matches filter criteria. It should return false otherwise
+		this.indexFor = function (vertexes, filter){
+			for(var i = 0; i < vertexes.length; i++){
+				if( filter(vertexes[i]) ){
+					return i;
+				}
+			}
+			return -1;
+		}
+		
 		/*
 		// sample client for the above API
 		
