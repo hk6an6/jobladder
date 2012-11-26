@@ -293,7 +293,7 @@ var serempre = new function(){
 		//edges: an array of edges that matches the vertex array
 		//start: where the path starts
 		//finish: where the path ends
-		function path(vertexes, edges, start, finish){
+		this.path = function (vertexes, edges, start, finish){
 			var pending = [ start ];
 			var path = [ ];
 			while(pending.length > 0 && start != finish){
@@ -313,6 +313,9 @@ var serempre = new function(){
 				if( vertexes[start].depth <= vertexes[ path[ path.length - 1] ].depth ){
 					path = path.slice(0, path.length - 1);
 				}
+			}
+			if(start == finish){
+				path[ path.length ] = start;
 			}
 			return path;
 		}
