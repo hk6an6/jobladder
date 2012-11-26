@@ -227,4 +227,116 @@ var serempre = new function(){
 			return abort;
 		}
 	}	
+	
+	this.graphs = new function(){
+	
+		//use Depth First Search to print a text based representation for a provided graph
+		//vertexes: an object where each attribute is a key to a vertex
+		//vertex: a vertex where graph walk starts
+		//prefix: string to make each node hint about it's depth
+		//vertexTagCallable: a function that takes a vertex as an argument and returns a string representing the provided vertex
+		this.outputVertex = function(vertexes, vertex, prefix, vertexTagCallable){
+			if(!vertex.visited){
+				console.log(vertex.depth +':'+ prefix + '-> ' + vertexTagCallable(vertex));
+				vertex.visited = true;
+				for(var i = 0; i< vertex.adjacent.length; i++){
+					var ith_vertex_pk = vertex.adjacent[i];
+					var ith_vertex = vertexes[ ith_vertex_pk ];
+					if(! ith_vertex.visited)
+						ith_vertex.depth = 1 + vertex.depth;
+					outputVertex(vertexes, ith_vertex,'------'+prefix, vertexTagCallable);
+				}
+			}
+		}
+		
+		//turn a key value pair representation of a graph into an array of vertexes
+		//vertexes: an object where each attribute is a key to a vertex
+		this.prepareAbstractGraph = function (vertexes){
+			var allNodes = [];
+			for(var i in vertexes){
+				node = vertexes[i];
+				node.visited = false;
+				node.depth = 1;
+				node.adjacent = [];
+				for(var j = 0; j < node.fields.siguientes.length; j++){
+					var next = node.fields.siguientes[j];
+					node.adjacent[ node.adjacent.length ] = next;
+				}
+				allNodes[ allNodes.length ] = node;
+			}
+			return allNodes;
+		}
+		
+		//use an array of vertexes to create a corresponding array of edges
+		//vertexes: an array of vertexes
+		this.buildEdgeArray = function (vertexes){
+			var edges = [];
+			for(var i = 0; i < vertexes.length; i++){
+				node = vertexes[i];
+				node.visited = false;
+				node.depth = 1;
+				node.adjacent = [];
+				for(var j = 0; j < node.fields.siguientes.length; j++){
+					var next = node.fields.siguientes[j];
+					var k;
+					for(k = 0; k < vertexes.length && next != vertexes[k].pk; k++);
+					node.adjacent[ node.adjacent.length ] = k;
+				}
+				edges[ i ] = node.adjacent;
+				console.log(i + ': ' + node.pk + ' || ' + node.fields.nombre);
+			}
+			return edges;
+		}
+		
+		//use Breath First Search to find a path in between 2 vertexes
+		//vertexes: an array of vertexes
+		//edges: an array of edges that matches the vertex array
+		//start: where the path starts
+		//finish: where the path ends
+		function path(vertexes, edges, start, finish){
+			var pending = [ start ];
+			var path = [ ];
+			while(pending.length > 0 && start != finish){
+				if( !vertexes[ start ].visited ){
+					for(var i = 0; i < edges[ start ].length; i++){
+						if( !vertexes[ edges[ start ][i] ].visited ){
+							pending[ pending.length ] = edges[ start ][i];
+							vertexes[ edges[ start ][i] ].depth = 1 + vertexes[ start ].depth;
+						}
+					}
+					path[ path.length ] = start;
+					pendingLenth = edges[ start ].length;
+					vertexes[ start ].visited = true;
+				}
+				pending = pending.slice(1, pending.length);
+				start = pending[0];
+				if( vertexes[start].depth <= vertexes[ path[ path.length - 1] ].depth ){
+					path = path.slice(0, path.length - 1);
+				}
+			}
+			return path;
+		}
+		
+		/*
+		// sample client for the above API
+		
+			console.log('total nodes: ' + prepareAbstractGraph(futurePaths).length);
+
+			node_pk = $('#cargo_inicial_nombre option:selected').val();
+			
+			
+			
+			outputVertex(futurePaths, futurePaths[node_pk], '', function(vertex){ return vertex.pk + ' ' + vertex.fields.nombre; });
+			
+			var vertexes = prepareAbstractGraph(futurePaths);
+			var edges = buildEdgeArray(vertexes);
+			var path = path(vertexes,edges,0,20);
+			console.log(path);
+			for(var i = 0; i < path.length; i++){
+				console.log(i + ' ' +edges[ path[ i ] ]);
+			}
+
+		
+		*/
+	}
 };
