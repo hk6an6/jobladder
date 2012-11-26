@@ -427,6 +427,17 @@ var serempre = new function(){
 			for(var i = 0; i < path.length; i++){
 				console.log(i + ' ' +edges[ path[ i ] ]);
 			}
+			
+			var x = serempre.graphs.dfs(vertexes, edges, 0, 48);
+			var vertexes = serempre.graphs.prepareAbstractGraph(paths);
+			var edges = serempre.graphs.buildEdgeArray(vertexes);
+			var y = serempre.graphs.bfs(vertexes,edges,0,-1, function(vertex){
+				var indent = '   ';
+				while(indent.length < vertex.depth * 3){
+					indent += '   ';
+				}
+				return indent + vertex.fields.nombre;
+			});
 
 		
 		*/
