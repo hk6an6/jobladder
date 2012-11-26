@@ -95,6 +95,21 @@ static file assets {% endcomment %}
 					serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
 					//display destination cargos
 					$('.toggled_by_cargo_inicial').css('visibility','visible');
+					//--------- this is temporal
+					var paths = JSON.parse(sessionStorage.futurePaths);
+					var vertexes = serempre.graphs.prepareAbstractGraph(paths);
+					var edges = serempre.graphs.buildEdgeArray(vertexes);
+					var container = $('<div id="rutas">Rutas</div>');
+					$('#rutas').remove();
+					var y = serempre.graphs.dfs(vertexes,edges,0,-1, '', function(vertex){ 
+						var indent = (vertex.depth-1) * 3;
+						var bg_color = (('#' + (indent%99)) + (indent%99)) + (indent%99);
+						var vertex_tag = $("<div style='margin-left: " + indent + "em; color: #FFFFFF; background-color: " + bg_color + "' >" + vertex.fields.nombre + "</div>");
+						container.append(vertex_tag);
+						return vertex.fields.nombre;
+					});
+					$('#main').append(container);
+					//----------
 				});
 			});
 			

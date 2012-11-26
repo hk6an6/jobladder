@@ -358,7 +358,6 @@ var serempre = new function(){
 						ith_vertex.depth = 1 + vertexes[ start ].depth;
 					var rtrnd = serempre.graphs.dfs(vertexes, edges, ith_vertex_index, end, '------'+prefix, vertexTagCallable, path);
 					if(rtrnd){
-					   console.log(start + ' == ' + rtrnd[ 0 ]);
 					   if(start != rtrnd[ 0 ]){
 					       path = [ start ].concat( rtrnd );
 					   }
@@ -403,6 +402,9 @@ var serempre = new function(){
 			}
 			if(start == finish){
 				path[ path.length ] = start;
+				if(vertexTagCallable){
+					console.log(vertexes[ start ].depth +':-> ' + vertexTagCallable(vertexes[ start ]));
+				}
 			} else {
 				path = null;
 			}
