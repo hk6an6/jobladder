@@ -244,7 +244,7 @@ var serempre = new function(){
 					var ith_vertex = vertexes[ ith_vertex_pk ];
 					if(! ith_vertex.visited)
 						ith_vertex.depth = 1 + vertex.depth;
-					outputVertex(vertexes, ith_vertex,'------'+prefix, vertexTagCallable);
+					serempre.graphs.outputVertex(vertexes, ith_vertex,'------'+prefix, vertexTagCallable);
 				}
 			}
 		}
@@ -330,6 +330,83 @@ var serempre = new function(){
 				}
 			}
 			return -1;
+		}
+		
+		//perform DFS upon a graph. Returns the path to follow, or null if no path was found
+		//vertexes: array holding vertexes
+		//edges: array holding edges
+		//start: path start as an index for the vertexes array
+		//end: path end as an index for the vertexes array
+		//vertexTagCallable: a function to perform on each visited vertex. The function receives the vertex as a parameter
+		//path: don't use this
+		this.dfs = function(vertexes, edges, start, end, prefix, vertexTagCallable, path){
+			if(!path){
+			     path = [];
+			}
+			if(!vertexes[ start ].visited){
+			    if(vertexTagCallable){
+				    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+				}
+				vertexes[ start ].visited = true;
+				if(start == end){
+				    path[ path.length ] = start;
+				}
+				for(var i = 0; i< edges[ start ].length; i++){
+					var ith_vertex_index = edges[ start ][i];
+					var ith_vertex = vertexes[ ith_vertex_index ];
+					if(! ith_vertex.visited)
+						ith_vertex.depth = 1 + vertexes[ start ].depth;
+					var rtrnd = serempre.graphs.dfs(vertexes, edges, ith_vertex_index, end, '------'+prefix, vertexTagCallable, path);
+					if(rtrnd){
+					   console.log(start + ' == ' + rtrnd[ 0 ]);
+					   if(start != rtrnd[ 0 ]){
+					       path = [ start ].concat( rtrnd );
+					   }
+					}
+				}
+			}
+			if(path.length <= 0)
+			     return null;
+			else
+			     return path;
+		}
+		
+		//perform BFS upon a graph. Returns the path to follow
+		//vertexes: array holding vertexes
+		//edges: array holding edges
+		//start: path start as an index for the vertexes array
+		//finish: path end as an index for the vertexes array
+		//vertexTagCallable: a function to perform on each visited vertex. The function receives the vertex as a parameter
+		this.bfs = function (vertexes, edges, start, finish, vertexTagCallable){
+			var pending = [ start ];
+			var path = [ ];
+			while(pending.length > 0 && start != finish){
+				if( !vertexes[ start ].visited ){
+				    if(vertexTagCallable){
+    				    console.log(vertexes[ start ].depth +':-> ' + vertexTagCallable(vertexes[ start ]));
+    				}
+					for(var i = 0; i < edges[ start ].length; i++){
+						if( !vertexes[ edges[ start ][i] ].visited ){
+							pending[ pending.length ] = edges[ start ][i];
+							vertexes[ edges[ start ][i] ].depth = 1 + vertexes[ start ].depth;
+						}
+					}
+					path[ path.length ] = start;
+					pendingLenth = edges[ start ].length;
+					vertexes[ start ].visited = true;
+				}
+				pending = pending.slice(1, pending.length);
+				start = pending[0];
+				if( start && vertexes[start].depth <= vertexes[ path[ path.length - 1] ].depth ){
+					path = path.slice(0, path.length - 1);
+				}
+			}
+			if(start == finish){
+				path[ path.length ] = start;
+			} else {
+				path = null;
+			}
+			return path;
 		}
 		
 		/*
