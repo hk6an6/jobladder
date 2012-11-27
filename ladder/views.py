@@ -40,6 +40,6 @@ def cargo_by_pk(request, cargo_pk=0):
 		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','cargo_critico'))
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
-def simulate(request, origin, sex):
-	logger.debug('origin cargo: ' + origin + '. sex: ' + sex)
+def simulate(request, origin, target, sex):
+	logger.debug('Origin cargo: ' + origin + '. Target cargo: ' + target + '. Sex: ' + sex)
 	return render_to_response('ladder/simulation.html', locals(), RequestContext(request))

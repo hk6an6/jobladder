@@ -45,6 +45,14 @@ static file assets {% endcomment %}
 {% endblock %}
 
 {% block pagebody %}
+    <div>
+        <div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
+            <label for='btn-hombre'>Sexo: </label>
+            <button id='btn-hombre' class='btn active'>H</button>
+            <button id='btn-mujer' class='btn'>M</button>
+        </div>
+        <span class='help-block'></span>
+    </div>
 	<div>
 		<div class='input-append'>
 			<label for='cargo_inicial_nombre'>Cargo actual: </label>
@@ -58,14 +66,24 @@ static file assets {% endcomment %}
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
 		</div>
 		<span class='help-block'>Elige el cargo al que quieres llegar</span>
-		<div>
-			<button id='btn-start' name='btn-start' class='btn btn-primary' style='visibility: hidden'>Next</button>
+		<div id='start-simulation' style='visibility: hidden'>
+            <label for='btn-start'>Simular ruta hasta:</label>
+			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "career-simulation" origin="1" target="2" sex="3" %}");'>Next</button>
 		</div>
 	</div>
 {% endblock %}
 
 {% block pagefooter %}
-	<script>	
+	<script>
+        
+        function navigate_to_simulation_start(blank_url){
+            var sex = $('div#div-sexo button.active').text();
+            var origin_cargo = $('#cargo_inicial_nombre option:selected').val();
+            var target_cargo = $('#cargo_destino_nombre option:selected').val();
+            var target_url = blank_url.replace(/1\/2\/3\/$/gi,origin_cargo+'/'+target_cargo+'/'+sex+'/');
+            window.location.href = target_url;
+        }
+        
 		$(document).ready(function(){
 			if(serempre.cargos.No_HTML5()){
 				return;
@@ -121,7 +139,8 @@ static file assets {% endcomment %}
 				//get selected element value
 				selected = selected[0].value;
 				//activate NEXT button
-				$('#btn-start').css('visibility','visible').text(label);
+                $('#start-simulation').css('visibility','visible')
+				$('#btn-start').text(label);
 			});
 		});
 	</script>

@@ -8,5 +8,5 @@ urlpatterns = patterns('',
 	url(r'^cargo/siguientes/(?P<cargo_pk>\d+)/$','ladder.views.cargo_by_pk', name="get-cargo-by-pk"),
 	url(r'^cargo/(?P<cargo_name_fragment>[\w\s]*)/$','ladder.views.cargo', name="get-cargos-filter-by-cargo-name"),
 	url(r'^cargo/destinos/(?P<cargo_origen>\d+)/$','ladder.views.cargo_destino', name="get-cargos-destino"),
-	url(r'^r/(?P<origin>\d+)/(?P<sex>\w)/$','ladder.views.simulate',name='career-simulation'),
+	url(r'^r/(?P<origin>\d+)/(?P<target>\d+)/(?P<sex>\w)/$','ladder.views.simulate',name='career-simulation'),
 )
