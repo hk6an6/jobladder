@@ -339,12 +339,10 @@ var serempre = new function(){
 		//end: path end as an index for the vertexes array
 		//vertexTagCallable: a function to perform on each visited vertex. The function receives the vertex as a parameter
 		//path: don't use this
-		this.dfs = function(vertexes, edges, start, end, prefix, vertexTagCallable, path){
+		this.dfs = function(vertexes, edges, start, end, prefix, vertexTagCallable){
 			var pending = [ start ];
 			
-			if(!path){
-                path = [];
-			}
+			var path = [ ];
 			
 			while(start != end && pending.length > 0){
                 start = pending[0];
@@ -384,41 +382,45 @@ var serempre = new function(){
 		//vertexes: array holding vertexes
 		//edges: array holding edges
 		//start: path start as an index for the vertexes array
-		//finish: path end as an index for the vertexes array
+		//end: path end as an index for the vertexes array
 		//vertexTagCallable: a function to perform on each visited vertex. The function receives the vertex as a parameter
-		this.bfs = function (vertexes, edges, start, finish, vertexTagCallable){
+		this.bfs = function (vertexes, edges, start, end, vertexTagCallable){
 			var pending = [ start ];
+			
 			var path = [ ];
-			while(pending.length > 0 && start != finish){
-				if( !vertexes[ start ].visited ){
-				    if(vertexTagCallable){
-    				    console.log(vertexes[ start ].depth +':-> ' + vertexTagCallable(vertexes[ start ]));
-    				}
-					for(var i = 0; i < edges[ start ].length; i++){
-						if( !vertexes[ edges[ start ][i] ].visited ){
-							pending[ pending.length ] = edges[ start ][i];
-							vertexes[ edges[ start ][i] ].depth = 1 + vertexes[ start ].depth;
-						}
-					}
-					path[ path.length ] = start;
-					pendingLenth = edges[ start ].length;
-					vertexes[ start ].visited = true;
-				}
-				pending = pending.slice(1, pending.length);
-				start = pending[0];
-				if( start && vertexes[start].depth <= vertexes[ path[ path.length - 1] ].depth ){
-					path = path.slice(0, path.length - 1);
-				}
+			
+			while(start != end && pending.length > 0){
+                start = pending[0];
+                pending = pending.slice(1, pending.length);
+                if( path[ path.length - 1 ] && vertexes[ start ].depth <= vertexes[ path[ path.length - 1 ] ].depth){
+                    path = path.slice(0, path.length - 1);
+                }
+                if( vertexes[ start ].visited ){
+                    continue;
+                }
+                if(vertexTagCallable){
+                    if( vertexes[ start ].depth > 1 ){
+                        var tmp = '------';
+                        for(var i = 0; i < vertexes[ start ].depth -1; i++){
+                            tmp += '------';
+                        }
+                        prefix = tmp;
+                    }
+                    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+                }
+                vertexes[ start ].visited = true;
+                path[ path.length ] = start;
+                for(var i = 0; i < edges[ start ].length; i++){
+                    if(! vertexes[ edges[start][i] ].visited ){
+                        vertexes[ edges[start][i] ].depth = 1 + vertexes[ start ].depth;
+                        pending[ pending.length ] = edges[ start ][i];
+                    }
+                }
 			}
-			if(start == finish){
-				path[ path.length ] = start;
-				if(vertexTagCallable){
-					console.log(vertexes[ start ].depth +':-> ' + vertexTagCallable(vertexes[ start ]));
-				}
-			} else {
-				path = null;
+			if( start == end ){
+                return path;
 			}
-			return path;
+			return null;
 		}
 		
 		/*
