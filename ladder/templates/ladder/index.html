@@ -125,10 +125,13 @@ static file assets {% endcomment %}
 						var vertex_tag = $("<div style='margin-left: " + indent + "em; color: #FFFFFF; background-color: " + bg_color + "' >" + vertex.fields.nombre + "</div>");
 						container.append(vertex_tag);
 						return vertex.fields.nombre;
-					});
+                    //----------
+                    });
 					$('#main').append(container);
-					//----------
-				});
+					
+                }, function waitUpdate(data){
+                    $('#dialog-wait span#msg-content').text('Trabajando en: '+ data.fields.nombre);
+                });
 			});
 			
 			$('#cargo_destino_nombre').change(function(){

@@ -49,7 +49,7 @@ var serempre = new function(){
 			}
 		}
 		
-		this.startStep = function (serviceURL, callback){
+		this.startStep = function (serviceURL, callback, wait_message_update_callback){
 			//if there are pending nodes to process
 			if(serempre.cargos.pendingCargos.length > 0){
 				//get the first pending node
@@ -72,7 +72,10 @@ var serempre = new function(){
 								//if the server-side data points to any other graph nodes, then schedule them for future processing
 								if(data[0]){
 									serempre.cargos.stopStep(data[0]);
-								} 
+                                    if(wait_message_update_callback){
+                                        wait_message_update_callback(data[0]);
+                                    }
+								}
 								//if server-side data doesn't point to any other nodes
 								if( data[0].fields.siguientes.length <= 0 ) {
 									//this is a leaf. Save it for later use
@@ -83,12 +86,12 @@ var serempre = new function(){
 								alert(textStatus);
 							}
 							, complete: function(jqXHR, textStatus){
-								serempre.cargos.startStep(serviceURL, callback);
+								serempre.cargos.startStep(serviceURL, callback, wait_message_update_callback);
 							}
 						});
 					}
 					else {
-						serempre.cargos.startStep(serviceURL, callback);
+						serempre.cargos.startStep(serviceURL, callback, wait_message_update_callback);
 					}
 				}
 			} 
@@ -114,7 +117,7 @@ var serempre = new function(){
 		
 		//calculate available career routes from a given starting point
 		//offSet: stands for a server-side primary key
-		this.calculateRouteEndpoints = function(offSet, serviceURL, callback, wait_message, wait_icon){
+		this.calculateRouteEndpoints = function(offSet, serviceURL, callback, wait_message_update_callback, wait_message, wait_icon){
 			//clear work queue
 			this.pendingCargos = [];
 			//clear previous results, if any
@@ -126,7 +129,7 @@ var serempre = new function(){
 			//show please wait dialog
 			this.toggleWaitDialog(wait_message ? wait_message : 'Estamos buscando planes de carrera a partir del cargo que ocupas', wait_icon ? wait_icon : 'icon-filter');
 			//trigger graph walking algorithm
-			serempre.cargos.startStep(serviceURL, callback);
+			serempre.cargos.startStep(serviceURL, callback, wait_message_update_callback);
 			//this.calculateRouteEndpoints_inspectChildrenFor(serviceURL, callback);
 		}
 		
