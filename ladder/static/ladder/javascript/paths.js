@@ -340,34 +340,44 @@ var serempre = new function(){
 		//vertexTagCallable: a function to perform on each visited vertex. The function receives the vertex as a parameter
 		//path: don't use this
 		this.dfs = function(vertexes, edges, start, end, prefix, vertexTagCallable, path){
+			var pending = [ start ];
+			
 			if(!path){
-			     path = [];
+                path = [];
 			}
-			if(!vertexes[ start ].visited){
-			    if(vertexTagCallable){
-				    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
-				}
-				vertexes[ start ].visited = true;
-				if(start == end){
-				    path[ path.length ] = start;
-				}
-				for(var i = 0; i< edges[ start ].length; i++){
-					var ith_vertex_index = edges[ start ][i];
-					var ith_vertex = vertexes[ ith_vertex_index ];
-					if(! ith_vertex.visited)
-						ith_vertex.depth = 1 + vertexes[ start ].depth;
-					var rtrnd = serempre.graphs.dfs(vertexes, edges, ith_vertex_index, end, '------'+prefix, vertexTagCallable, path);
-					if(rtrnd){
-					   if(start != rtrnd[ 0 ]){
-					       path = [ start ].concat( rtrnd );
-					   }
-					}
-				}
+			
+			while(start != end && pending.length > 0){
+                start = pending[0];
+                pending = pending.slice(1, pending.length);
+                if( path[ path.length - 1 ] && vertexes[ start ].depth <= vertexes[ path[ path.length - 1 ] ].depth){
+                    path = path.slice(0, path.length - 1);
+                }
+                if( vertexes[ start ].visited ){
+                    continue;
+                }
+                if(vertexTagCallable){
+                    if( vertexes[ start ].depth > 1 ){
+                        var tmp = '------';
+                        for(var i = 0; i < vertexes[ start ].depth -1; i++){
+                            tmp += '------';
+                        }
+                        prefix = tmp;
+                    }
+                    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+                }
+                vertexes[ start ].visited = true;
+                path[ path.length ] = start;
+                for(var i = 0; i < edges[ start ].length; i++){
+                    if(! vertexes[ edges[start][i] ].visited ){
+                        vertexes[ edges[start][i] ].depth = 1 + vertexes[ start ].depth;
+                        pending = [ edges[ start ][i] ].concat(pending);
+                    }
+                }
 			}
-			if(path.length <= 0)
-			     return null;
-			else
-			     return path;
+			if( start == end ){
+                return path;
+			}
+			return null;
 		}
 		
 		//perform BFS upon a graph. Returns the path to follow
