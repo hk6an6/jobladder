@@ -68,7 +68,7 @@ static file assets {% endcomment %}
 		<span class='help-block'>Elige el cargo al que quieres llegar</span>
 		<div id='start-simulation' style='visibility: hidden'>
             <label for='btn-start'>Simular ruta hasta:</label>
-			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "career-simulation" origin="1" target="2" sex="3" %}");'>Next</button>
+			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "career-simulation" origin_pk="1" target_pk="2" sex="3" %}");'>Next</button>
 		</div>
 	</div>
 {% endblock %}

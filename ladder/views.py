@@ -38,8 +38,22 @@ def cargo_by_pk(request, cargo_pk=0):
 	result = serializers.serialize('json', data)
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
-def simulate(request, origin, target, sex):
-	logger.debug('Origin cargo: ' + origin + '. Target cargo: ' + target + '. Sex: ' + sex)
+def simulate(request, origin_pk, target_pk, sex):
+	logger.debug('Origin cargo: ' + origin_pk + '. Target cargo: ' + target_pk + '. Sex: ' + sex)
+	origin_cargo = Cargo.objects.all().filter(pk=int(origin_pk))
+	target_cargo = Cargo.objects.all().filter(pk=int(target_pk))
+	origin_avatar = None
+	target_avatar = None
+	if sex == 'H':
+		origin_avatar=Avatar.objects.all().filter(cargos_hombre__pk=origin_pk, cargos_hombre__avatar_hombre__pk=F('pk'))
+		target_avatar=Avatar.objects.all().filter(cargos_hombre__pk=target_pk, cargos_hombre__avatar_hombre__pk=F('pk'))
+	else:
+		origin_avatar=Avatar.objects.all().filter(cargos_mujer__pk=origin_pk, cargos_mujer__avatar_mujer__pk=F('pk'))
+		origin_avatar=Avatar.objects.all().filter(cargos_mujer__pk=target_pk, cargos_mujer__avatar_mujer__pk=F('pk'))
+	origin_cargo_json = serializers.serialize('json', origin_cargo)
+	target_cargo_json = serializers.serialize('json', target_cargo)
+	origin_avatar_json = serializers.serialize('json', origin_avatar)
+	target_avatar_json = serializers.serialize('json', target_avatar)
 	return render_to_response('ladder/simulation.html', locals(), RequestContext(request))
 
 def zona_by_pk(request, zona_pk):

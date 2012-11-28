@@ -209,9 +209,9 @@ class Avatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	cuerpo = models.ForeignKey(CuerpoAvatar, verbose_name='Cuerpo')
 	cara   = models.ForeignKey(CaraAvatar, verbose_name='Cara')
-	ropa   = models.ForeignKey(RopaAvatar, verbose_name='Sombrero')
-	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Sombrero')
-	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Sombrero', blank=True, null=True)
+	ropa   = models.ForeignKey(RopaAvatar, verbose_name='Ropa')
+	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Zapatos')
+	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Accesorios', blank=True, null=True)
 	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Sombrero', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
