@@ -147,7 +147,7 @@ class CuerpoAvatar(models.Model):
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
-		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
+		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
 		
 	class Meta:
 		ordering = ["etiqueta"]
@@ -160,7 +160,7 @@ class CamisaAvatar(models.Model):
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
-		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
+		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
 		
 	class Meta:
 		ordering = ["etiqueta"]
@@ -173,7 +173,7 @@ class PantalonAvatar(models.Model):
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
-		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
+		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
 	
 	class Meta:
 		ordering = ["etiqueta"]
