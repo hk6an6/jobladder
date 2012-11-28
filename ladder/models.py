@@ -164,7 +164,7 @@ class CamisaAvatar(models.Model):
 		
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Camisas Avatar";
+		verbose_name_plural = "Camisas y Vestidos";
 
 
 class PantalonAvatar(models.Model):
@@ -177,7 +177,7 @@ class PantalonAvatar(models.Model):
 	
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Pantalones Avatar";
+		verbose_name_plural = "Pantalones";
 
 
 class PeloAvatar(models.Model):
@@ -190,7 +190,8 @@ class PeloAvatar(models.Model):
 	
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Pelo Avatar";
+		verbose_name_plural = "Cabellos (de acuerdo a experiencia)";
+		verbose_name = "Cabello (según experiencia)"
 	
 	
 class ZapatosAvatar(models.Model):
@@ -226,7 +227,8 @@ class AccesoriosAvatar(models.Model):
 		
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Accesorios Avatar";	
+		verbose_name_plural = "Pelo y Accesorios";
+		verbose_name = "Pelo/Accesorio"
 		
 	
 class SombreroAvatar(models.Model):
@@ -238,7 +240,8 @@ class SombreroAvatar(models.Model):
 		
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Sombreros Avatar";	
+		verbose_name_plural = "Cascos";
+		verbose_name = "Casco"
 		
 	
 class Avatar(models.Model):
@@ -248,9 +251,9 @@ class Avatar(models.Model):
 	camisa   = models.ForeignKey(CamisaAvatar, verbose_name='Camisa', blank=True, null=True)
 	pantalon   = models.ForeignKey(PantalonAvatar, verbose_name='Pantalon', blank=True, null=True)
 	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Zapatos', blank=True, null=True)
-	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Accesorios', blank=True, null=True)
+	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Pelo/Accesorios', blank=True, null=True)
 	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Casco', blank=True, null=True)
-	pelo = models.ForeignKey(PeloAvatar, verbose_name='Pelo', blank=True, null=True)
+	pelo = models.ForeignKey(PeloAvatar, verbose_name='Cabello (de acuerdo a experiencia)', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
