@@ -37,7 +37,7 @@ def cargo_by_pk(request, cargo_pk=0):
 	data = Cargo.objects.all().filter(pk = int(cargo_pk))
 	result = None
 	for o in data:
-		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','cargo_critico'))
+		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','requisitos','cargo_critico','avatar_hombre','avatar_mujer','zona','anios_experiencia','tiempo_permanencia'))
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
 def simulate(request, origin, target, sex):

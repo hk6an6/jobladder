@@ -27,12 +27,25 @@
 {% endblock %}
 
 {% block pagefooter %}
-	<script>	
+	<script>
+        var paths = null;
+        var vertexes = null;
+        var edges = null;
+        
+        //resets visited status on all nodes within the graph
+        function prepareGraph(){
+            vertexes = serempre.graphs.prepareAbstractGraph(paths);
+            edges = serempre.graphs.buildEdgeArray(vertexes);
+        }
+        
 		$(document).ready(function(){
 			serempre.cargos.futurePaths = sessionStorage.futurePaths;
 			if(! serempre.cargos.futurePaths){
 				window.location.href='/';
 			}
+            paths = JSON.parse(sessionStorage.futurePaths);
+            prepareGraph();
+            
 		});
 	</script>
 	<!-- 
