@@ -46,6 +46,17 @@ OPCIONES_NIVEL_JERARQUIA = (
 	(14,'14'),
 	(15,'15'),
 )
+OPCIONES_CUERPO_ALTURA = (
+	(1,'Alto'),
+	(2,'Promedio'),
+	(3,'Bajo'),
+)
+OPCIONES_CONTEXTURA = (
+	(1,'Flaco'),
+	(2,'Promedio'),
+	(3,'Alto'),
+)
+
 
 class Categoria(models.Model):
 	nombre = models.CharField(max_length=256)
@@ -135,26 +146,57 @@ class Cargo(models.Model):
 
 class CuerpoAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
+	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
-		return self.etiqueta
+		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
 		
 	class Meta:
 		ordering = ["etiqueta"]
 		verbose_name_plural = "Cuerpos Avatar";
 	
 	
-class RopaAvatar(models.Model):
+class CamisaAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
+	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
+		
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Camisas Avatar";
+
+
+class PantalonAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
+	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta + ". Altura: " + OPCIONES_CUERPO_ALTURA[ self.altura ][1] + ". Contextura: " + OPCIONES_CONTEXTURA[ self.contextura ][1]
+	
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Pantalones Avatar";
+
+
+class PeloAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
+	experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
-		
+	
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Ropa Avatar";
+		verbose_name_plural = "Pelo Avatar";
 	
 	
 class ZapatosAvatar(models.Model):
@@ -207,12 +249,14 @@ class SombreroAvatar(models.Model):
 	
 class Avatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
-	cuerpo = models.ForeignKey(CuerpoAvatar, verbose_name='Cuerpo')
-	cara   = models.ForeignKey(CaraAvatar, verbose_name='Cara')
-	ropa   = models.ForeignKey(RopaAvatar, verbose_name='Ropa')
-	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Zapatos')
+	cuerpo = models.ForeignKey(CuerpoAvatar, verbose_name='Cuerpo', blank=True, null=True)
+	cara   = models.ForeignKey(CaraAvatar, verbose_name='Cara', blank=True, null=True)
+	camisa   = models.ForeignKey(CamisaAvatar, verbose_name='Camisa', blank=True, null=True)
+	pantalon   = models.ForeignKey(PantalonAvatar, verbose_name='Pantalon', blank=True, null=True)
+	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Zapatos', blank=True, null=True)
 	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Accesorios', blank=True, null=True)
-	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Sombrero', blank=True, null=True)
+	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Casco', blank=True, null=True)
+	pelo = models.ForeignKey(PeloAvatar, verbose_name='Pelo', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
