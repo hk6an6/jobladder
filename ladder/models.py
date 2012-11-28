@@ -46,15 +46,12 @@ OPCIONES_NIVEL_JERARQUIA = (
 	(14,'14'),
 	(15,'15'),
 )
-OPCIONES_CUERPO_ALTURA = (
-	(1,'Alto'),
-	(2,'Promedio'),
-	(3,'Bajo'),
-)
 OPCIONES_CONTEXTURA = (
-	(1,'Flaco'),
-	(2,'Promedio'),
-	(3,'Alto'),
+	(1,'Volumen 1'),
+	(2,'Volumen 2'),
+	(3,'Volumen 3'),
+	(4,'Volumen 4'),
+	(5,'Volumen 5'),
 )
 
 
@@ -146,8 +143,7 @@ class Cargo(models.Model):
 
 class CuerpoAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
-	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
-	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
@@ -160,8 +156,7 @@ class CuerpoAvatar(models.Model):
 	
 class CamisaAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
-	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
-	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
@@ -174,8 +169,7 @@ class CamisaAvatar(models.Model):
 
 class PantalonAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
-	altura = models.IntegerField(choices=OPCIONES_CUERPO_ALTURA)
-	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA)
+	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
