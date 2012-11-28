@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core import serializers
-from models import Cargo
+from models import Cargo, Zona, Requisito, Avatar
 from django.db.models import F
 import logging
 
@@ -35,11 +35,25 @@ def cargo_destino(request, cargo_origen=None):
 
 def cargo_by_pk(request, cargo_pk=0):
 	data = Cargo.objects.all().filter(pk = int(cargo_pk))
-	result = None
-	for o in data:
-		result = serializers.serialize('json', data, fields=('pk','nombre','siguientes','requisitos','cargo_critico','avatar_hombre','avatar_mujer','zona','anios_experiencia','tiempo_permanencia'))
+	result = serializers.serialize('json', data)
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
 def simulate(request, origin, target, sex):
 	logger.debug('Origin cargo: ' + origin + '. Target cargo: ' + target + '. Sex: ' + sex)
 	return render_to_response('ladder/simulation.html', locals(), RequestContext(request))
+
+def zona_by_pk(request, zona_pk):
+    data = Zona.objects.all().filter(pk = int(zona_pk))
+    result = serializers.serialize('json', data)
+    return HttpResponse(result, mimetype='application/json; charset=utf-8')
+
+def requisito_by_pk(request, requisito_pk):
+    data = Requisito.objects.all().filter(pk = int(requisito_pk))
+    result = serializers.serialize('json', data)
+    return HttpResponse(result, mimetype='application/json; charset=utf-8')
+
+def avatar_by_pk(request, avatar_pk):
+    data = Avatar.objects.all().filter(pk = int(avatar_pk))
+    result = serializers.serialize('json', data)
+    return HttpResponse(result, mimetype='application/json; charset=utf-8')
+
