@@ -108,6 +108,8 @@ class Clasificacion(models.Model):
 
 class Departamento(models.Model):
 	nombre = models.CharField(max_length=256)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	fondo = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.nombre
 		
@@ -180,7 +182,7 @@ class PantalonAvatar(models.Model):
 		verbose_name_plural = "Pantalones";
 
 
-class PeloAvatar(models.Model):
+class CabelloAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
 	#use the upload_to attribute con configure file upload through boto & django storages
@@ -190,9 +192,34 @@ class PeloAvatar(models.Model):
 	
 	class Meta:
 		ordering = ["etiqueta"]
-		verbose_name_plural = "Cabellos (de acuerdo a experiencia)";
+		verbose_name_plural = "Cabelleras (de acuerdo a experiencia)";
 		verbose_name = "Cabello (según experiencia)"
+
+
+class PeloAvatar(models.Model):
+	etiqueta = models.CharField(max_length=100)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
 	
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Pelos";
+		verbose_name = "Pelo"
+
+class Faccion(models.Model):
+	etiqueta = models.CharField(max_length=100)
+	#use the upload_to attribute con configure file upload through boto & django storages
+	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	def __unicode__(self):
+		return self.etiqueta
+	
+	class Meta:
+		ordering = ["etiqueta"]
+		verbose_name_plural = "Facciones";
+		verbose_name = "Facción"
+
 	
 class ZapatosAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
@@ -251,9 +278,11 @@ class Avatar(models.Model):
 	camisa   = models.ForeignKey(CamisaAvatar, verbose_name='Camisa', blank=True, null=True)
 	pantalon   = models.ForeignKey(PantalonAvatar, verbose_name='Pantalon', blank=True, null=True)
 	zapatos= models.ForeignKey(ZapatosAvatar, verbose_name='Zapatos', blank=True, null=True)
-	accesorios= models.ForeignKey(AccesoriosAvatar, verbose_name='Pelo/Accesorios', blank=True, null=True)
+	accesorios = models.ManyToManyField(AccesoriosAvatar, symmetrical=False, blank=True, null=True, related_name="avatares", verbose_name='Pelo/Accesorios')
 	sombrero = models.ForeignKey(SombreroAvatar, verbose_name='Casco', blank=True, null=True)
-	pelo = models.ForeignKey(PeloAvatar, verbose_name='Cabello (de acuerdo a experiencia)', blank=True, null=True)
+	cabello = models.ForeignKey(CabelloAvatar, verbose_name='Cabello (de acuerdo a experiencia)', blank=True, null=True)
+	pelo = models.ForeignKey(PeloAvatar, verbose_name='Pelo', blank=True, null=True)
+	facciones = models.ManyToManyField(Faccion, symmetrical=False, blank=True, null=True, related_name="avatares", verbose_name='facciones')
 	def __unicode__(self):
 		return self.etiqueta
 	

@@ -16,7 +16,8 @@ class RequisitoAdmin(admin.ModelAdmin):
 	list_filter = ('categoria',)
 	
 class AvatarAdmin(admin.ModelAdmin):
-	raw_id_fields = ('cuerpo','cara','pelo','camisa','pantalon','zapatos','accesorios','sombrero',)
+	raw_id_fields = ('cuerpo','cara','pelo','camisa','pantalon','zapatos','sombrero','cabello')
+	filter_horizontal = ('accesorios','facciones',)
 	
 class JugadorAdmin(admin.ModelAdmin):
 	list_display = ('nombre','correo',)
@@ -43,3 +44,5 @@ admin.site.register(Avatar, AvatarAdmin)
 admin.site.register(Paso)
 admin.site.register(Ruta)
 admin.site.register(Jugador, JugadorAdmin)
+admin.site.register(CabelloAvatar)
+admin.site.register(Faccion)
