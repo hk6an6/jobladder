@@ -5,6 +5,13 @@
 	var your_object = JSON.parse(json_text);
 
 */
+//setup class inheritance
+Function.prototype.inheritsFrom = function( superClass ){
+	this.prototype = new superClass;
+	this.prototype.constructor = this;
+	this.prototype.parent = superClass.prototype; // use this.parent.methodName.call(this[, arg]*) to call a method from the superclass
+}
+
 var serempre = new function(){
 	this.cargos = new function(){
 		//this is 'work queue'... all objects in this collection are primary keys for objects to be processed
@@ -457,5 +464,80 @@ var serempre = new function(){
 
 		
 		*/
+	}
+	
+	this.avatars = new function(){
+		//creates a random number
+		this.randomNumber = function (max){
+			return Math.floor(Math.random() * max + 1);
+		}
+		//x-browser event helper
+		this.addEvent = function(node, name, func, supressDefault) {
+			if(node.addEventListener){
+				node.addEventListener(name, func, supressDefault);
+			}else if(node.attachEvent) {
+				node.attachEvent(name, func);
+			}
+		}
+		
+		this.Avatar = function (){
+			this.images = [
+						   new Image(),//0
+						   new Image(),//1
+						   new Image(),//2
+						   new Image(),//3
+						   new Image(),//4
+						   new Image(),//5
+						   new Image(),//6
+						   new Image(),//7
+						   new Image(),//8
+						   ];
+			this.background = this.images[0];
+			this.body = this.images[1];
+			this.face = this.images[2];
+			this.faceFeatures = [];
+			this.pants = this.images[3];
+			this.shoes = this.images[4];
+			this.shirt = this.images[5];
+			this.misc = [];
+			this.hair = this.images[6];
+			this.hairFeatures = this.images[7];
+			this.helmet = this.images[8];
+			this.width = 430;
+			this.height = 600;
+			this.doneLoading = false;
+			var currentObject = this;
+			for(var i = 0; i < this.images.length; i++){
+				this.images[i].onload = function(){
+					currentObject.imageLoaded(i);
+				}
+			}
+		}
+		
+		this.Avatar.prototype.imageLoaded = function(imageIndex){
+			this.images[imageIndex].loaded = true;
+			var sourced_images = 0;
+			var loaded_images = 0;
+			for(var i = 0; i < this.images.length; i++){
+				if(this.images[i].src && this.images[i].src.length > 1){
+					sourced_images += 1;
+				}
+				if(this.images[i].loaded){
+					loaded_images += 1;
+				}
+			}
+			if(sourced_images == loaded_images){
+				if(this.allImagesLoaded){
+					this.allImagesLoaded();
+				}
+				this.doneLoading = true;
+			}
+		}
+		
+		this.Avatar.prototype.draw = function(context){
+			for(var i = 0; i < this.images.length; i++){
+				context.drawImage(this.images[i],0,0,this.width, this.height);
+			}
+		}
 	}
 };

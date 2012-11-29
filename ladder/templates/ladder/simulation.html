@@ -77,6 +77,9 @@
 		Your browser doesn't support HTML 5. Please get a better browser.
 	</canvas>
 </div>
+<div>
+	<img src='{% url 'get-avatar-zapatos-by-pk' zapatos_pk=origin_avatar.zapatos.pk %}'/>
+</div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -108,6 +111,14 @@
 		var origin_avatar = {{ origin_avatar_json|safe }}{% if origin_avatar_json|length > 2 %}[0]{% else %} ;origin_avatar = null{% endif %};
 		var target_avatar = {{ target_avatar_json|safe }}{% if target_avatar_json|length > 2 %}[0]{% else %} ;target_avatar = null{% endif %};
 		
+		var k = new serempre.avatars.Avatar();
+		if(origin_avatar.fields.zona){
+			k.background.src = '{{ origin_cargo.zona.fondo.url }}';
+		}else if(origin_avatar.fields.departamento){
+			k.background.src = '{{ origin_cargo.departamento.fondo.url }}';
+		}
+		k.body.src = '{{ origin_avatar.cuerpo.imagen.url|safe }}';
+		k.shoes.src = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=origin_avatar.zapatos.pk %}';
 		
 	</script>
 	<!-- 

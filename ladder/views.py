@@ -1,8 +1,8 @@
 from django.http import Http404, HttpResponse
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.core import serializers
-from models import Cargo, Zona, Requisito, Avatar
+from models import *
 from django.db.models import F
 import logging
 
@@ -54,6 +54,11 @@ def simulate(request, origin_pk, target_pk, sex):
 	target_cargo_json = serializers.serialize('json', target_cargo)
 	origin_avatar_json = serializers.serialize('json', origin_avatar)
 	target_avatar_json = serializers.serialize('json', target_avatar)
+	origin_cargo = origin_cargo[0]
+	target_cargo = target_cargo[0]
+	origin_avatar = origin_avatar[0];
+	target_avatar = target_avatar[0];
+	logger.debug(origin_avatar.cuerpo.imagen.url)
 	return render_to_response('ladder/simulation.html', locals(), RequestContext(request))
 
 def zona_by_pk(request, zona_pk):
@@ -71,3 +76,46 @@ def avatar_by_pk(request, avatar_pk):
     result = serializers.serialize('json', data)
     return HttpResponse(result, mimetype='application/json; charset=utf-8')
 
+def avatar_cuerpo_by_pk(request, cuerpo_pk):
+	item = get_object_or_404(CuerpoAvatar, pk=int(cuerpo_pk))
+	return redirect(item.imagen.url)
+
+def avatar_camisa_by_pk(request, camisa_pk):
+	item = get_object_or_404(CamisaAvatar, pk=int(camisa_pk))
+	return redirect(item.imagen.url)
+	
+def	avatar_pantalon_by_pk(request, pantalon_pk):
+	item = get_object_or_404(PantalonAvatar, pk=int(pantalon_pk))
+	return redirect(item.imagen.url)
+	
+def avatar_cabello_by_pk(request, cabello_pk):
+	item = get_object_or_404(CabelloAvatar, pk=int(cabello_pk))
+	return redirect(item.imagen.url)
+	
+def avatar_pelo_by_pk(request, pelo_pk):
+	item = get_object_or_404(PeloAvatar, pk=int(pelo_pk))
+	return redirect(item.imagen.url)
+
+def avatar_faccion_by_pk(request, faccion_pk):
+	item = get_object_or_404(Faccion, pk=int(faccion_pk))
+	return redirect(item.imagen.url)
+
+def avatar_zapatos_by_pk(request, zapatos_pk):
+	item = get_object_or_404(ZapatosAvatar, pk=int(zapatos_pk))
+	return redirect(item.imagen.url)
+	
+def	avatar_cara_by_pk(request, cara_pk):
+	item = get_object_or_404(CaraAvatar, pk=int(cara_pk))
+	return redirect(item.imagen.url)
+	
+def avatar_accesorios_by_pk(request, accesorios_pk):
+	item = get_object_or_404(AccesoriosAvatar, pk=int(accesorios_pk))
+	return redirect(item.imagen.url)
+	
+def avatar_sombrero_by_pk(request, sombrero_pk):
+	item = get_object_or_404(SombreroAvatar, pk=int(sombrero_pk))
+	return redirect(item.imagen.url)
+
+def avatar_departamento_by_pk(request, departamento_pk):
+	item = get_object_or_404(Departamento, pk=int(departamento_pk))
+	return redirect(item.fondo.url)
