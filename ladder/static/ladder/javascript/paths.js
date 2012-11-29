@@ -286,7 +286,6 @@ var serempre = new function(){
 					node.adjacent[ node.adjacent.length ] = k;
 				}
 				edges[ i ] = node.adjacent;
-				console.log(i + ': ' + node.pk + ' || ' + node.fields.nombre);
 			}
 			return edges;
 		}

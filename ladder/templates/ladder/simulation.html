@@ -103,6 +103,11 @@
 	</script>
 	<script>
 		
+		var origin_cargo = {{ origin_cargo_json|safe }}{% if origin_cargo_json|length > 2 %}[0]{% else %} ;origin_cargo = null{% endif %};
+		var target_cargo = {{ target_cargo_json|safe }}{% if target_cargo_json|length > 2 %}[0]{% else %} ;target_cargo = null{% endif %};
+		var origin_avatar = {{ origin_avatar_json|safe }}{% if origin_avatar_json|length > 2 %}[0]{% else %} ;origin_avatar = null{% endif %};
+		var target_avatar = {{ target_avatar_json|safe }}{% if target_avatar_json|length > 2 %}[0]{% else %} ;target_avatar = null{% endif %};
+		
 		
 	</script>
 	<!-- 
