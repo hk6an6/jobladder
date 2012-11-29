@@ -1,4 +1,11 @@
 # coding=utf-8
+
+# to enable backups use: heroku addons:add pgbackups
+# to create a new backup use: heroku pgbackups:capture --expire
+# to list backups use: heroku pgbackups
+# to delete a backup use: heroku pgbackups:destroy <DUMP_ALIAS>
+# to download a backup use: heroku pgbackups:capture --expire; curl -o ~/Desktop/latest.dump `heroku pgbackups:url`; pg_restore --verbose --clean --no-acl --no-owner -h localhost -d jobladder ~/Desktop/latest.dump;
+
 from django.db import models
 #completar opciones
 OPCIONES_ANIOS_EXPERIENCIA = (
