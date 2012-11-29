@@ -40,26 +40,24 @@
 </div>
 <div class='alert alert-success'>
 	<button type="button" class="close" data-dismiss="alert">×</button>
-	<h4>cargo origen:</h4>
-    <p>{{ origin_cargo }}</p>
-	<h4>cargo origen en JSON:</h4>
+	<h4>Cargo origen: {{ origin_cargo }}</h4>
+	<h4>Cargo origen en JSON:</h4>
 	<p>{{ origin_cargo_json }}</p>
 </div>
 <div class='alert alert-success'>
 	<button type="button" class="close" data-dismiss="alert">×</button>
-	<h4>cargo destino:</h4>
-    <p>{{ target_cargo }}</p>
-	<h4>cargo destino en JSON:</h4>
+	<h4>Cargo destino: {{ target_cargo }}</h4>
+	<h4>Cargo destino en JSON:</h4>
 	<p>{{ target_cargo_json }}</p>
 </div>
 <div class='alert alert-error'>
 	<button type="button" class="close" data-dismiss="alert">×</button>
-    <p>{{ origin_avatar }}</p>
+    <h4><p>Avatar: {{ origin_avatar }}</p></h4>
 	<p>{{ origin_avatar_json }}</p>
 </div>
 <div class='alert alert-error'>
 	<button type="button" class="close" data-dismiss="alert">×</button>
-    <p>{{ target_avatar }}</p>
+    <h4><p>Avatar: {{ target_avatar }}</p></h4>
 	<p>{{ target_avatar_json }}</p>
 </div>
 <div class='alert alert-info'>
@@ -73,6 +71,11 @@
 <div class='alert alert-info'>
 	<button type="button" class="close" data-dismiss="alert">×</button>
     Sexo: {{ sex }}
+</div>
+<div role='main'>
+	<canvas id="canvas">
+		Your browser doesn't support HTML 5. Please get a better browser.
+	</canvas>
 </div>
 {% endblock %}
 
@@ -97,6 +100,10 @@
             prepareGraph();
             
 		});
+	</script>
+	<script>
+		
+		
 	</script>
 	<!-- 
 			//this turns an input field into a remote data sourced autocomplete
