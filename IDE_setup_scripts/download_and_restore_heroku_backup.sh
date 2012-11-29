@@ -14,13 +14,13 @@ abortOnFailure(){
 
 echo 'creating heroku backup';
 heroku pgbackups:capture --expire
-abortOnFailure $? 'unable to create heroku backup. Aborting...';
+abortOnFailure $? 'heroku backup';
 echo 'downloading heroku backup';
 curl -o ~/Desktop/latest.dump `heroku pgbackups:url`
-abortOnFailure $? 'unable to download heroku backup. Aborting...';
+abortOnFailure $? 'download heroku backup';
 echo 'restoring backup';
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -d jobladder ~/Desktop/latest.dump
-abortOnFailure $? 'unable to restore postgres dump. Aborting...';
+abortOnFailure $? 'restore postgres dump';
 echo 'removing dump file';
 rm ~/Desktop/latest.dump;
 echo 'Done!';
