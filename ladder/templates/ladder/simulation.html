@@ -1,0 +1,176 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+	
+{% endblock %}
+
+{% block pageheader %}
+	<h1>Arma tu plan de carera</h1>
+{% endblock %}
+
+{% block pagebody %}
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<h4>URL to request Zona object</h4>
+	{% url "get-zona-by-pk" 1 %}
+</div>
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<h4>URL to request requisito object</h4>
+	{% url "get-requisito-by-pk" 1 %}
+</div>
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<h4>URL to request avatar object</h4>
+	{% url "get-avatar-by-pk" 1 %}
+</div>
+<div class='alert alert-success'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<h4>Cargo origen: {{ origin_cargo }}</h4>
+	<h4>Cargo origen en JSON:</h4>
+	<p>{{ origin_cargo_json }}</p>
+</div>
+<div class='alert alert-success'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+	<h4>Cargo destino: {{ target_cargo }}</h4>
+	<h4>Cargo destino en JSON:</h4>
+	<p>{{ target_cargo_json }}</p>
+</div>
+<div class='alert alert-error'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    <h4><p>Avatar: {{ origin_avatar }}</p></h4>
+	<p>{{ origin_avatar_json }}</p>
+</div>
+<div class='alert alert-error'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    <h4><p>Avatar: {{ target_avatar }}</p></h4>
+	<p>{{ target_avatar_json }}</p>
+</div>
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    Llave del cargo origen: {{ origin_pk }}
+</div>
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    Llave del cargo destino: {{ target_pk }}
+</div>
+<div class='alert alert-info'>
+	<button type="button" class="close" data-dismiss="alert">×</button>
+    Sexo: {{ sex }}
+</div>
+<div role='main'>
+	<canvas id="canvas">
+		Your browser doesn't support HTML 5. Please get a better browser.
+	</canvas>
+</div>
+<div>
+	<img src='{% url 'get-avatar-zapatos-by-pk' zapatos_pk=origin_avatar.zapatos.pk %}'/>
+</div>
+{% endblock %}
+
+{% block pagefooter %}
+	<script>
+        var paths = null;
+        var vertexes = null;
+        var edges = null;
+        
+        //resets visited status on all nodes within the graph
+        function prepareGraph(){
+            vertexes = serempre.graphs.prepareAbstractGraph(paths);
+            edges = serempre.graphs.buildEdgeArray(vertexes);
+        }
+        
+		$(document).ready(function(){
+			serempre.cargos.futurePaths = sessionStorage.futurePaths;
+			if(! serempre.cargos.futurePaths){
+				window.location.href='/';
+			}
+            paths = JSON.parse(sessionStorage.futurePaths);
+            prepareGraph();
+            
+		});
+	</script>
+	<script>
+		
+		var origin_cargo = {{ origin_cargo_json|safe }}{% if origin_cargo_json|length > 2 %}[0]{% else %} ;origin_cargo = null{% endif %};
+		var target_cargo = {{ target_cargo_json|safe }}{% if target_cargo_json|length > 2 %}[0]{% else %} ;target_cargo = null{% endif %};
+		var origin_avatar = {{ origin_avatar_json|safe }}{% if origin_avatar_json|length > 2 %}[0]{% else %} ;origin_avatar = null{% endif %};
+		var target_avatar = {{ target_avatar_json|safe }}{% if target_avatar_json|length > 2 %}[0]{% else %} ;target_avatar = null{% endif %};
+		
+		var k = new serempre.avatars.Avatar();
+		if(origin_avatar.fields.zona){
+			k.background.src = '{{ origin_cargo.zona.fondo.url }}';
+		}else if(origin_avatar.fields.departamento){
+			k.background.src = '{{ origin_cargo.departamento.fondo.url }}';
+		}
+		k.body.src = '{{ origin_avatar.cuerpo.imagen.url|safe }}';
+		k.shoes.src = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=origin_avatar.zapatos.pk %}';
+		
+	</script>
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

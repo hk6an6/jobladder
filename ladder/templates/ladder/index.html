@@ -1,0 +1,206 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+{% comment %}
+	when inheriting from another template, the first line in the file should declare the inheritance.
+	This is a must. Otherwise template inheritance will not work
+{% endcomment %}
+{% comment %} This defines comments within a template {% endcomment %}
+{% comment %} OF SEARING IMPORTANCE: the 'extends' tag should be the first to appear
+in order for template inheritance to work! {% endcomment %}
+{% comment %} The following loads the 'static' tag, so that it can be used to load
+static file assets {% endcomment %}
+{% load static from staticfiles %}
+
+{% block pagetitle %}Rutas de Carrera{% endblock %}
+
+{% block includestylesheet %}
+{% comment %} 
+	The following tag outputs original text from the parent template
+	so that the parent's content for this section isn't completely overridden
+	
+	In this case, CSS from the master form template will be added to this page's
+	html-head
+{% endcomment %}
+		{{ block.super }}
+{% endblock %}
+
+{% block includejavascript %}
+{% comment %} 
+	The following tag outputs original text from the parent template
+	so that the parent's content for this section isn't completely overridden 
+	
+	In this case, javascript from the master template will be added to this page's
+	html-head
+{% endcomment %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+	
+{% endblock %}
+
+{% block pageheader %}
+	<h1>Rutas de carrera</h1>
+{% endblock %}
+
+{% block pagebody %}
+    <div>
+        <div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
+            <label for='btn-hombre'>Sexo: </label>
+            <button id='btn-hombre' class='btn active'>H</button>
+            <button id='btn-mujer' class='btn'>M</button>
+        </div>
+        <span class='help-block'></span>
+    </div>
+	<div>
+		<div class='input-append'>
+			<label for='cargo_inicial_nombre'>Cargo actual: </label>
+			<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+		</div>
+		<span class='help-block'>Elige el cargo que tienes en este momento</span>
+	</div>
+	<div class='toggled_by_cargo_inicial'>
+		<div class='input-append'>
+			<label for='cargo_destino_nombre'>Cargo Destino: </label>
+			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
+		</div>
+		<span class='help-block'>Elige el cargo al que quieres llegar</span>
+		<div id='start-simulation' style='visibility: hidden'>
+            <label for='btn-start'>Simular ruta hasta:</label>
+			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "avatar-editor" origin_pk="1" target_pk="2" sex="3" %}");'>Next</button>
+		</div>
+	</div>
+{% endblock %}
+
+{% block pagefooter %}
+	<script>
+        
+        function navigate_to_simulation_start(blank_url){
+            var sex = $('div#div-sexo button.active').text();
+            var origin_cargo = $('#cargo_inicial_nombre option:selected').val();
+            var target_cargo = $('#cargo_destino_nombre option:selected').val();
+            var target_url = blank_url.replace(/1\/2\/3\/$/gi,origin_cargo+'/'+target_cargo+'/'+sex+'/');
+            window.location.href = target_url;
+        }
+        
+		$(document).ready(function(){
+			if(serempre.cargos.No_HTML5()){
+				return;
+			}
+			//fix dialogs
+			serempre.cargos.setupWaitDialog();
+			//load cargo list
+			serempre.cargos.loadOffsetCargos("{% url 'get-cargos' %}", "#cargo_inicial_nombre");
+			//turn combo boxes into autocomplete combo boxes
+			$('select').combobox();
+			//fix sizes for input fields
+			$('div.input-append button').css('height','2em');
+			$('div.input-append input').css('height','1.3em');
+			
+			$('#cargo_inicial_nombre').change(function(){
+				//get selected element
+				var selected = $('#cargo_inicial_nombre option:selected');
+				//get selected element label
+				var label = selected.text();
+				//get selected element value
+				selected = selected[0].value;
+				//walk the job ladder
+				serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
+					//this code is run after all endpoints have been calculated from server-side data
+					//graph contents are stored at the futurePaths variable
+					//populate destination dropdown
+					serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
+					//display destination cargos
+					$('.toggled_by_cargo_inicial').css('visibility','visible');
+					//--------- this is temporal
+					var paths = JSON.parse(sessionStorage.futurePaths);
+					var vertexes = serempre.graphs.prepareAbstractGraph(paths);
+					var edges = serempre.graphs.buildEdgeArray(vertexes);
+					var container = $('<div id="rutas">Rutas</div>');
+					$('#rutas').remove();
+					var y = serempre.graphs.dfs(vertexes,edges,0,-1, '', function(vertex){ 
+						var indent = (vertex.depth-1) * 3;
+						var bg_color = (('#' + (indent%99)) + (indent%99)) + (indent%99);
+						var vertex_tag = $("<div style='margin-left: " + indent + "em; color: #FFFFFF; background-color: " + bg_color + "' >" + vertex.fields.nombre + "</div>");
+						container.append(vertex_tag);
+						return vertex.fields.nombre;
+                    //----------
+                    });
+					$('#main').append(container);
+					
+                }, function waitUpdate(data){
+                    $('#dialog-wait span#msg-content').text('Trabajando en: '+ data.fields.nombre);
+                });
+			});
+			
+			$('#cargo_destino_nombre').change(function(){
+				//get selected element
+				var selected = $('#cargo_destino_nombre option:selected');
+				//get selected element label
+				var label = selected.text();
+				//get selected element value
+				selected = selected[0].value;
+				//activate NEXT button
+                $('#start-simulation').css('visibility','visible')
+				$('#btn-start').text(label);
+			});
+		});
+	</script>
+	<script>
+		//hide destination cargo until an offset cargo has been chosen
+		$('.toggled_by_cargo_inicial').css('visibility','hidden');
+	</script>
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

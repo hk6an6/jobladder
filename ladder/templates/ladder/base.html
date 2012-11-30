@@ -1,0 +1,58 @@
+{% load static from staticfiles %}<!doctype html>
+<html manifest="{% static "ladder/ladder.appcache" %}">
+	<head>
+		<meta http-equiv="content-type" content='text/html; charset=utf-8'/>
+		<title> {% block pagetitle %}{% endblock %} </title>
+		{% block includestylesheet %}
+		{% comment %}
+			<!-- space invaders css -->
+			<link href="{% static "ladder/css/space_invaders.css" %}" rel="stylesheet">
+		{% endcomment %}
+		<link href="{% static "ladder/css/jqueryui/jquery-ui-1.9.1.min.css" %}" rel="stylesheet">
+		<link href="{% static "ladder/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+		<link href="{% static "ladder/css/base.css" %}" rel="stylesheet">
+		{% comment %}
+			<!-- bootstrap css -->
+			<link href="{% static "ladder/bootstrap/css/bootstrap-responsive.min.css" %}" rel="stylesheet">
+		{% endcomment %}
+		{% endblock %}
+		{% block includejavascript %}
+		{% comment %}
+			<!-- space invaders js -->
+			<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
+		{% endcomment %}
+		<script src="{% static "ladder/javascript/jquery-1.8.3.min.js" %}" language="javascript" type="text/javascript"></script>
+		<script src="{% static "ladder/javascript/jquery-ui-1.9.1.min.js" %}" language="javascript" type="text/javascript"></script>
+		<script src="{% static "ladder/javascript/autocompleteoncombobox.js" %}" language="javascript" type="text/javascript"></script>
+		<script src="{% static "ladder/javascript/paths.js" %}" language="javascript" type="text/javascript"></script>
+		<script src="{% static "ladder/bootstrap/js/bootstrap.min.js" %}" language="javascript" type="text/javascript"></script>
+		{% comment %}
+			<!-- bootstrap js -->
+			<script src="{% static "ladder/javascript/bootstrap.min.js" %}" language="javascript" type="text/javascript"></script>
+		{% endcomment %}
+		{% endblock %}
+		<style>
+		{% block pagestyle %}{% endblock %}		
+		</style>
+	</head>
+	<body>
+		<header>
+			{% block pageheader %}{% endblock %}
+		</header>
+		<div id="main" role="main">
+			{% block pagebody %}{% endblock %}
+		</div>
+		<footer>
+			{% block pagefooter %}{% endblock %}
+		</footer>
+	</body>
+</html>
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}
