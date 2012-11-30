@@ -23,16 +23,61 @@
 {% endblock %}
 
 {% block pagebody %}
-	<select>
+	<canvas id='canvas' width='300' height='600'>
+		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
+	</canvas>
+	<script>
+		var bodies = [];
 {% for cuerpo in cuerpos %}
-		<option value='{{ cuerpo.imagen.url }}'>{{ cuerpo.etiqueta }}</option>
+		bodies[{{ forloop.counter|add:"-1" }}] = new Image();
+		bodies[{{ forloop.counter|add:"-1" }}].loaded = false;
+		bodies[{{ forloop.counter|add:"-1" }}].onload = function(){
+			this.loaded = true;
+			checkAllBodiesDoneLoading();
+		};
+		bodies[{{ forloop.counter|add:"-1" }}].src = '{{ cuerpo.imagen.url|safe }}';
+		bodies[{{ forloop.counter|add:"-1" }}].alt = '{{ cuerpo.etiqueta|safe }}';
+		bodies[{{ forloop.counter|add:"-1" }}].pk ='{{ cuerpo.pk }}';
+		bodies[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
+		
 {% endfor %}
-	</select>
+		var chosenBody = 0;
+		
+		//slide to the next body
+		function nextBody(){
+			chosenBody = (chosenBody + 1) % (bodies.length);
+		}
+		
+		//slide to the previous body
+		function previousBody(){
+			chosenBody = Math.abs((chosenBody - 1) % (bodies.length));
+		}
+	</script>
 {% endblock %}
 
 {% block pagefooter %}
-	
-	<!-- 
+	<script>
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		
+		function checkAllBodiesDoneLoading(){
+			var allBodiesLoaded = true;
+			for(var i = 0; i< bodies.length; i++){
+				allBodiesLoaded = allBodiesLoaded && bodies[i].loaded;
+			}
+			if(allBodiesLoaded){
+				drawBody(document.getElementById('canvas').getContext('2d'), 0);
+			}
+		}
+		
+		function drawBody(context, imageIndex){
+			context.drawImage(bodies[imageIndex],0,0,canvas.width,canvas.height);
+		}
+		$(document).ready(function(){
+
+		});
+	</script>
+	<!--
 			//this turns an input field into a remote data sourced autocomplete
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
