@@ -254,10 +254,11 @@ class CaraAvatar(models.Model):
 	
 class AccesoriosAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
+	contextura = models.IntegerField(choices = OPCIONES_CONTEXTURA)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
-		return self.etiqueta
+		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura - 1 ][1]
 		
 	class Meta:
 		ordering = ["etiqueta"]
