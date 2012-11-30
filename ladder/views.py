@@ -38,6 +38,10 @@ def cargo_by_pk(request, cargo_pk=0):
 	result = serializers.serialize('json', data)
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
+def create_avatar(request, origin_pk, target_pk, sex):
+
+	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
+
 def simulate(request, origin_pk, target_pk, sex):
 	logger.debug('Origin cargo: ' + origin_pk + '. Target cargo: ' + target_pk + '. Sex: ' + sex)
 	origin_cargo = Cargo.objects.all().filter(pk=int(origin_pk))
