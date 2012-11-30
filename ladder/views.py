@@ -39,7 +39,11 @@ def cargo_by_pk(request, cargo_pk=0):
 	return HttpResponse(result, mimetype='application/json; charset=utf-8')
 	
 def create_avatar(request, origin_pk, target_pk, sex):
-
+	cuerpos = None
+	if(sex == 'H'):
+		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="hombre")
+	else:
+		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="mujer")
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
 
 def simulate(request, origin_pk, target_pk, sex):

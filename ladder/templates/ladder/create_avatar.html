@@ -23,7 +23,11 @@
 {% endblock %}
 
 {% block pagebody %}
-
+	<select>
+{% for cuerpo in cuerpos %}
+		<option value='{{ cuerpo.imagen.url }}'>{{ cuerpo.etiqueta }}</option>
+{% endfor %}
+	</select>
 {% endblock %}
 
 {% block pagefooter %}
