@@ -6,11 +6,316 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXFileReference section */
+		43B47175166903B9003EB0DC /* 01_setup_heroku.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 01_setup_heroku.sh; sourceTree = "<group>"; };
+		43B47176166903B9003EB0DC /* 02_fix_local_keys.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 02_fix_local_keys.sh; sourceTree = "<group>"; };
+		43B47177166903B9003EB0DC /* 03_fix_heroku_aws_keyx.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 03_fix_heroku_aws_keyx.sh; sourceTree = "<group>"; };
+		43B47178166903B9003EB0DC /* download_and_restore_heroku_backup.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = download_and_restore_heroku_backup.sh; sourceTree = "<group>"; };
+		43B47179166903B9003EB0DC /* setup_heroku_backups.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = setup_heroku_backups.sh; sourceTree = "<group>"; };
+		43B4717B166903B9003EB0DC /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		43B4717C166903B9003EB0DC /* settings.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = settings.py; sourceTree = "<group>"; };
+		43B4717E166903B9003EB0DC /* urls.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = urls.py; sourceTree = "<group>"; };
+		43B4717F166903B9003EB0DC /* wsgi.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wsgi.py; sourceTree = "<group>"; };
+		43B47181166903B9003EB0DC /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		43B47182166903B9003EB0DC /* admin.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = admin.py; sourceTree = "<group>"; };
+		43B47183166903B9003EB0DC /* models.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = models.py; sourceTree = "<group>"; };
+		43B47188166903B9003EB0DC /* bootstrap-responsive.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "bootstrap-responsive.css"; sourceTree = "<group>"; };
+		43B47189166903B9003EB0DC /* bootstrap-responsive.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "bootstrap-responsive.min.css"; sourceTree = "<group>"; };
+		43B4718A166903B9003EB0DC /* bootstrap.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = bootstrap.css; sourceTree = "<group>"; };
+		43B4718B166903B9003EB0DC /* bootstrap.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = bootstrap.min.css; sourceTree = "<group>"; };
+		43B4718D166903B9003EB0DC /* glyphicons-halflings-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glyphicons-halflings-white.png"; sourceTree = "<group>"; };
+		43B4718E166903B9003EB0DC /* glyphicons-halflings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glyphicons-halflings.png"; sourceTree = "<group>"; };
+		43B47190166903B9003EB0DC /* bootstrap.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bootstrap.js; sourceTree = "<group>"; };
+		43B47191166903B9003EB0DC /* bootstrap.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bootstrap.min.js; sourceTree = "<group>"; };
+		43B47193166903B9003EB0DC /* base.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = base.css; sourceTree = "<group>"; };
+		43B47195166903B9003EB0DC /* bootstrap-responsive.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "bootstrap-responsive.css"; sourceTree = "<group>"; };
+		43B47196166903B9003EB0DC /* bootstrap-responsive.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "bootstrap-responsive.min.css"; sourceTree = "<group>"; };
+		43B47197166903B9003EB0DC /* bootstrap.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = bootstrap.css; sourceTree = "<group>"; };
+		43B47198166903B9003EB0DC /* bootstrap.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = bootstrap.min.css; sourceTree = "<group>"; };
+		43B4719B166903B9003EB0DC /* ui-bg_flat_30_cccccc_40x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_flat_30_cccccc_40x100.png"; sourceTree = "<group>"; };
+		43B4719C166903B9003EB0DC /* ui-bg_flat_50_5c5c5c_40x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_flat_50_5c5c5c_40x100.png"; sourceTree = "<group>"; };
+		43B4719D166903B9003EB0DC /* ui-bg_glass_20_555555_1x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_glass_20_555555_1x400.png"; sourceTree = "<group>"; };
+		43B4719E166903B9003EB0DC /* ui-bg_glass_40_0078a3_1x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_glass_40_0078a3_1x400.png"; sourceTree = "<group>"; };
+		43B4719F166903B9003EB0DC /* ui-bg_glass_40_a83300_1x400.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_glass_40_a83300_1x400.png"; sourceTree = "<group>"; };
+		43B471A0166903B9003EB0DC /* ui-bg_gloss-wave_25_333333_500x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_gloss-wave_25_333333_500x100.png"; sourceTree = "<group>"; };
+		43B471A1166903B9003EB0DC /* ui-bg_highlight-soft_10_2e7db2_1x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_highlight-soft_10_2e7db2_1x100.png"; sourceTree = "<group>"; };
+		43B471A2166903B9003EB0DC /* ui-bg_inset-soft_25_000000_1x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_inset-soft_25_000000_1x100.png"; sourceTree = "<group>"; };
+		43B471A3166903B9003EB0DC /* ui-bg_inset-soft_40_0078a3_1x100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-bg_inset-soft_40_0078a3_1x100.png"; sourceTree = "<group>"; };
+		43B471A4166903B9003EB0DC /* ui-icons_222222_256x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-icons_222222_256x240.png"; sourceTree = "<group>"; };
+		43B471A5166903B9003EB0DC /* ui-icons_cccccc_256x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-icons_cccccc_256x240.png"; sourceTree = "<group>"; };
+		43B471A6166903B9003EB0DC /* ui-icons_ffb73c_256x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-icons_ffb73c_256x240.png"; sourceTree = "<group>"; };
+		43B471A7166903B9003EB0DC /* ui-icons_ffffff_256x240.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-icons_ffffff_256x240.png"; sourceTree = "<group>"; };
+		43B471A8166903B9003EB0DC /* jquery-ui-1.9.1.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "jquery-ui-1.9.1.css"; sourceTree = "<group>"; };
+		43B471A9166903B9003EB0DC /* jquery-ui-1.9.1.min.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "jquery-ui-1.9.1.min.css"; sourceTree = "<group>"; };
+		43B471AA166903B9003EB0DC /* space_invaders.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = space_invaders.css; sourceTree = "<group>"; };
+		43B471AC166903B9003EB0DC /* background-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-01.png"; sourceTree = "<group>"; };
+		43B471AD166903B9003EB0DC /* glyphicons-halflings-white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glyphicons-halflings-white.png"; sourceTree = "<group>"; };
+		43B471AE166903B9003EB0DC /* glyphicons-halflings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "glyphicons-halflings.png"; sourceTree = "<group>"; };
+		43B471AF166903B9003EB0DC /* invader-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "invader-01.png"; sourceTree = "<group>"; };
+		43B471B0166903B9003EB0DC /* laser-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "laser-01.png"; sourceTree = "<group>"; };
+		43B471B1166903B9003EB0DC /* laser-xplode-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "laser-xplode-01.png"; sourceTree = "<group>"; };
+		43B471B2166903B9003EB0DC /* master.ai */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master.ai; sourceTree = "<group>"; };
+		43B471B3166903B9003EB0DC /* missile-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missile-01.png"; sourceTree = "<group>"; };
+		43B471B4166903B9003EB0DC /* missile-xplode-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missile-xplode-01.png"; sourceTree = "<group>"; };
+		43B471B5166903B9003EB0DC /* shield-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shield-01.png"; sourceTree = "<group>"; };
+		43B471B6166903B9003EB0DC /* spaceNico-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spaceNico-01.png"; sourceTree = "<group>"; };
+		43B471B7166903B9003EB0DC /* spaceship-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spaceship-01.png"; sourceTree = "<group>"; };
+		43B471B8166903B9003EB0DC /* spaceship-hit-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spaceship-hit-01.png"; sourceTree = "<group>"; };
+		43B471B9166903B9003EB0DC /* spaceship-left-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spaceship-left-01.png"; sourceTree = "<group>"; };
+		43B471BA166903B9003EB0DC /* spaceship-right-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spaceship-right-01.png"; sourceTree = "<group>"; };
+		43B471BB166903B9003EB0DC /* speedwedge-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speedwedge-01.png"; sourceTree = "<group>"; };
+		43B471BC166903B9003EB0DC /* ui-anim_basic_16x16.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "ui-anim_basic_16x16.gif"; sourceTree = "<group>"; };
+		43B471BE166903B9003EB0DC /* autocompleteoncombobox.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = autocompleteoncombobox.js; sourceTree = "<group>"; };
+		43B471BF166903B9003EB0DC /* bootstrap.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bootstrap.js; sourceTree = "<group>"; };
+		43B471C0166903B9003EB0DC /* bootstrap.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bootstrap.min.js; sourceTree = "<group>"; };
+		43B471C1166903B9003EB0DC /* jquery-1.8.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.8.2.js"; sourceTree = "<group>"; };
+		43B471C2166903B9003EB0DC /* jquery-1.8.3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-1.8.3.min.js"; sourceTree = "<group>"; };
+		43B471C3166903B9003EB0DC /* jquery-ui-1.9.1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-ui-1.9.1.js"; sourceTree = "<group>"; };
+		43B471C4166903B9003EB0DC /* jquery-ui-1.9.1.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "jquery-ui-1.9.1.min.js"; sourceTree = "<group>"; };
+		43B471C5166903B9003EB0DC /* paths.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = paths.js; sourceTree = "<group>"; };
+		43B471C6166903B9003EB0DC /* space_invaders.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = space_invaders.js; sourceTree = "<group>"; };
+		43B471C7166903B9003EB0DC /* ladder.appcache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ladder.appcache; sourceTree = "<group>"; };
+		43B471CA166903B9003EB0DC /* base.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = base.html; sourceTree = "<group>"; };
+		43B471CB166903B9003EB0DC /* create_avatar.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = create_avatar.html; sourceTree = "<group>"; };
+		43B471CC166903B9003EB0DC /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		43B471CD166903B9003EB0DC /* simulation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = simulation.html; sourceTree = "<group>"; };
+		43B471CE166903B9003EB0DC /* tests.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tests.py; sourceTree = "<group>"; };
+		43B471CF166903B9003EB0DC /* urls.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = urls.py; sourceTree = "<group>"; };
+		43B471D0166903B9003EB0DC /* views.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = views.py; sourceTree = "<group>"; };
+		43B471D1166903B9003EB0DC /* manage.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manage.py; sourceTree = "<group>"; };
+		43B471D2166903B9003EB0DC /* Procfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Procfile; sourceTree = "<group>"; };
+		43B471D3166903B9003EB0DC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		43B471D4166903B9003EB0DC /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		43B471671669026C003EB0DC = {
 			isa = PBXGroup;
 			children = (
+				43B47174166903B9003EB0DC /* IDE_setup_scripts */,
+				43B4717A166903B9003EB0DC /* jobladder */,
+				43B47180166903B9003EB0DC /* ladder */,
+				43B471D1166903B9003EB0DC /* manage.py */,
+				43B471D2166903B9003EB0DC /* Procfile */,
+				43B471D3166903B9003EB0DC /* README */,
+				43B471D4166903B9003EB0DC /* requirements.txt */,
 			);
+			sourceTree = "<group>";
+		};
+		43B47174166903B9003EB0DC /* IDE_setup_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				43B47175166903B9003EB0DC /* 01_setup_heroku.sh */,
+				43B47176166903B9003EB0DC /* 02_fix_local_keys.sh */,
+				43B47177166903B9003EB0DC /* 03_fix_heroku_aws_keyx.sh */,
+				43B47178166903B9003EB0DC /* download_and_restore_heroku_backup.sh */,
+				43B47179166903B9003EB0DC /* setup_heroku_backups.sh */,
+			);
+			path = IDE_setup_scripts;
+			sourceTree = "<group>";
+		};
+		43B4717A166903B9003EB0DC /* jobladder */ = {
+			isa = PBXGroup;
+			children = (
+				43B4717B166903B9003EB0DC /* __init__.py */,
+				43B4717C166903B9003EB0DC /* settings.py */,
+				43B4717D166903B9003EB0DC /* static */,
+				43B4717E166903B9003EB0DC /* urls.py */,
+				43B4717F166903B9003EB0DC /* wsgi.py */,
+			);
+			path = jobladder;
+			sourceTree = "<group>";
+		};
+		43B4717D166903B9003EB0DC /* static */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		43B47180166903B9003EB0DC /* ladder */ = {
+			isa = PBXGroup;
+			children = (
+				43B47181166903B9003EB0DC /* __init__.py */,
+				43B47182166903B9003EB0DC /* admin.py */,
+				43B47183166903B9003EB0DC /* models.py */,
+				43B47184166903B9003EB0DC /* static */,
+				43B471C8166903B9003EB0DC /* templates */,
+				43B471CE166903B9003EB0DC /* tests.py */,
+				43B471CF166903B9003EB0DC /* urls.py */,
+				43B471D0166903B9003EB0DC /* views.py */,
+			);
+			path = ladder;
+			sourceTree = "<group>";
+		};
+		43B47184166903B9003EB0DC /* static */ = {
+			isa = PBXGroup;
+			children = (
+				43B47185166903B9003EB0DC /* ladder */,
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		43B47185166903B9003EB0DC /* ladder */ = {
+			isa = PBXGroup;
+			children = (
+				43B47186166903B9003EB0DC /* bootstrap */,
+				43B47192166903B9003EB0DC /* css */,
+				43B471AB166903B9003EB0DC /* images */,
+				43B471BD166903B9003EB0DC /* javascript */,
+				43B471C7166903B9003EB0DC /* ladder.appcache */,
+			);
+			path = ladder;
+			sourceTree = "<group>";
+		};
+		43B47186166903B9003EB0DC /* bootstrap */ = {
+			isa = PBXGroup;
+			children = (
+				43B47187166903B9003EB0DC /* css */,
+				43B4718C166903B9003EB0DC /* img */,
+				43B4718F166903B9003EB0DC /* js */,
+			);
+			path = bootstrap;
+			sourceTree = "<group>";
+		};
+		43B47187166903B9003EB0DC /* css */ = {
+			isa = PBXGroup;
+			children = (
+				43B47188166903B9003EB0DC /* bootstrap-responsive.css */,
+				43B47189166903B9003EB0DC /* bootstrap-responsive.min.css */,
+				43B4718A166903B9003EB0DC /* bootstrap.css */,
+				43B4718B166903B9003EB0DC /* bootstrap.min.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		43B4718C166903B9003EB0DC /* img */ = {
+			isa = PBXGroup;
+			children = (
+				43B4718D166903B9003EB0DC /* glyphicons-halflings-white.png */,
+				43B4718E166903B9003EB0DC /* glyphicons-halflings.png */,
+			);
+			path = img;
+			sourceTree = "<group>";
+		};
+		43B4718F166903B9003EB0DC /* js */ = {
+			isa = PBXGroup;
+			children = (
+				43B47190166903B9003EB0DC /* bootstrap.js */,
+				43B47191166903B9003EB0DC /* bootstrap.min.js */,
+			);
+			path = js;
+			sourceTree = "<group>";
+		};
+		43B47192166903B9003EB0DC /* css */ = {
+			isa = PBXGroup;
+			children = (
+				43B47193166903B9003EB0DC /* base.css */,
+				43B47194166903B9003EB0DC /* bootstrap */,
+				43B47199166903B9003EB0DC /* jqueryui */,
+				43B471AA166903B9003EB0DC /* space_invaders.css */,
+			);
+			path = css;
+			sourceTree = "<group>";
+		};
+		43B47194166903B9003EB0DC /* bootstrap */ = {
+			isa = PBXGroup;
+			children = (
+				43B47195166903B9003EB0DC /* bootstrap-responsive.css */,
+				43B47196166903B9003EB0DC /* bootstrap-responsive.min.css */,
+				43B47197166903B9003EB0DC /* bootstrap.css */,
+				43B47198166903B9003EB0DC /* bootstrap.min.css */,
+			);
+			path = bootstrap;
+			sourceTree = "<group>";
+		};
+		43B47199166903B9003EB0DC /* jqueryui */ = {
+			isa = PBXGroup;
+			children = (
+				43B4719A166903B9003EB0DC /* images */,
+				43B471A8166903B9003EB0DC /* jquery-ui-1.9.1.css */,
+				43B471A9166903B9003EB0DC /* jquery-ui-1.9.1.min.css */,
+			);
+			path = jqueryui;
+			sourceTree = "<group>";
+		};
+		43B4719A166903B9003EB0DC /* images */ = {
+			isa = PBXGroup;
+			children = (
+				43B4719B166903B9003EB0DC /* ui-bg_flat_30_cccccc_40x100.png */,
+				43B4719C166903B9003EB0DC /* ui-bg_flat_50_5c5c5c_40x100.png */,
+				43B4719D166903B9003EB0DC /* ui-bg_glass_20_555555_1x400.png */,
+				43B4719E166903B9003EB0DC /* ui-bg_glass_40_0078a3_1x400.png */,
+				43B4719F166903B9003EB0DC /* ui-bg_glass_40_a83300_1x400.png */,
+				43B471A0166903B9003EB0DC /* ui-bg_gloss-wave_25_333333_500x100.png */,
+				43B471A1166903B9003EB0DC /* ui-bg_highlight-soft_10_2e7db2_1x100.png */,
+				43B471A2166903B9003EB0DC /* ui-bg_inset-soft_25_000000_1x100.png */,
+				43B471A3166903B9003EB0DC /* ui-bg_inset-soft_40_0078a3_1x100.png */,
+				43B471A4166903B9003EB0DC /* ui-icons_222222_256x240.png */,
+				43B471A5166903B9003EB0DC /* ui-icons_cccccc_256x240.png */,
+				43B471A6166903B9003EB0DC /* ui-icons_ffb73c_256x240.png */,
+				43B471A7166903B9003EB0DC /* ui-icons_ffffff_256x240.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		43B471AB166903B9003EB0DC /* images */ = {
+			isa = PBXGroup;
+			children = (
+				43B471AC166903B9003EB0DC /* background-01.png */,
+				43B471AD166903B9003EB0DC /* glyphicons-halflings-white.png */,
+				43B471AE166903B9003EB0DC /* glyphicons-halflings.png */,
+				43B471AF166903B9003EB0DC /* invader-01.png */,
+				43B471B0166903B9003EB0DC /* laser-01.png */,
+				43B471B1166903B9003EB0DC /* laser-xplode-01.png */,
+				43B471B2166903B9003EB0DC /* master.ai */,
+				43B471B3166903B9003EB0DC /* missile-01.png */,
+				43B471B4166903B9003EB0DC /* missile-xplode-01.png */,
+				43B471B5166903B9003EB0DC /* shield-01.png */,
+				43B471B6166903B9003EB0DC /* spaceNico-01.png */,
+				43B471B7166903B9003EB0DC /* spaceship-01.png */,
+				43B471B8166903B9003EB0DC /* spaceship-hit-01.png */,
+				43B471B9166903B9003EB0DC /* spaceship-left-01.png */,
+				43B471BA166903B9003EB0DC /* spaceship-right-01.png */,
+				43B471BB166903B9003EB0DC /* speedwedge-01.png */,
+				43B471BC166903B9003EB0DC /* ui-anim_basic_16x16.gif */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		43B471BD166903B9003EB0DC /* javascript */ = {
+			isa = PBXGroup;
+			children = (
+				43B471BE166903B9003EB0DC /* autocompleteoncombobox.js */,
+				43B471BF166903B9003EB0DC /* bootstrap.js */,
+				43B471C0166903B9003EB0DC /* bootstrap.min.js */,
+				43B471C1166903B9003EB0DC /* jquery-1.8.2.js */,
+				43B471C2166903B9003EB0DC /* jquery-1.8.3.min.js */,
+				43B471C3166903B9003EB0DC /* jquery-ui-1.9.1.js */,
+				43B471C4166903B9003EB0DC /* jquery-ui-1.9.1.min.js */,
+				43B471C5166903B9003EB0DC /* paths.js */,
+				43B471C6166903B9003EB0DC /* space_invaders.js */,
+			);
+			path = javascript;
+			sourceTree = "<group>";
+		};
+		43B471C8166903B9003EB0DC /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				43B471C9166903B9003EB0DC /* ladder */,
+			);
+			path = templates;
+			sourceTree = "<group>";
+		};
+		43B471C9166903B9003EB0DC /* ladder */ = {
+			isa = PBXGroup;
+			children = (
+				43B471CA166903B9003EB0DC /* base.html */,
+				43B471CB166903B9003EB0DC /* create_avatar.html */,
+				43B471CC166903B9003EB0DC /* index.html */,
+				43B471CD166903B9003EB0DC /* simulation.html */,
+			);
+			path = ladder;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
