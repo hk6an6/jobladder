@@ -19,6 +19,15 @@
 		width: 300px;
 		margin: 15px;
 	}
+	.scroll-pane { overflow: auto; width: 300px; float:left; margin: 15px; }
+    .scroll-content { width: {{ css_len_caras }}px; float: left; }
+    .scroll-content-item { width: 100px; height: 100px; float: left; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
+    * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+    .scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
+    .scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
+    .scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
+    .scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
+    .scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 {% endblock %}
 
 {% block pageheader %}
@@ -30,6 +39,22 @@
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
 	<div id="body-slider"></div>
+	<div id="faceshape-slider">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+{% for cara in caras %}
+				<div class="scroll-content-item ui-widget-header">
+					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.face = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					/>
+				</div>
+{% endfor %}
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -37,6 +62,7 @@
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var bodies = [];
+        var faceshapes = [];
 		var chosenBody = 0;
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
@@ -54,10 +80,33 @@
 		bodies[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
 		
 {% endfor %}
+{% for cara in caras %}
+		faceshapes[{{ forloop.counter|add:"-1" }}] = new Image();
+		faceshapes[{{ forloop.counter|add:"-1" }}].loaded = false;
+		faceshapes[{{ forloop.counter|add:"-1" }}].onload = function(){
+			this.loaded = true;
+			checkAllFaceshapesDoneLoading();
+		}
+		faceshapes[{{ forloop.counter|add:"-1" }}].src = '{{ cara.imagen.url|safe }}';
+		faceshapes[{{ forloop.counter|add:"-1" }}].alt = '{{ cara.etiqueta|safe }}';
+		faceshapes[{{ forloop.counter|add:"-1" }}].pk = '{{ cara.pk }}';
+		faceshapes[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
+{% endfor %}
 		
 		function refreshBody(event, ui){
 			avatar.body = bodies[ui.value];
 			avatar.paint(context);
+		}
+		
+		function checkAllFaceshapesDoneLoading(){
+			var allFaceshapesLoaded = true;
+			for(var i =0; i < faceshapes.length; i++){
+				allFaceshapesLoaded = allFaceshapesLoaded && faceshapes[i].loaded;
+			}
+			if(allFaceshapesLoaded){
+				avatar.face = faceshapes[0];
+				avatar.paint(context);
+			}
 		}
 		
 		//if all bodies are done loading, then draw the bodies
@@ -82,6 +131,76 @@
 				slide: refreshBody,
 				change: refreshBody
 			});
+			
+			//scrollpane parts
+			var scrollPane = $( ".scroll-pane" ),
+				scrollContent = $( ".scroll-content" );
+			 
+			//build slider
+			var scrollbar = $( ".scroll-bar" ).slider({
+				slide: function( event, ui ) {
+					if ( scrollContent.width() > scrollPane.width() ) {
+						scrollContent.css( "margin-left", Math.round(
+							ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
+						) + "px" );
+					} else {
+						scrollContent.css( "margin-left", 0 );
+					}
+				}
+			});
+			 
+			//append icon to handle
+			var handleHelper = scrollbar.find( ".ui-slider-handle" )
+			.mousedown(function() {
+				scrollbar.width( handleHelper.width() );
+			})
+			.mouseup(function() {
+				scrollbar.width( "100%" );
+			})
+			.append( "<span class='ui-icon ui-icon-grip-dotted-vertical'></span>" )
+			.wrap( "<div class='ui-handle-helper-parent'></div>" ).parent();
+			 
+			//change overflow to hidden now that slider handles the scrolling
+			scrollPane.css( "overflow", "hidden" );
+			 
+			//size scrollbar and handle proportionally to scroll distance
+			function sizeScrollbar() {
+				var remainder = scrollContent.width() - scrollPane.width();
+				var proportion = remainder / scrollContent.width();
+				var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
+				scrollbar.find( ".ui-slider-handle" ).css({
+					width: handleSize,
+					"margin-left": -handleSize / 2
+				});
+				handleHelper.width( "" ).width( scrollbar.width() - handleSize );
+			}
+			 
+			//reset slider value based on scroll content position
+			function resetValue() {
+				var remainder = scrollPane.width() - scrollContent.width();
+				var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
+					parseInt( scrollContent.css( "margin-left" ) );
+				var percentage = Math.round( leftVal / remainder * 100 );
+				scrollbar.slider( "value", percentage );
+			}
+			 
+			//if the slider is 100% and window gets larger, reveal content
+			function reflowContent() {
+					var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
+					var gap = scrollPane.width() - showing;
+					if ( gap > 0 ) {
+						scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
+					}
+			}
+			 
+			//change handle position on window resize
+			$( window ).resize(function() {
+				resetValue();
+				sizeScrollbar();
+				reflowContent();
+			});
+			//init scrollbar size
+			setTimeout( sizeScrollbar, 10 );//safari wants a timeout
 		});
 	</script>
 	<!--

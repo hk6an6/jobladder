@@ -40,6 +40,8 @@ def cargo_by_pk(request, cargo_pk=0):
 	
 def create_avatar(request, origin_pk, target_pk, sex):
 	cuerpos = None
+	caras = CaraAvatar.objects.all()
+	css_len_caras = (len(caras)+1) * 120
 	if(sex == 'H'):
 		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="hombre")
 	else:
