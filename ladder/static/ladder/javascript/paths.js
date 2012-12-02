@@ -481,62 +481,61 @@ var serempre = new function(){
 		}
 		
 		this.Avatar = function (){
-			this.images = [
-						   new Image(),//0
-						   new Image(),//1
-						   new Image(),//2
-						   new Image(),//3
-						   new Image(),//4
-						   new Image(),//5
-						   new Image(),//6
-						   new Image(),//7
-						   new Image(),//8
-						   ];
-			this.background = this.images[0];
-			this.body = this.images[1];
-			this.face = this.images[2];
+			this.background = 'empty';
+			this.body = 'empty';
+			this.face = 'empty';
 			this.faceFeatures = [];
-			this.pants = this.images[3];
-			this.shoes = this.images[4];
-			this.shirt = this.images[5];
+			this.pants = 'empty';
+			this.shoes = 'empty';
+			this.shirt = 'empty';
 			this.misc = [];
-			this.hair = this.images[6];
-			this.hairFeatures = this.images[7];
-			this.helmet = this.images[8];
+			this.hair = 'empty';
+			this.hairFeatures = 'empty';
+			this.helmet = 'empty';
 			this.width = 430;
 			this.height = 600;
-			this.doneLoading = false;
-			var currentObject = this;
-			for(var i = 0; i < this.images.length; i++){
-				this.images[i].onload = function(){
-					currentObject.imageLoaded(i);
+			this.doneLoading = 0;
+			var currentObject = 'empty';
+		}
+		
+		this.Avatar.prototype.setImage = function(attributeName, attributeValue, bindOnLoad){
+			if(this[attributeName]){
+				this[attributeName] = attributeValue;
+				if(bindOnLoad){
+					attributeValue.loaded = false;
+					attributeValue.onload = this.imageLoaded(attributeName);
 				}
 			}
 		}
 		
-		this.Avatar.prototype.imageLoaded = function(imageIndex){
-			this.images[imageIndex].loaded = true;
-			var sourced_images = 0;
-			var loaded_images = 0;
-			for(var i = 0; i < this.images.length; i++){
-				if(this.images[i].src && this.images[i].src.length > 1){
-					sourced_images += 1;
-				}
-				if(this.images[i].loaded){
-					loaded_images += 1;
-				}
-			}
-			if(sourced_images == loaded_images){
-				if(this.allImagesLoaded){
-					this.allImagesLoaded();
-				}
-				this.doneLoading = true;
+		this.Avatar.prototype.imageLoaded = function(attributeName){
+			this[attributeName].loaded = true;
+			this.doneLoading += 1;
+			if(this.itemLoaded){
+				this.itemLoaded(this[attributeName]);
 			}
 		}
 		
-		this.Avatar.prototype.draw = function(context){
-			for(var i = 0; i < this.images.length; i++){
-				context.drawImage(this.images[i],0,0,this.width, this.height);
+		this.Avatar.prototype.paint = function(context){
+			var images = [
+						  this.background,
+						  this.body,
+						  this.face,
+						  this.pants,
+						  this.shoes,
+						  this.shirt,
+						  this.hair,
+						  this.hairFeatures,
+						  this.helmet,
+			];
+			context.save();
+			context.fillStyle = 'white';
+			context.fillRect(0,0, this.width, this.height);
+			context.restore();
+			for(var i = 0; i < images.length; i++){
+				if(images[i] != 'empty'){
+					context.drawImage(images[i],0,0,this.width, this.height);
+				}
 			}
 		}
 	}

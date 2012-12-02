@@ -15,7 +15,10 @@
 {% endblock %}
 
 {% block pagestyle %}
-	
+	#body-slider {
+		width: 300px;
+		margin: 15px;
+	}
 {% endblock %}
 
 {% block pageheader %}
@@ -23,11 +26,21 @@
 {% endblock %}
 
 {% block pagebody %}
-	<canvas id='canvas' width='300' height='600'>
+	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
+	<div id="body-slider"></div>
+{% endblock %}
+
+{% block pagefooter %}
 	<script>
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
 		var bodies = [];
+		var chosenBody = 0;
+		var avatar = new serempre.avatars.Avatar();
+		avatar.width = canvas.width;
+		avatar.height = canvas.height;
 {% for cuerpo in cuerpos %}
 		bodies[{{ forloop.counter|add:"-1" }}] = new Image();
 		bodies[{{ forloop.counter|add:"-1" }}].loaded = false;
@@ -41,40 +54,47 @@
 		bodies[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
 		
 {% endfor %}
-		var chosenBody = 0;
-		
 		//slide to the next body
 		function nextBody(){
-			chosenBody = (chosenBody + 1) % (bodies.length);
+			chosenBody = (chosenBody + 1);
+			avatar.body = bodies[chosenBody % bodies.length];
+			avatar.paint(context);
+		}
+		
+		function refreshBody(){
+			var body = $('#body-slider').slider('value');
+			avatar.body = bodies[body];
+			avatar.paint(context);
 		}
 		
 		//slide to the previous body
 		function previousBody(){
-			chosenBody = Math.abs((chosenBody - 1) % (bodies.length));
+			chosenBody = (chosenBody - 1)
+			avatar.body = bodies[Math.abs(chosenBody) % bodies.length];
+			avatar.paint(context);
 		}
-	</script>
-{% endblock %}
-
-{% block pagefooter %}
-	<script>
-		var canvas = document.getElementById('canvas');
-		var context = canvas.getContext('2d');
 		
+		//if all bodies are done loading, then draw the bodies
 		function checkAllBodiesDoneLoading(){
 			var allBodiesLoaded = true;
 			for(var i = 0; i< bodies.length; i++){
 				allBodiesLoaded = allBodiesLoaded && bodies[i].loaded;
 			}
 			if(allBodiesLoaded){
-				drawBody(document.getElementById('canvas').getContext('2d'), 0);
+				avatar.body = bodies[0];
+				avatar.paint(context);
 			}
 		}
 		
-		function drawBody(context, imageIndex){
-			context.drawImage(bodies[imageIndex],0,0,canvas.width,canvas.height);
-		}
 		$(document).ready(function(){
-
+			$("#body-slider").slider({
+				orientation: "horizontal",
+				range: "min",
+				max: bodies.length - 1,
+				value: 0,
+				slide: refreshBody,
+				change: refreshBody
+			});
 		});
 	</script>
 	<!--
