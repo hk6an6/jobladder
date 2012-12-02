@@ -14,14 +14,19 @@ abortOnFailure(){
 
 echo 'creating heroku backup';
 heroku pgbackups:capture --expire
-abortOnFailure $? 'heroku backup';
+abortOnFailure $? 'heroku pgbackups:capture --expire';
 echo 'downloading heroku backup';
 curl -o ~/Desktop/latest.dump `heroku pgbackups:url`
-abortOnFailure $? 'download heroku backup';
+abortOnFailure $? "curl -o ~/Desktop/latest.dump `heroku pgbackups:url`";
 echo 'restoring backup';
 pg_restore --verbose --clean --no-acl --no-owner -h localhost -d jobladder ~/Desktop/latest.dump
-abortOnFailure $? 'restore postgres dump';
+abortOnFailure $? "pg_restore --verbose --clean --no-acl --no-owner -h localhost -d jobladder ~/De\
+sktop/latest.dump";
 echo 'removing dump file';
 rm ~/Desktop/latest.dump;
+abortOnFailure $? "rm ~/Desktop/latest.dump";
+echo 'deleting backup dump';
+heroku pgbackups:destroy `heroku pgbackups | awk 'NR>2{ print $1 }'`;
+abortOnFailure $? "heroku pgbackups:destroy `heroku pgbackups | awk 'NR>2{ print $1 }'`";
 echo 'Done!';
 
