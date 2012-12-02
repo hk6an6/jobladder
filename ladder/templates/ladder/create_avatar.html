@@ -54,23 +54,9 @@
 		bodies[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
 		
 {% endfor %}
-		//slide to the next body
-		function nextBody(){
-			chosenBody = (chosenBody + 1);
-			avatar.body = bodies[chosenBody % bodies.length];
-			avatar.paint(context);
-		}
 		
-		function refreshBody(){
-			var body = $('#body-slider').slider('value');
-			avatar.body = bodies[body];
-			avatar.paint(context);
-		}
-		
-		//slide to the previous body
-		function previousBody(){
-			chosenBody = (chosenBody - 1)
-			avatar.body = bodies[Math.abs(chosenBody) % bodies.length];
+		function refreshBody(event, ui){
+			avatar.body = bodies[ui.value];
 			avatar.paint(context);
 		}
 		
@@ -92,6 +78,7 @@
 				range: "min",
 				max: bodies.length - 1,
 				value: 0,
+				step: 1,
 				slide: refreshBody,
 				change: refreshBody
 			});
