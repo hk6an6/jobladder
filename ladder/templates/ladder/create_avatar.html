@@ -59,38 +59,72 @@
 
 {% block pagefooter %}
 	<script>
+		/**
+		 prepares an array of images for later use
+		 @itemIndex: array index where image is to be stored at
+		 @imagePk: entity key for the image
+		 @imageURL: where to fetch image data from
+		 @imageAltText: what to display if image loading fails
+		 @imageArray: placeholder for the image object
+		 @imageLoadedCallback: function that gets triggered upon image loaded event. The image object is passed as the first parameter to the function
+		 */
+		function setupImage(itemIndex, imagePk, imageURL, imageAltText, imageArray, imageLoadedCallback){
+			imageArray[itemIndex] = new Image();
+			imageArray[itemIndex].loaded = false;
+			imageArray[itemIndex].onload = function(){
+				imageArray[itemIndex].loaded = true;
+				if(imageLoadedCallback){
+					imageLoadedCallback(imageArray[itemIndex]);
+				}
+			};
+			imageArray[itemIndex].src = imageURL;
+			imageArray[itemIndex].alt = imageAltText;
+			imageArray[itemIndex].pk = imagePk;
+			imageArray[itemIndex].arrayIndex = itemIndex;
+		}
+		/* 
+		 set's an avatars attribute when an image array is done loading
+		 @imageArray: image array to be loaded before setting an avatar's attribute
+		 @avatarAttributeToFix: clear text mapping to avatar attribute
+		 */
+		function checkAllImagesLoaded(imageArray, avatarAttributeToFix){
+			var allImagesLoaded = true;
+			for(var i = 0; i<imageArray.length; i++){
+				allImagesLoaded = allImagesLoaded && imageArray[i].loaded;
+			}
+			if(allImagesLoaded){
+				avatar[avatarAttributeToFix] = imageArray[0];
+				avatar.paint(context);
+			}
+		}
+		
+		//if all face shapes are done loading, then draw the default face shape on the avatar
+		function checkAllFaceshapesDoneLoading(){
+			checkAllImagesLoaded(faceshapes, 'face');
+		}
+		
+		//if all bodies are done loading, then draw the default body on the avatar
+		function checkAllBodiesDoneLoading(){
+			checkAllImagesLoaded(bodies, 'body');
+		}
+		
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var bodies = [];
         var faceshapes = [];
+		var faces = [];
 		var chosenBody = 0;
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
 		avatar.height = canvas.height;
 {% for cuerpo in cuerpos %}
-		bodies[{{ forloop.counter|add:"-1" }}] = new Image();
-		bodies[{{ forloop.counter|add:"-1" }}].loaded = false;
-		bodies[{{ forloop.counter|add:"-1" }}].onload = function(){
-			this.loaded = true;
-			checkAllBodiesDoneLoading();
-		};
-		bodies[{{ forloop.counter|add:"-1" }}].src = '{{ cuerpo.imagen.url|safe }}';
-		bodies[{{ forloop.counter|add:"-1" }}].alt = '{{ cuerpo.etiqueta|safe }}';
-		bodies[{{ forloop.counter|add:"-1" }}].pk ='{{ cuerpo.pk }}';
-		bodies[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
-		
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
 {% endfor %}
 {% for cara in caras %}
-		faceshapes[{{ forloop.counter|add:"-1" }}] = new Image();
-		faceshapes[{{ forloop.counter|add:"-1" }}].loaded = false;
-		faceshapes[{{ forloop.counter|add:"-1" }}].onload = function(){
-			this.loaded = true;
-			checkAllFaceshapesDoneLoading();
-		}
-		faceshapes[{{ forloop.counter|add:"-1" }}].src = '{{ cara.imagen.url|safe }}';
-		faceshapes[{{ forloop.counter|add:"-1" }}].alt = '{{ cara.etiqueta|safe }}';
-		faceshapes[{{ forloop.counter|add:"-1" }}].pk = '{{ cara.pk }}';
-		faceshapes[{{ forloop.counter|add:"-1" }}].arrayIndex = {{ forloop.counter|add:"-1" }};
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', faceshapes, checkAllFaceshapesDoneLoading);
+{% endfor %}
+{% for faccion in facciones %}
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, null/*checkAllImagesLoaded(faces, 'faceFeatures')*/);
 {% endfor %}
 		
 		function refreshBody(event, ui){
@@ -98,28 +132,7 @@
 			avatar.paint(context);
 		}
 		
-		function checkAllFaceshapesDoneLoading(){
-			var allFaceshapesLoaded = true;
-			for(var i =0; i < faceshapes.length; i++){
-				allFaceshapesLoaded = allFaceshapesLoaded && faceshapes[i].loaded;
-			}
-			if(allFaceshapesLoaded){
-				avatar.face = faceshapes[0];
-				avatar.paint(context);
-			}
-		}
 		
-		//if all bodies are done loading, then draw the bodies
-		function checkAllBodiesDoneLoading(){
-			var allBodiesLoaded = true;
-			for(var i = 0; i< bodies.length; i++){
-				allBodiesLoaded = allBodiesLoaded && bodies[i].loaded;
-			}
-			if(allBodiesLoaded){
-				avatar.body = bodies[0];
-				avatar.paint(context);
-			}
-		}
 		
 		$(document).ready(function(){
 			$("#body-slider").slider({
