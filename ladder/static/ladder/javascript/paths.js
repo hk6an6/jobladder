@@ -521,6 +521,7 @@ var serempre = new function(){
 						  this.background,
 						  this.body,
 						  this.face,
+						  this.faceFeatures,
 						  this.pants,
 						  this.shoes,
 						  this.shirt,
@@ -531,12 +532,16 @@ var serempre = new function(){
 			context.save();
 			context.fillStyle = 'white';
 			context.fillRect(0,0, this.width, this.height);
-			context.restore();
 			for(var i = 0; i < images.length; i++){
-				if(images[i] != 'empty'){
+				if(images[i] != 'empty' && !(images[i] instanceof Array)){
 					context.drawImage(images[i],0,0,this.width, this.height);
+				}else if(images[i] instanceof Array){
+					for(var j = 0; j < images[i].length; j++){
+						context.drawImage(images[i][j],0,0,this.width, this.height);
+					}
 				}
 			}
+			context.restore();
 		}
 	}
 };

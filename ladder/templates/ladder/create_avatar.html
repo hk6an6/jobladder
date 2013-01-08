@@ -12,6 +12,7 @@
 
 {% block includejavascript %}
 		{{ block.super }}
+		<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
 {% endblock %}
 
 {% block pagestyle %}
@@ -19,9 +20,9 @@
 		width: 300px;
 		margin: 15px;
 	}
-	.scroll-pane { overflow: auto; width: 300px; float:left; margin: 15px; }
-    .scroll-content { width: {{ css_len_caras }}px; float: left; }
-    .scroll-content-item { width: 100px; height: 100px; float: left; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; }
+	.scroll-pane { overflow: auto; width: 300px; margin: 15px; position: relative; float:left; }
+	.scroll-content { position: relative; float: left; }
+	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
     * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
     .scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
     .scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
@@ -38,14 +39,30 @@
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
-	<div id="body-slider"></div>
+	<div id="body-slider" style="clear: left;"></div>
 	<div id="faceshape-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
 {% for cara in caras %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.face = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					onclick="javascript: avatar.faceFeatures = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					/>
+				</div>
+{% endfor %}
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
+	<div id="faceFeature-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+{% for faccion in facciones %}
+				<div class="scroll-content-item ui-widget-header">
+					<img src="{{ faccion.imagen.url|safe }}" alt="{{ faccion.etiqueta|safe }}" pk="{{ faccion.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.face = faces[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -108,6 +125,11 @@
 			checkAllImagesLoaded(bodies, 'body');
 		}
 		
+		//if all face features done loading, then draw the default one on the avatar
+		function checkAllFacesDoneLoading(){
+			checkAllImagesLoaded(faces, 'faceFeatures');
+		}
+		
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var bodies = [];
@@ -124,15 +146,13 @@
 		setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', faceshapes, checkAllFaceshapesDoneLoading);
 {% endfor %}
 {% for faccion in facciones %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, null/*checkAllImagesLoaded(faces, 'faceFeatures')*/);
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, checkAllFacesDoneLoading);
 {% endfor %}
 		
 		function refreshBody(event, ui){
 			avatar.body = bodies[ui.value];
 			avatar.paint(context);
 		}
-		
-		
 		
 		$(document).ready(function(){
 			$("#body-slider").slider({
@@ -145,75 +165,9 @@
 				change: refreshBody
 			});
 			
-			//scrollpane parts
-			var scrollPane = $( ".scroll-pane" ),
-				scrollContent = $( ".scroll-content" );
-			 
-			//build slider
-			var scrollbar = $( ".scroll-bar" ).slider({
-				slide: function( event, ui ) {
-					if ( scrollContent.width() > scrollPane.width() ) {
-						scrollContent.css( "margin-left", Math.round(
-							ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-						) + "px" );
-					} else {
-						scrollContent.css( "margin-left", 0 );
-					}
-				}
-			});
-			 
-			//append icon to handle
-			var handleHelper = scrollbar.find( ".ui-slider-handle" )
-			.mousedown(function() {
-				scrollbar.width( handleHelper.width() );
-			})
-			.mouseup(function() {
-				scrollbar.width( "100%" );
-			})
-			.append( "<span class='ui-icon ui-icon-grip-dotted-vertical'></span>" )
-			.wrap( "<div class='ui-handle-helper-parent'></div>" ).parent();
-			 
-			//change overflow to hidden now that slider handles the scrolling
-			scrollPane.css( "overflow", "hidden" );
-			 
-			//size scrollbar and handle proportionally to scroll distance
-			function sizeScrollbar() {
-				var remainder = scrollContent.width() - scrollPane.width();
-				var proportion = remainder / scrollContent.width();
-				var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
-				scrollbar.find( ".ui-slider-handle" ).css({
-					width: handleSize,
-					"margin-left": -handleSize / 2
-				});
-				handleHelper.width( "" ).width( scrollbar.width() - handleSize );
-			}
-			 
-			//reset slider value based on scroll content position
-			function resetValue() {
-				var remainder = scrollPane.width() - scrollContent.width();
-				var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
-					parseInt( scrollContent.css( "margin-left" ) );
-				var percentage = Math.round( leftVal / remainder * 100 );
-				scrollbar.slider( "value", percentage );
-			}
-			 
-			//if the slider is 100% and window gets larger, reveal content
-			function reflowContent() {
-					var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
-					var gap = scrollPane.width() - showing;
-					if ( gap > 0 ) {
-						scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
-					}
-			}
-			 
-			//change handle position on window resize
-			$( window ).resize(function() {
-				resetValue();
-				sizeScrollbar();
-				reflowContent();
-			});
-			//init scrollbar size
-			setTimeout( sizeScrollbar, 10 );//safari wants a timeout
+			setupSliderScrollBar('faceshape-slider');
+						  
+			setupSliderScrollBar('faceFeature-slider');
 		});
 	</script>
 	<!--

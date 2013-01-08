@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		433BADB2169CD0560083E268 /* scrollableslider.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = scrollableslider.js; sourceTree = "<group>"; };
 		43B47175166903B9003EB0DC /* 01_setup_heroku.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 01_setup_heroku.sh; sourceTree = "<group>"; };
 		43B47176166903B9003EB0DC /* 02_fix_local_keys.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 02_fix_local_keys.sh; sourceTree = "<group>"; };
 		43B47177166903B9003EB0DC /* 03_fix_heroku_aws_keyx.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 03_fix_heroku_aws_keyx.sh; sourceTree = "<group>"; };
@@ -295,6 +296,7 @@
 				43B471C4166903B9003EB0DC /* jquery-ui-1.9.1.min.js */,
 				43B471C5166903B9003EB0DC /* paths.js */,
 				43B471C6166903B9003EB0DC /* space_invaders.js */,
+				433BADB2169CD0560083E268 /* scrollableslider.js */,
 			);
 			path = javascript;
 			sourceTree = "<group>";
@@ -447,6 +449,7 @@
 				43B471731669026C003EB0DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
