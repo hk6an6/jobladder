@@ -39,14 +39,24 @@
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
+	<div id="skin-color" class="btn-group">
+		<a id="skin-color-tag" class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+			Piel
+			<span class="caret"></span>
+		</a>
+		<ul id="skin-choices" class="dropdown-menu">
+			
+		</ul>
+	</div>
 	<div id="body-slider" style="clear: left;"></div>
-	<div id="faceshape-slider">
+	<!-- begin: face feature picker -->
+	<div id="eyebrows-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
 {% for cara in caras %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.faceFeatures = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					onclick="javascript: avatar.faceFeatures[0] = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -56,13 +66,15 @@
 			</div>
 		</div>
 	</div>
-	<div id="faceFeature-slider" style="clear: left;">
+	<!-- end: face feature picker -->
+	<!-- begin: face feature picker -->
+	<div id="eyeshapes-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
-{% for faccion in facciones %}
+{% for cara in caras %}
 				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ faccion.imagen.url|safe }}" alt="{{ faccion.etiqueta|safe }}" pk="{{ faccion.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.face = faces[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.faceFeatures[1] = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -72,6 +84,73 @@
 			</div>
 		</div>
 	</div>
+	<!-- end: face feature picker -->
+	<!-- begin: face picker -->
+	<div id="faces-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
+	<!-- end face picker -->
+<!-- begin: pants picker -->
+<div id="pants-slider" style="clear: left;">
+	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+		<div class="scroll-content">
+			{% for pantalon in pantalones %}
+			<div class="scroll-content-item ui-widget-header">
+				<img src="{{ pantalon.imagen.url|safe }}" alt="{{ pantalon.etiqueta|safe }}" pk="{{ pantalon.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+				onclick="javascript: avatar.pants = pants[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+				/>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+			<div class="scroll-bar"></div>
+		</div>
+	</div>
+</div>
+<!-- end: pants picker -->
+<!-- begin: shoes picker -->
+<div id="shoes-slider" style="clear: left;">
+	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+		<div class="scroll-content">
+			{% for zapato in zapatos %}
+			<div class="scroll-content-item ui-widget-header">
+				<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+				onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+				/>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+			<div class="scroll-bar"></div>
+		</div>
+	</div>
+</div>
+<!-- end: shoes picker -->
+<!-- begin: shirts picker -->
+<div id="shirts-slider" style="clear: left;">
+	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+		<div class="scroll-content">
+			{% for camisa in camisas %}
+			<div class="scroll-content-item ui-widget-header">
+				<img src="{{ camisa.imagen.url|safe }}" alt="{{ camisa.etiqueta|safe }}" pk="{{ camisa.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+				onclick="javascript: avatar.shirt = shirts[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+				/>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+			<div class="scroll-bar"></div>
+		</div>
+	</div>
+</div>
+<!-- end face feature picker -->
 {% endblock %}
 
 {% block pagefooter %}
@@ -85,7 +164,7 @@
 		 @imageArray: placeholder for the image object
 		 @imageLoadedCallback: function that gets triggered upon image loaded event. The image object is passed as the first parameter to the function
 		 */
-		function setupImage(itemIndex, imagePk, imageURL, imageAltText, imageArray, imageLoadedCallback){
+		function setupImage(itemIndex, imagePk, imageURL, imageAltText, imageArray, imageLoadedCallback, targetAttributeName){
 			imageArray[itemIndex] = new Image();
 			imageArray[itemIndex].loaded = false;
 			imageArray[itemIndex].onload = function(){
@@ -98,21 +177,49 @@
 			imageArray[itemIndex].alt = imageAltText;
 			imageArray[itemIndex].pk = imagePk;
 			imageArray[itemIndex].arrayIndex = itemIndex;
+			if(targetAttributeName){
+				imageArray[itemIndex].onclick = function(){ avatar[targetAttributeName] = imageArray[itemIndex]; avatar.paint(context); };
+			}
 		}
 		/* 
 		 set's an avatars attribute when an image array is done loading
 		 @imageArray: image array to be loaded before setting an avatar's attribute
 		 @avatarAttributeToFix: clear text mapping to avatar attribute
 		 */
-		function checkAllImagesLoaded(imageArray, avatarAttributeToFix){
+		function checkAllImagesLoaded(imageArray, avatarAttributeToFix, paint){
 			var allImagesLoaded = true;
 			for(var i = 0; i<imageArray.length; i++){
 				allImagesLoaded = allImagesLoaded && imageArray[i].loaded;
 			}
-			if(allImagesLoaded){
+			if(allImagesLoaded && paint){
 				avatar[avatarAttributeToFix] = imageArray[0];
 				avatar.paint(context);
 			}
+			return allImagesLoaded;
+		}
+		
+		/*
+		 builds a face slider selector using only those faces wich skin color match user selection
+		 @sliderId: div id for the element which is to become the face slider
+		 @color: plain text describing chosen color
+		 */
+		function faceColorPicked(sliderId, color){
+			var regex = new RegExp(color,RegExp.i, RegExp.g);
+			var scrollContent = $('div#'+ sliderId +' div.scroll-content');
+			var slider = $('div#'+ sliderId +' div.scroll-bar');
+			slider.remove();
+			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
+			scrollContent.empty();
+			$.each(faces,function (index,valueObject){
+				   var label = valueObject.alt+'';
+				   if(label.match(regex)){
+				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
+				   container.append(valueObject);
+				   scrollContent.append(container);
+				   console.log(container);
+				   }
+				   });
+			setupSliderScrollBar(sliderId);
 		}
 		
 		//if all face shapes are done loading, then draw the default face shape on the avatar
@@ -122,31 +229,105 @@
 		
 		//if all bodies are done loading, then draw the default body on the avatar
 		function checkAllBodiesDoneLoading(){
-			checkAllImagesLoaded(bodies, 'body');
+			if(checkAllImagesLoaded(bodies, 'body')){
+				//use this object as a hash table to store unique skin colors
+				var availableColors = {};
+				//read skin colors from the bodies 'alt' attribute
+				for(var i = 0; i < bodies.length; i++){
+					var color = bodies[i].alt.match(color_regex)+'';
+					availableColors[color] = color;
+				}
+				//store unique colors in a global array
+				var counter = 0;
+				for(color in availableColors){
+					colors[counter++] = color;
+				}
+				//use available skin colors to populate skin color dropdown
+				for(var i = 0; i<colors.length;i++){
+					var option = '<li><a tabindex="-1" href="#" onclick="javascript: pickedSkinColor(\''+ colors[i] +'\')">'+ colors[i] +'</a></li>';
+					option = $(option)
+					$('#skin-choices').append(option);
+				}
+				allBodies = bodies;
+			}
+		}
+		
+		//picks a skin color for the avatar
+		function pickedSkinColor(color){
+			var regex = new RegExp(color,RegExp.i, RegExp.g);
+			$('#skin-color-tag').text(color);
+			bodies = allBodies.filter(function(body){
+				return body.alt.match(color_regex) == color;
+			});
+			faceColorPicked('faces-slider',color);
+			$("#body-slider").slider({
+				 orientation: "horizontal",
+				 range: "min",
+				 max: bodies.length - 1,
+				 value: 0,
+				 step: 1,
+				 slide: refreshBody,
+				 change: refreshBody
+			 });
 		}
 		
 		//if all face features done loading, then draw the default one on the avatar
 		function checkAllFacesDoneLoading(){
-			checkAllImagesLoaded(faces, 'faceFeatures');
+			if(checkAllImagesLoaded(faces, 'face')){
+				allFaces = faces;
+			}
+		}
+		
+		//if all face features done loading, then draw the default one on the avatar
+		function checkAllPantsDoneLoading(){
+			checkAllImagesLoaded(pants, 'pants');
+		}
+		
+		//if all face features done loading, then draw the default one on the avatar
+		function checkAllShoesDoneLoading(){
+			checkAllImagesLoaded(shoes, 'shoes');
+		}
+		
+		//if all face features done loading, then draw the default one on the avatar
+		function checkAllShirtsDoneLoading(){
+			checkAllImagesLoaded(shirts, 'shirt');
 		}
 		
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
+		var size_regex = /\d+(?=( [^\s]+ hombre))/gi;
+		var color_regex = /[^\s]+(?=( hombre))/gi;
+		var colors = [];
 		var bodies = [];
-        var faceshapes = [];
+		var allBodies = [];
 		var faces = [];
-		var chosenBody = 0;
+		var allFaces = [];
+        var faceshapes = [];
+		var pants = [];
+		var allPants = [];
+		var shoes = [];
+		var shirts = [];
+		var allShirts = [];
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
 		avatar.height = canvas.height;
 {% for cuerpo in cuerpos %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.contextura|safe }} {{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
 {% endfor %}
 {% for cara in caras %}
 		setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', faceshapes, checkAllFaceshapesDoneLoading);
 {% endfor %}
 {% for faccion in facciones %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, checkAllFacesDoneLoading);
+		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, checkAllFacesDoneLoading, 'face');
+{% endfor %}
+{% for pantalon in pantalones %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ pantalon.pk }}', '{{ pantalon.imagen.url|safe }}', '{{ pantalon.contextura|safe }} {{ pantalon.etiqueta|safe }}', pants, checkAllPantsDoneLoading);
+{% endfor %}
+{% for zapato in zapatos %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ zapato.pk }}', '{{ zapato.imagen.url|safe }}', '{{ zapato.etiqueta|safe }}', shoes, checkAllShoesDoneLoading);
+{% endfor %}
+{% for camisa in camisas %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ camisa.pk }}', '{{ camisa.imagen.url|safe }}', '{{ camisa.contextura|safe }} {{ camisa.etiqueta|safe }}', shirts, checkAllShirtsDoneLoading);
 {% endfor %}
 		
 		function refreshBody(event, ui){
@@ -165,9 +346,17 @@
 				change: refreshBody
 			});
 			
-			setupSliderScrollBar('faceshape-slider');
+			setupSliderScrollBar('eyebrows-slider');
 						  
-			setupSliderScrollBar('faceFeature-slider');
+			setupSliderScrollBar('eyeshapes-slider');
+						  
+			
+						  
+			setupSliderScrollBar('pants-slider');
+						  
+			setupSliderScrollBar('shoes-slider');
+						  
+			setupSliderScrollBar('shirts-slider');
 		});
 	</script>
 	<!--

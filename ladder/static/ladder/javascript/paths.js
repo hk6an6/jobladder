@@ -537,7 +537,9 @@ var serempre = new function(){
 					context.drawImage(images[i],0,0,this.width, this.height);
 				}else if(images[i] instanceof Array){
 					for(var j = 0; j < images[i].length; j++){
-						context.drawImage(images[i][j],0,0,this.width, this.height);
+						if(images[i][j] != null){
+							context.drawImage(images[i][j],0,0,this.width, this.height);
+						}
 					}
 				}
 			}

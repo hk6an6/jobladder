@@ -42,17 +42,26 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	cuerpos = None
 	caras = CaraAvatar.objects.all()
 	facciones = Faccion.objects.all()
-	pantalones = PantalonAvatar.objects.all()
-	camisas = CamisaAvatar.objects.all()
-	zapatos = ZapatosAvatar.objects.all()
+	pantalones = None
+	camisas = None
+	zapatos = None
 	accesorios = AccesoriosAvatar.objects.all()
 	cabellos = PeloAvatar.objects.all()
 	cabellos_experiencia = CabelloAvatar.objects.all()
 	sombreros = SombreroAvatar.objects.all()
 	if(sex == 'H'):
 		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="hombre")
+		pantalones = PantalonAvatar.objects.filter(etiqueta__icontains="hombre")
+		camisas = CamisaAvatar.objects.filter(etiqueta__icontains="hombre")
+		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="hombre")
 	else:
 		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="mujer")
+		pantalones = PantalonAvatar.objects.filter(etiqueta__icontains="mujer")
+		camisas = CamisaAvatar.objects.filter(etiqueta__icontains="mujer")
+		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="mujer")
+	cuerpos = cuerpos.order_by('etiqueta','contextura')
+	pantalones = pantalones.order_by('etiqueta','contextura')
+	camisas = camisas.order_by('etiqueta','contextura')
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
 
 def simulate(request, origin_pk, target_pk, sex):
