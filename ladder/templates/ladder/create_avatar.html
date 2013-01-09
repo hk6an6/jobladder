@@ -20,7 +20,7 @@
 		width: 300px;
 		margin: 15px;
 	}
-	.scroll-pane { overflow: auto; width: 300px; margin: 15px; position: relative; float:left; }
+	.scroll-pane { overflow: auto; width: 300px; margin: 15px; position: relative; }
 	.scroll-content { position: relative; float: left; }
 	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
     * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
@@ -49,6 +49,18 @@
 		</ul>
 	</div>
 	<div id="body-slider" style="clear: left;"></div>
+	<!-- begin: face picker -->
+	<div id="faces-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+				
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
+	<!-- end face picker -->
 	<!-- begin: face feature picker -->
 	<div id="eyebrows-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
@@ -85,18 +97,6 @@
 		</div>
 	</div>
 	<!-- end: face feature picker -->
-	<!-- begin: face picker -->
-	<div id="faces-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end face picker -->
 <!-- begin: pants picker -->
 <div id="pants-slider" style="clear: left;">
 	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
