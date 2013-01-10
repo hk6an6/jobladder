@@ -364,8 +364,8 @@
 		};
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
-		var size_regex = /\d+(?=( [^\s]+ hombre))/gi;
-		var color_regex = /[^\s]+(?=( hombre))/gi;
+		var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
+		var color_regex = /[^\s]+(?=( ((hombre)|(mujer))))/gi;
 		var colors = [];
 		var bodies = [];
 		var allBodies = [];
