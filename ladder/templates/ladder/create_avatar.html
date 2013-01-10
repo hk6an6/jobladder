@@ -49,7 +49,7 @@
 	</canvas>
 	<div id="skin-color" class="btn-group">
 		<a id="skin-color-tag" class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
-			Piel
+			Elija un color de piel
 			<span class="caret"></span>
 		</a>
 		<ul id="skin-choices" class="dropdown-menu">
@@ -189,6 +189,8 @@
 				   }
 				   });
 			setupSliderScrollBar(sliderId);
+			$('#faces-slider .scroll-content-item img').css(face_thumbnail_style);
+			$('#faces-slider .scroll-content-item img')[0].click();
 		}
 		
 		/*
@@ -213,6 +215,7 @@
 				   }
 				   });
 			setupSliderScrollBar(sliderId);
+			$('#'+ sliderId +' .scroll-content-item img')[0].click();
 		}
 		
 		//if all bodies are done loading, then draw the default body on the avatar
@@ -269,6 +272,9 @@
 			avatar.paint(context);
 			bodySizePicked('pants-slider',ui.value+1,pants);
 			bodySizePicked('shirts-slider',ui.value+1,shirts);
+			$('#pants-slider .scroll-content-item img').css(pant_thumbnail_style);
+			$('#shirts-slider .scroll-content-item img').css(shirt_thumbnail_style);
+			$('#shoes-slider .scroll-content-item img')[0].click();
 		}
 		/*
 		 handles eyebrow slider value changes. Updates avatar eyebrow image
@@ -298,6 +304,8 @@
 			});
 			faceColorPicked('faces-slider',color);
 			buildSimpleSlider('body-slider', bodies, refreshBody, refreshBody);
+			$('#eye-slider').slider('value',0)
+			$('#eyebrow-slider').slider('value',0)
 		}
 		
 		//if all face features done loading, then draw the default one on the avatar
@@ -314,7 +322,9 @@
 		
 		//if all face features done loading, then draw the default one on the avatar
 		function checkAllShoesDoneLoading(){
-			checkAllImagesLoaded(shoes, 'shoes');
+			if(checkAllImagesLoaded(shoes, 'shoes')){
+				$('#shoes-slider .scroll-content-item img').css(shoe_thumbnail_style);
+			}
 		}
 		
 		//if all face features done loading, then draw the default one on the avatar
@@ -334,6 +344,24 @@
 			}
 		}
 		
+		var face_thumbnail_style = {
+			'margin-left': '-40px',
+		};
+		var shoe_thumbnail_style = {
+			
+			'margin-top': '-120px',
+			'margin-left': '-40px',
+		};
+		var pant_thumbnail_style = {
+			'margin-top': '-80px',
+			'margin-left': '-30px',
+			
+		};
+		var shirt_thumbnail_style = {
+			'margin-top': '-40px',
+			'margin-left': '-30px',
+			
+		};
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
 		var size_regex = /\d+(?=( [^\s]+ hombre))/gi;
