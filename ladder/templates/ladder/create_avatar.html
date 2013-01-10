@@ -20,6 +20,14 @@
 		width: 300px;
 		margin: 15px;
 	}
+	#eyebrow-slider {
+		width: 300px;
+		margin: 15px;
+	}
+	#eye-slider {
+		width: 300px;
+		margin: 15px;
+	}
 	.scroll-pane { overflow: auto; width: 300px; margin: 15px; position: relative; }
 	.scroll-content { position: relative; float: left; }
 	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
@@ -63,41 +71,9 @@
 	<!-- end face picker -->
 	<!-- begin: face feature picker -->
 	<div id="eyebrow-slider" style="clear: left;"></div>
-	<div id="eyebrows-slider">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-{% for cara in cejas %}
-				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.faceFeatures[0] = this; avatar.paint(context);";
-					/>
-				</div>
-{% endfor %}
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
 	<!-- end: face feature picker -->
 	<!-- begin: face feature picker -->
-	<div id="eyebrow-slider" style="clear: left;"></div>
-	<div id="eyeshapes-slider">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-{% for cara in ojos %}
-				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.faceFeatures[1] = this; avatar.paint(context);";
-					/>
-				</div>
-{% endfor %}
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
+	<div id="eye-slider" style="clear: left;"></div>
 	<!-- end: face feature picker -->
 	<!-- begin: pants picker -->
 	<div id="pants-slider" style="clear: left;">
@@ -283,6 +259,36 @@
 			});
 		}
 		
+		/*
+		 handles body slider value changes. Updates avatar body image
+		 @event: object sent by jquery API
+		 @ui: holds jquery-ui slider data
+		 */
+		function refreshBody(event, ui){
+			avatar.body = bodies[ui.value];
+			avatar.paint(context);
+			bodySizePicked('pants-slider',ui.value+1,pants);
+			bodySizePicked('shirts-slider',ui.value+1,shirts);
+		}
+		/*
+		 handles eyebrow slider value changes. Updates avatar eyebrow image
+		 @event: object sent by jquery API
+		 @ui: holds jquery-ui slider data
+		 */
+		function refreshEyebrows(event,ui){
+			avatar.faceFeatures[0] = eyebrows[ui.value];
+			avatar.paint(context);
+		}
+		/*
+		 handles eye slider value changes. Updates avatar eye image
+		 @event: object sent by jquery API
+		 @ui: holds jquery-ui slider data
+		 */
+		function refreshEyes(event,ui){
+			avatar.faceFeatures[1] = eyes[ui.value];
+			avatar.paint(context);
+		}
+		
 		//picks a skin color for the avatar
 		function pickedSkinColor(color){
 			var regex = new RegExp(color,RegExp.i, RegExp.g);
@@ -314,6 +320,18 @@
 		//if all face features done loading, then draw the default one on the avatar
 		function checkAllShirtsDoneLoading(){
 			checkAllImagesLoaded(shirts, 'shirt');
+		}
+		
+		function checkAllEyesDoneLoading(){
+			if(checkAllImagesLoaded(eyes)){
+				
+			}
+		}
+		
+		function checkAllEyebrowsDoneLoading(){
+			if(checkAllImagesLoaded(eyebrows)){
+				
+			}
 		}
 		
 		var canvas = document.getElementById('canvas');
@@ -351,31 +369,19 @@
 {% for camisa in camisas %}
 	setupImage({{ forloop.counter|add:"-1" }}, '{{ camisa.pk }}', '{{ camisa.imagen.url|safe }}', '{{ camisa.contextura|safe }} {{ camisa.etiqueta|safe }}', shirts, checkAllShirtsDoneLoading, 'shirt');
 {% endfor %}
+{% for ojo in ojos %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ ojo.pk }}', '{{ ojo.imagen.url|safe }}', '{{ ojo.etiqueta|safe }}', eyes, checkAllEyesDoneLoading);
+{% endfor %}
+{% for ceja in cejas %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ ceja.pk }}', '{{ ceja.imagen.url|safe }}', '{{ ceja.etiqueta|safe }}', eyebrows, checkAllEyebrowsDoneLoading);
+{% endfor %}
 		
-		function refreshBody(event, ui){
-			avatar.body = bodies[ui.value];
-			avatar.paint(context);
-			bodySizePicked('pants-slider',ui.value+1,pants);
-			bodySizePicked('shirts-slider',ui.value+1,shirts);
-		}
 		
 		$(document).ready(function(){
-			$("#body-slider").slider({
-				orientation: "horizontal",
-				range: "min",
-				max: bodies.length - 1,
-				value: 0,
-				step: 1,
-				slide: refreshBody,
-				change: refreshBody
-			});
-			
-			setupSliderScrollBar('eyebrows-slider');
-						  
-			setupSliderScrollBar('eyeshapes-slider');
-						  
+			buildSimpleSlider('body-slider',bodies,refreshBody,refreshBody);
 			setupSliderScrollBar('shoes-slider');
-
+			buildSimpleSlider('eye-slider', eyes, refreshEyes, refreshEyes);
+			buildSimpleSlider('eyebrow-slider',eyebrows, refreshEyebrows, refreshEyebrows);
 		});
 	</script>
 	<!--
