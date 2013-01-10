@@ -62,6 +62,7 @@
 	</div>
 	<!-- end face picker -->
 	<!-- begin: face feature picker -->
+	<div id="eyebrow-slider" style="clear: left;"></div>
 	<div id="eyebrows-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
@@ -80,6 +81,7 @@
 	</div>
 	<!-- end: face feature picker -->
 	<!-- begin: face feature picker -->
+	<div id="eyebrow-slider" style="clear: left;"></div>
 	<div id="eyeshapes-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
@@ -237,11 +239,6 @@
 			setupSliderScrollBar(sliderId);
 		}
 		
-		//if all face shapes are done loading, then draw the default face shape on the avatar
-		function checkAllFaceshapesDoneLoading(){
-			checkAllImagesLoaded(faceshapes, 'face');
-		}
-		
 		//if all bodies are done loading, then draw the default body on the avatar
 		function checkAllBodiesDoneLoading(){
 			if(checkAllImagesLoaded(bodies, 'body')){
@@ -267,6 +264,28 @@
 			}
 		}
 		
+		/*
+		 turns a div into a slider using an array as the slider's data source
+		 @sliderId: domID for the div to be converted to a slider
+		 @sourceArray: elements over which the slider iterates
+		 @onSlide: handle to a function definition matching function(event,ui) { ... }
+		 @onChange: handle to a function definition matching function(event,ui) { ... }
+		 */
+		function buildSimpleSlider(sliderId, sourceArray, onSlide, onChange){
+
+			if(checkAllImagesLoaded(eyebrows)){
+				$('#'+sliderId).slider({
+					orientation: "horizontal",
+					range: "min",
+					max: sourceArray.length - 1,
+				    value: 0,
+					step: 1,
+					slide: onSlide,
+					change: onChange,
+				});
+			}
+		}
+		
 		//picks a skin color for the avatar
 		function pickedSkinColor(color){
 			var regex = new RegExp(color,RegExp.i, RegExp.g);
@@ -275,15 +294,7 @@
 				return body.alt.match(color_regex) == color;
 			});
 			faceColorPicked('faces-slider',color);
-			$("#body-slider").slider({
-				 orientation: "horizontal",
-				 range: "min",
-				 max: bodies.length - 1,
-				 value: 0,
-				 step: 1,
-				 slide: refreshBody,
-				 change: refreshBody
-			 });
+			buildSimpleSlider('body-slider', bodies, refreshBody, refreshBody);
 		}
 		
 		//if all face features done loading, then draw the default one on the avatar
@@ -323,6 +334,8 @@
 		var shoes = [];
 		var shirts = [];
 		var allShirts = [];
+		var eyebrows = [];
+		var eyes = [];
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
 		avatar.height = canvas.height;
