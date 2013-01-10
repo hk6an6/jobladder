@@ -40,9 +40,9 @@ def cargo_by_pk(request, cargo_pk=0):
 	
 def create_avatar(request, origin_pk, target_pk, sex):
 	cuerpos = None
-	facciones = Faccion.objects.all()
-	cejas = CaraAvatar.objects.filter(etiqueta__icontains="cejas")
-	ojos = CaraAvatar.objects.filter(etiqueta__icontains="ojos")
+	facciones = CaraAvatar.objects.all()
+	cejas = Faccion.objects.filter(etiqueta__icontains="cejas")
+	ojos = Faccion.objects.filter(etiqueta__icontains="ojos")
 	pantalones = None
 	camisas = None
 	zapatos = None
