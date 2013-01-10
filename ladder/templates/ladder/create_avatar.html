@@ -65,10 +65,10 @@
 	<div id="eyebrows-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
-{% for cara in caras %}
+{% for cara in cejas %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.faceFeatures[0] = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					onclick="javascript: avatar.faceFeatures[0] = this; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -83,10 +83,10 @@
 	<div id="eyeshapes-slider">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
-{% for cara in caras %}
+{% for cara in ojos %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ cara.imagen.url|safe }}" alt="{{ cara.etiqueta|safe }}" pk="{{ cara.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.faceFeatures[1] = faceshapes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					onclick="javascript: avatar.faceFeatures[1] = this; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -97,60 +97,52 @@
 		</div>
 	</div>
 	<!-- end: face feature picker -->
-<!-- begin: pants picker -->
-<div id="pants-slider" style="clear: left;">
-	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="scroll-content">
-			{% for pantalon in pantalones %}
-			<div class="scroll-content-item ui-widget-header">
-				<img src="{{ pantalon.imagen.url|safe }}" alt="{{ pantalon.etiqueta|safe }}" pk="{{ pantalon.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-				onclick="javascript: avatar.pants = pants[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
-				/>
+	<!-- begin: pants picker -->
+	<div id="pants-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+				<div class="scroll-content-item ui-widget-header">
+					
+				</div>
 			</div>
-			{% endfor %}
-		</div>
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
 		</div>
 	</div>
-</div>
-<!-- end: pants picker -->
-<!-- begin: shoes picker -->
-<div id="shoes-slider" style="clear: left;">
-	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="scroll-content">
-			{% for zapato in zapatos %}
-			<div class="scroll-content-item ui-widget-header">
-				<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-				onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
-				/>
+	<!-- end: pants picker -->
+	<!-- begin: shoes picker -->
+	<div id="shoes-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+{% for zapato in zapatos %}
+				<div class="scroll-content-item ui-widget-header">
+					<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					/>
+				</div>
+{% endfor %}
 			</div>
-			{% endfor %}
-		</div>
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
 		</div>
 	</div>
-</div>
-<!-- end: shoes picker -->
-<!-- begin: shirts picker -->
-<div id="shirts-slider" style="clear: left;">
-	<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-		<div class="scroll-content">
-			{% for camisa in camisas %}
-			<div class="scroll-content-item ui-widget-header">
-				<img src="{{ camisa.imagen.url|safe }}" alt="{{ camisa.etiqueta|safe }}" pk="{{ camisa.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-				onclick="javascript: avatar.shirt = shirts[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
-				/>
+	<!-- end: shoes picker -->
+	<!-- begin: shirts picker -->
+	<div id="shirts-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+				<div class="scroll-content-item ui-widget-header">
+					
+				</div>
 			</div>
-			{% endfor %}
-		</div>
-		<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-			<div class="scroll-bar"></div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
 		</div>
 	</div>
-</div>
-<!-- end face feature picker -->
+	<!-- end face feature picker -->
 {% endblock %}
 
 {% block pagefooter %}
@@ -216,7 +208,30 @@
 				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
 				   container.append(valueObject);
 				   scrollContent.append(container);
-				   console.log(container);
+				   }
+				   });
+			setupSliderScrollBar(sliderId);
+		}
+		
+		/*
+		 builds a face slider selector using clothing wich size match user selection
+		 @sliderId: div id for the element which is to become the face slider
+		 @size: clothing size as an integer
+		 @clothing: a collection holding clothing images
+		 */
+		function bodySizePicked(sliderId, size, clothing){
+			var regex = new RegExp(size+'(?= \.+)',RegExp.i, RegExp.g);
+			var scrollContent = $('div#'+ sliderId +' div.scroll-content');
+			var slider = $('div#'+ sliderId +' div.scroll-bar');
+			slider.remove();
+			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
+			scrollContent.empty();
+			$.each(clothing,function (index,valueObject){
+				   var label = valueObject.alt+'';
+				   if(label.match(regex)){
+				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
+				   container.append(valueObject);
+				   scrollContent.append(container);
 				   }
 				   });
 			setupSliderScrollBar(sliderId);
@@ -314,25 +329,24 @@
 {% for cuerpo in cuerpos %}
 		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.contextura|safe }} {{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
 {% endfor %}
-{% for cara in caras %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', faceshapes, checkAllFaceshapesDoneLoading);
-{% endfor %}
 {% for faccion in facciones %}
 		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, checkAllFacesDoneLoading, 'face');
 {% endfor %}
 {% for pantalon in pantalones %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ pantalon.pk }}', '{{ pantalon.imagen.url|safe }}', '{{ pantalon.contextura|safe }} {{ pantalon.etiqueta|safe }}', pants, checkAllPantsDoneLoading);
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ pantalon.pk }}', '{{ pantalon.imagen.url|safe }}', '{{ pantalon.contextura|safe }} {{ pantalon.etiqueta|safe }}', pants, checkAllPantsDoneLoading, 'pants');
 {% endfor %}
 {% for zapato in zapatos %}
 	setupImage({{ forloop.counter|add:"-1" }}, '{{ zapato.pk }}', '{{ zapato.imagen.url|safe }}', '{{ zapato.etiqueta|safe }}', shoes, checkAllShoesDoneLoading);
 {% endfor %}
 {% for camisa in camisas %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ camisa.pk }}', '{{ camisa.imagen.url|safe }}', '{{ camisa.contextura|safe }} {{ camisa.etiqueta|safe }}', shirts, checkAllShirtsDoneLoading);
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ camisa.pk }}', '{{ camisa.imagen.url|safe }}', '{{ camisa.contextura|safe }} {{ camisa.etiqueta|safe }}', shirts, checkAllShirtsDoneLoading, 'shirt');
 {% endfor %}
 		
 		function refreshBody(event, ui){
 			avatar.body = bodies[ui.value];
 			avatar.paint(context);
+			bodySizePicked('pants-slider',ui.value+1,pants);
+			bodySizePicked('shirts-slider',ui.value+1,shirts);
 		}
 		
 		$(document).ready(function(){
@@ -350,13 +364,8 @@
 						  
 			setupSliderScrollBar('eyeshapes-slider');
 						  
-			
-						  
-			setupSliderScrollBar('pants-slider');
-						  
 			setupSliderScrollBar('shoes-slider');
-						  
-			setupSliderScrollBar('shirts-slider');
+
 		});
 	</script>
 	<!--
