@@ -272,18 +272,15 @@
 		 @onChange: handle to a function definition matching function(event,ui) { ... }
 		 */
 		function buildSimpleSlider(sliderId, sourceArray, onSlide, onChange){
-
-			if(checkAllImagesLoaded(eyebrows)){
-				$('#'+sliderId).slider({
-					orientation: "horizontal",
-					range: "min",
-					max: sourceArray.length - 1,
-				    value: 0,
-					step: 1,
-					slide: onSlide,
-					change: onChange,
-				});
-			}
+			$('#'+sliderId).slider({
+				orientation: "horizontal",
+				range: "min",
+				max: sourceArray.length - 1,
+				value: 0,
+				step: 1,
+				slide: onSlide,
+				change: onChange,
+			});
 		}
 		
 		//picks a skin color for the avatar
