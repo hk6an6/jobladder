@@ -96,7 +96,7 @@
 {% for zapato in zapatos %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; avatar.paint(context);";
+					onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; current_selection.shoes = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
