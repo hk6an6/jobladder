@@ -88,13 +88,21 @@
 	</div>
 	<!-- end: hair picker -->
 	<!-- begin: helmet picker -->
+	<div>
+		<div id='div-toggle-helmet' class='btn-group' data-toggle='buttons-radio'>
+			<label for='btn-no-usar-casco'>Casco: </label>
+			<button id='btn-no-usar-casco' class='btn active' onclick="avatar.helmet = 'empty'; avatar.paint(context); return true;">No usar</button>
+			<button id='btn-usar-casco' class='btn'>Usar</button>
+		</div>
+		<span class='help-block'>Marque 'No usar' para quitarse el casco</span>
+	</div>
 	<div id="helmet-slider" style="clear: left;">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
 {% for casco in cascos %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ casco.imagen.url|safe }}" alt="{{ casco.etiqueta|safe }}" pk="{{ casco.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.helmet = this; current_selection.helmet = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
+					onclick="javascript: $('#btn-usar-casco').addClass('active').prev().removeClass('active'); avatar.helmet = this; current_selection.helmet = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -112,6 +120,10 @@
 	<div id="eye-slider" style="clear: left;"></div>
 	<!-- end: face feature picker -->
 	<!-- begin: pants picker -->
+	<div id='pants-off'>
+		<button id='btn-pants-off' name='btn-pants-off' class='btn' onclick="avatar.pants = 'empty'; avatar.paint(context);">Quitarse el pantalón</button>
+		<span class='help-block'>Use este botón para quitarse el pantalón si ha elegido una falda</span>
+	</div>
 	<div id="pants-slider" style="clear: left;">
 		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
 			<div class="scroll-content">
@@ -132,7 +144,7 @@
 {% for zapato in zapatos %}
 				<div class="scroll-content-item ui-widget-header">
 					<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.shoes = shoes[{{ forloop.counter|add:"-1" }}]; current_selection.shoes = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
+					onclick="javascript: avatar.shoes = this; current_selection.shoes = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
 					/>
 				</div>
 {% endfor %}
@@ -461,6 +473,13 @@
 		
 		
 		$(document).ready(function(){
+			serempre.cargos.futurePaths = sessionStorage.futurePaths;
+				if(! serempre.cargos.futurePaths){
+				window.location.href='/';
+			}
+			if(window.location.href.match(/\/ae\/\d+\/\d+\/H\//g)){
+				$('#pants-off').remove();
+			}
 			buildSimpleSlider('body-slider',bodies,refreshBody,refreshBody);
 			setupSliderScrollBar('shoes-slider');
 			setupSliderScrollBar('hair-slider');
