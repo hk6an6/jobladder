@@ -148,7 +148,12 @@
 			imageArray[itemIndex].pk = imagePk;
 			imageArray[itemIndex].arrayIndex = itemIndex;
 			if(targetAttributeName){
-				imageArray[itemIndex].onclick = function(){ avatar[targetAttributeName] = imageArray[itemIndex]; avatar.paint(context); };
+				imageArray[itemIndex].onclick = function(){
+					avatar[targetAttributeName] = imageArray[itemIndex];
+					//save selection
+					current_selection[targetAttributeName] = imageArray[itemIndex].index;
+					avatar.paint(context);
+				};
 			}
 		}
 		/* 
@@ -181,13 +186,13 @@
 			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
 			scrollContent.empty();
 			$.each(faces,function (index,valueObject){
-				   var label = valueObject.alt+'';
-				   if(label.match(regex)){
-				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
-				   container.append(valueObject);
-				   scrollContent.append(container);
-				   }
-				   });
+				var label = valueObject.alt+'';
+				if(label.match(regex)){
+					var container = $('<div class="scroll-content-item ui-widget-header"></div>');
+					container.append(valueObject);
+					scrollContent.append(container);
+				}
+			});
 			setupSliderScrollBar(sliderId);
 			$('#faces-slider .scroll-content-item img').css(face_thumbnail_style);
 			$('#faces-slider .scroll-content-item img')[0].click();
@@ -198,24 +203,30 @@
 		 @sliderId: div id for the element which is to become the face slider
 		 @size: clothing size as an integer
 		 @clothing: a collection holding clothing images
+		 @attributeName: the name for the avatar attribute that holds this piece of clothing
 		 */
-		function bodySizePicked(sliderId, size, clothing){
+		function bodySizePicked(sliderId, size, clothing, attributeName){
 			var regex = new RegExp(size+'(?= \.+)',RegExp.i, RegExp.g);
 			var scrollContent = $('div#'+ sliderId +' div.scroll-content');
 			var slider = $('div#'+ sliderId +' div.scroll-bar');
+			var displayedImageIndex = 0;
+			var currentImagePicked = current_selection[attributeName];
 			slider.remove();
 			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
 			scrollContent.empty();
 			$.each(clothing,function (index,valueObject){
-				   var label = valueObject.alt+'';
-				   if(label.match(regex)){
+				var label = valueObject.alt+'';
+				if(label.match(regex)){
 				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
+				   //save the index within the slider datasource. This index is used bellow to swap clothing and use matching body size
+				   valueObject.index = displayedImageIndex++;
 				   container.append(valueObject);
 				   scrollContent.append(container);
-				   }
-				   });
+				}
+			});
 			setupSliderScrollBar(sliderId);
-			$('#'+ sliderId +' .scroll-content-item img')[0].click();
+			//swap clothing and match body size
+			$('#'+ sliderId +' .scroll-content-item img')[currentImagePicked].click();
 		}
 		
 		//if all bodies are done loading, then draw the default body on the avatar
@@ -270,11 +281,11 @@
 		function refreshBody(event, ui){
 			avatar.body = bodies[ui.value];
 			avatar.paint(context);
-			bodySizePicked('pants-slider',ui.value+1,pants);
-			bodySizePicked('shirts-slider',ui.value+1,shirts);
+			bodySizePicked('pants-slider',ui.value+1,pants,'pants');
+			bodySizePicked('shirts-slider',ui.value+1,shirts,'shirt');
 			$('#pants-slider .scroll-content-item img').css(pant_thumbnail_style);
 			$('#shirts-slider .scroll-content-item img').css(shirt_thumbnail_style);
-			$('#shoes-slider .scroll-content-item img')[0].click();
+			$('#shoes-slider .scroll-content-item img')[current_selection.shoes].click();
 		}
 		/*
 		 handles eyebrow slider value changes. Updates avatar eyebrow image
@@ -379,6 +390,11 @@
 		var allShirts = [];
 		var eyebrows = [];
 		var eyes = [];
+		var current_selection = {
+			pants: 0,
+			shirt: 0,
+			shoes: 0,
+		};
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
 		avatar.height = canvas.height;
