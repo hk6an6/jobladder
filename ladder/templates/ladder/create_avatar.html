@@ -69,6 +69,24 @@
 		</div>
 	</div>
 	<!-- end face picker -->
+	<!-- begin: hair picker -->
+	<div id="hair-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+{% for pelo in pelos %}
+				<div class="scroll-content-item ui-widget-header">
+					<img src="{{ pelo.imagen.url|safe }}" alt="{{ pelo.etiqueta|safe }}" pk="{{ pelo.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.hair = this; current_selection.hair = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
+					/>
+				</div>
+{% endfor %}
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
+	<!-- end: hair picker -->
 	<!-- begin: face feature picker -->
 	<div id="eyebrow-slider" style="clear: left;"></div>
 	<!-- end: face feature picker -->
@@ -424,6 +442,7 @@
 		$(document).ready(function(){
 			buildSimpleSlider('body-slider',bodies,refreshBody,refreshBody);
 			setupSliderScrollBar('shoes-slider');
+			setupSliderScrollBar('hair-slider');
 			buildSimpleSlider('eye-slider', eyes, refreshEyes, refreshEyes);
 			buildSimpleSlider('eyebrow-slider',eyebrows, refreshEyebrows, refreshEyebrows);
 		});
