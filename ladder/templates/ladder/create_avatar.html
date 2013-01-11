@@ -376,6 +376,9 @@
 		var face_thumbnail_style = {
 			'margin-left': '-40px',
 		};
+		var hair_thumbnail_style = {
+			'margin-left': '-40px',
+		};
 		var shoe_thumbnail_style = {
 			
 			'margin-top': '-120px',
@@ -445,6 +448,7 @@
 			setupSliderScrollBar('hair-slider');
 			buildSimpleSlider('eye-slider', eyes, refreshEyes, refreshEyes);
 			buildSimpleSlider('eyebrow-slider',eyebrows, refreshEyebrows, refreshEyebrows);
+			$('#hair-slider .scroll-content-item img').css(hair_thumbnail_style);
 		});
 	</script>
 	<!--
