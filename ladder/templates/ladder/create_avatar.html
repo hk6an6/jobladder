@@ -87,6 +87,24 @@
 		</div>
 	</div>
 	<!-- end: hair picker -->
+	<!-- begin: helmet picker -->
+	<div id="helmet-slider" style="clear: left;">
+		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
+			<div class="scroll-content">
+{% for casco in cascos %}
+				<div class="scroll-content-item ui-widget-header">
+					<img src="{{ casco.imagen.url|safe }}" alt="{{ casco.etiqueta|safe }}" pk="{{ casco.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
+					onclick="javascript: avatar.helmet = this; current_selection.helmet = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
+					/>
+				</div>
+{% endfor %}
+			</div>
+			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
+				<div class="scroll-bar"></div>
+			</div>
+		</div>
+	</div>
+	<!-- end: helmet picker -->
 	<!-- begin: face feature picker -->
 	<div id="eyebrow-slider" style="clear: left;"></div>
 	<!-- end: face feature picker -->
@@ -446,9 +464,11 @@
 			buildSimpleSlider('body-slider',bodies,refreshBody,refreshBody);
 			setupSliderScrollBar('shoes-slider');
 			setupSliderScrollBar('hair-slider');
+			setupSliderScrollBar('helmet-slider');
 			buildSimpleSlider('eye-slider', eyes, refreshEyes, refreshEyes);
 			buildSimpleSlider('eyebrow-slider',eyebrows, refreshEyebrows, refreshEyebrows);
 			$('#hair-slider .scroll-content-item img').css(hair_thumbnail_style);
+			$('#helmet-slider .scroll-content-item img').css(hair_thumbnail_style);
 		});
 	</script>
 	<!--

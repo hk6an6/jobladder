@@ -47,6 +47,7 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	camisas = None
 	zapatos = None
 	pelos = None
+	cascos = None
 	accesorios = AccesoriosAvatar.objects.all()
 	cabellos = PeloAvatar.objects.all()
 	cabellos_experiencia = CabelloAvatar.objects.all()
@@ -57,12 +58,14 @@ def create_avatar(request, origin_pk, target_pk, sex):
 		camisas = CamisaAvatar.objects.filter(etiqueta__icontains="hombre")
 		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="hombre")
 		pelos = PeloAvatar.objects.filter(etiqueta__icontains="hombre")
+		cascos = SombreroAvatar.objects.filter(etiqueta__icontains="hombre")
 	else:
 		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="mujer")
 		pantalones = PantalonAvatar.objects.filter(etiqueta__icontains="mujer")
 		camisas = CamisaAvatar.objects.filter(etiqueta__icontains="mujer")
 		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="mujer")
 		pelos = PeloAvatar.objects.filter(etiqueta__icontains="mujer")
+		cascos = SombreroAvatar.objects.filter(etiqueta__icontains="mujer")
 	cuerpos = cuerpos.order_by('etiqueta','contextura')
 	pantalones = pantalones.order_by('etiqueta','contextura')
 	camisas = camisas.order_by('etiqueta','contextura')
