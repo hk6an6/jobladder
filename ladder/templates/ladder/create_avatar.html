@@ -16,15 +16,7 @@
 {% endblock %}
 
 {% block pagestyle %}
-	#body-slider {
-		width: 300px;
-		margin: 15px;
-	}
-	#eyebrow-slider {
-		width: 300px;
-		margin: 15px;
-	}
-	#eye-slider {
+	.bodypart-slider {
 		width: 300px;
 		margin: 15px;
 	}
@@ -56,123 +48,62 @@
 			
 		</ul>
 	</div>
-	<div id="body-slider" style="clear: left;"></div>
-	<!-- begin: face picker -->
-	<div id="faces-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-				
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end face picker -->
-	<!-- begin: hair picker -->
-	<div id="hair-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-{% for pelo in pelos %}
-				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ pelo.imagen.url|safe }}" alt="{{ pelo.etiqueta|safe }}" pk="{{ pelo.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.hair = this; current_selection.hair = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
-					/>
-				</div>
-{% endfor %}
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end: hair picker -->
-	<!-- begin: helmet picker -->
-	<div>
-		<div id='div-toggle-helmet' class='btn-group' data-toggle='buttons-radio'>
-			<label for='btn-no-usar-casco'>Casco: </label>
-			<button id='btn-no-usar-casco' class='btn active' onclick="avatar.helmet = 'empty'; avatar.paint(context); return true;">No usar</button>
-			<button id='btn-usar-casco' class='btn'>Usar</button>
-		</div>
-		<span class='help-block'>Marque 'No usar' para quitarse el casco</span>
-	</div>
-	<div id="helmet-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-{% for casco in cascos %}
-				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ casco.imagen.url|safe }}" alt="{{ casco.etiqueta|safe }}" pk="{{ casco.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: $('#btn-usar-casco').addClass('active').prev().removeClass('active'); avatar.helmet = this; current_selection.helmet = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
-					/>
-				</div>
-{% endfor %}
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end: helmet picker -->
-	<!-- begin: face feature picker -->
-	<div id="eyebrow-slider" style="clear: left;"></div>
-	<!-- end: face feature picker -->
-	<!-- begin: face feature picker -->
-	<div id="eye-slider" style="clear: left;"></div>
-	<!-- end: face feature picker -->
-	<!-- begin: pants picker -->
-	<div id='pants-off'>
-		<button id='btn-pants-off' name='btn-pants-off' class='btn' onclick="avatar.pants = 'empty'; avatar.paint(context);">Quitarse el pantalón</button>
-		<span class='help-block'>Use este botón para quitarse el pantalón si ha elegido una falda</span>
-	</div>
-	<div id="pants-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-				<div class="scroll-content-item ui-widget-header">
-					
-				</div>
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end: pants picker -->
-	<!-- begin: shoes picker -->
-	<div id="shoes-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-{% for zapato in zapatos %}
-				<div class="scroll-content-item ui-widget-header">
-					<img src="{{ zapato.imagen.url|safe }}" alt="{{ zapato.etiqueta|safe }}" pk="{{ zapato.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}"
-					onclick="javascript: avatar.shoes = this; current_selection.shoes = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
-					/>
-				</div>
-{% endfor %}
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end: shoes picker -->
-	<!-- begin: shirts picker -->
-	<div id="shirts-slider" style="clear: left;">
-		<div class="scroll-pane ui-widget ui-widget-header ui-corner-all">
-			<div class="scroll-content">
-				<div class="scroll-content-item ui-widget-header">
-					
-				</div>
-			</div>
-			<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom">
-				<div class="scroll-bar"></div>
-			</div>
-		</div>
-	</div>
-	<!-- end face feature picker -->
+	<div id="faces-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="hairStyles-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="eyebrows-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="eyes-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="body-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="shirts-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="pants-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
+
 {% endblock %}
 
 {% block pagefooter %}
 	<script>
+		var colors = [];
+		var allFaces = [];
+		var	allHairStyles = [];
+		var allEyeBrows = [];
+		var allEyes = [];
+		var allBodies = [];
+		var allShirts = [];
+		var allPants = [];
+		var allShoes = [];
+		var allHelmets = [];
+		var faces = [];
+		var hairStyles = [];
+		var eyeBrows = [];
+		var eyes = [];
+		var bodies = [];
+		var shirts = [];
+		var pants = [];
+		var shoes = [];
+		var helmets = [];
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
+		var current_selections = {};
+		var avatar = new serempre.avatars.Avatar();
+		avatar.width = canvas.width;
+		avatar.height = canvas.height;
+		//when document completes loading, execute the following code
+		$(document).ready(function(){
+			//if there is no data about the origin and destination cargos, then redirect the user to the home page
+			serempre.cargos.futurePaths = sessionStorage.futurePaths;
+			if(! serempre.cargos.futurePaths){
+				window.location.href='/';
+			}
+			//get ready to use wait dialogs in this page
+			serempre.cargos.setupWaitDialog();
+			//ask the user to wait
+			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+			//start loading all assets
+			
+			//dismiss wait dialog
+			serempre.cargos.toggleWaitDialog();
+		});
 		/**
 		 prepares an array of images for later use
 		 @itemIndex: array index where image is to be stored at
@@ -205,103 +136,76 @@
 			}
 		}
 		/* 
-		 set's an avatars attribute when an image array is done loading
-		 @imageArray: image array to be loaded before setting an avatar's attribute
-		 @avatarAttributeToFix: clear text mapping to avatar attribute
+		 returns true if all images loaded within an array
+		 @imageArray: array of images to check. Note that images should have been built using 'setupImage' or at least have a loaded attribute
 		 */
-		function checkAllImagesLoaded(imageArray, avatarAttributeToFix, paint){
+		function checkAllImagesLoaded(imageArray){
 			var allImagesLoaded = true;
-			for(var i = 0; i<imageArray.length; i++){
+			for(var i = 0; i<imageArray.length && allImagesLoaded; i++){
 				allImagesLoaded = allImagesLoaded && imageArray[i].loaded;
-			}
-			if(allImagesLoaded && paint){
-				avatar[avatarAttributeToFix] = imageArray[0];
-				avatar.paint(context);
 			}
 			return allImagesLoaded;
 		}
-		
 		/*
-		 builds a face slider selector using only those faces wich skin color match user selection
-		 @sliderId: div id for the element which is to become the face slider
-		 @color: plain text describing chosen color
+		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
+		 @imageArray: collection to use as a data source
+		 @color: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
 		 */
-		function faceColorPicked(sliderId, color){
+		function filterByColor(imageArray, color){
 			var regex = new RegExp(color,RegExp.i, RegExp.g);
-			var scrollContent = $('div#'+ sliderId +' div.scroll-content');
-			var slider = $('div#'+ sliderId +' div.scroll-bar');
-			slider.remove();
-			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
-			scrollContent.empty();
-			$.each(faces,function (index,valueObject){
-				var label = valueObject.alt+'';
-				if(label.match(regex)){
-					var container = $('<div class="scroll-content-item ui-widget-header"></div>');
-					container.append(valueObject);
-					scrollContent.append(container);
-				}
+			return imageArray.filter(function(testValue){
+				return testValue.alt.match(regex);
 			});
-			setupSliderScrollBar(sliderId);
-			$('#faces-slider .scroll-content-item img').css(face_thumbnail_style);
-			$('#faces-slider .scroll-content-item img')[0].click();
 		}
-		
 		/*
-		 builds a face slider selector using clothing wich size match user selection
-		 @sliderId: div id for the element which is to become the face slider
-		 @size: clothing size as an integer
-		 @clothing: a collection holding clothing images
-		 @attributeName: the name for the avatar attribute that holds this piece of clothing
+		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
+		 @imageArray: collection to use as a data source
+		 @size: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
 		 */
-		function bodySizePicked(sliderId, size, clothing, attributeName){
+		function filterBySize(imageArray, size){
 			var regex = new RegExp(size+'(?= \.+)',RegExp.i, RegExp.g);
-			var scrollContent = $('div#'+ sliderId +' div.scroll-content');
-			var slider = $('div#'+ sliderId +' div.scroll-bar');
-			var displayedImageIndex = 0;
-			var currentImagePicked = current_selection[attributeName];
-			slider.remove();
-			$('div#'+ sliderId +' div.scroll-bar-wrap').append($('<div class="scroll-bar"></div>'));
-			scrollContent.empty();
-			$.each(clothing,function (index,valueObject){
-				var label = valueObject.alt+'';
-				if(label.match(regex)){
-				   var container = $('<div class="scroll-content-item ui-widget-header"></div>');
-				   //save the index within the slider datasource. This index is used bellow to swap clothing and use matching body size
-				   valueObject.index = displayedImageIndex++;
-				   container.append(valueObject);
-				   scrollContent.append(container);
-				}
+			return imageArray.filter(function(testValue){
+				return testValue.alt.match(regex) == size;
 			});
-			setupSliderScrollBar(sliderId);
-			//swap clothing and match body size
-			$('#'+ sliderId +' .scroll-content-item img')[currentImagePicked].click();
 		}
-		
-		//if all bodies are done loading, then draw the default body on the avatar
-		function checkAllBodiesDoneLoading(){
-			if(checkAllImagesLoaded(bodies, 'body')){
-				//use this object as a hash table to store unique skin colors
-				var availableColors = {};
-				//read skin colors from the bodies 'alt' attribute
-				for(var i = 0; i < bodies.length; i++){
-					var color = bodies[i].alt.match(color_regex)+'';
-					availableColors[color] = color;
-				}
-				//store unique colors in a global array
-				var counter = 0;
-				for(color in availableColors){
-					colors[counter++] = color;
-				}
-				//use available skin colors to populate skin color dropdown
-				for(var i = 0; i<colors.length;i++){
-					var option = '<li><a tabindex="-1" href="#" onclick="javascript: pickedSkinColor(\''+ colors[i] +'\')">'+ colors[i] +'</a></li>';
-					option = $(option)
-					$('#skin-choices').append(option);
-				}
-				allBodies = bodies;
+		/**
+		 saves whatever raw strings are found within 'colors' as choices for #skin-choices
+		 @colors: an array of strings holding color names
+		 @colorChosenHandler: a function of the form function(colorName){ ... } where colorName is plain text
+		 */
+		function populateColorChoices(colors, colorChosenHandler){
+			for(var i = 0; i<colors.length;i++){
+				var optionContainer = $('<li></li>');
+				var colorOption = $('<a tabindex="-1" href="#">'+ colors[i] +'</a>');
+				colorOption.click(function(){
+					var face = current_selections.face ? current_selections.face : 0;
+					var body = current_selections.body ? current_selections.body : 0;
+					colorChosenHandler( $(this).text() );
+					$('#faces-slider').slider('value',face);
+					$('#body-slider').slider('value',body);
+				});
+				optionContainer.append(colorOption);
+				$('#skin-choices').append(optionContainer);
 			}
 		}
-		
+		/**
+		 reads the 'alt' attribute for each image in the imageArray. Saves unique values for color which is extracted using a regular expression. Returns an array of strings holding unique color names
+		 @imageArray: array of images where colors are to be extracted from
+		 */
+		function getUniqueColorNamesFrom(imageArray){
+			var color_regex = /[^\s]+(?=( ((hombre)|(mujer))))/gi;
+			var availableColors = {};
+			var counter = 0;
+			colors = [];
+			for(var i = 0; i < imageArray.length; i++){
+				var color = imageArray[i].alt.match(color_regex)+'';
+				availableColors[color] = color;
+			}
+			for(color in availableColors){
+				colors[counter++] = color;
+			}
+			return colors;
+		}
 		/*
 		 turns a div into a slider using an array as the slider's data source
 		 @sliderId: domID for the div to be converted to a slider
@@ -320,141 +224,56 @@
 				change: onChange,
 			});
 		}
+		/*
+		 when all bodies are done loading, setup color choices
+		 */
+		function setupColorChoices(){
+			if(checkAllImagesLoaded(allBodies)){
+				var availableColors = getUniqueColorNamesFrom(allBodies);
+				populateColorChoices(availableColors, function(colorName){
+					$('#skin-color-tag').text(colorName);
+					bodies = filterByColor(allBodies, colorName);
+					faces = filterByColor(allFaces, colorName);
+					buildSimpleSlider('body-slider',bodies,function(event,ui){ bodySliderChanged(ui.value); },function(event,ui){ bodySliderChanged(ui.value); });
+					buildSimpleSlider('faces-slider',faces,function(event,ui){ faceSliderChanged(ui.value); },function(event,ui){ faceSliderChanged(ui.value); });
+				});
+			}
+		}
 		
-		/*
-		 handles body slider value changes. Updates avatar body image
-		 @event: object sent by jquery API
-		 @ui: holds jquery-ui slider data
-		 */
-		function refreshBody(event, ui){
-			avatar.body = bodies[ui.value];
-			avatar.paint(context);
-			bodySizePicked('pants-slider',ui.value+1,pants,'pants');
-			bodySizePicked('shirts-slider',ui.value+1,shirts,'shirt');
-			$('#pants-slider .scroll-content-item img').css(pant_thumbnail_style);
-			$('#shirts-slider .scroll-content-item img').css(shirt_thumbnail_style);
-			$('#shoes-slider .scroll-content-item img')[current_selection.shoes].click();
-		}
-		/*
-		 handles eyebrow slider value changes. Updates avatar eyebrow image
-		 @event: object sent by jquery API
-		 @ui: holds jquery-ui slider data
-		 */
-		function refreshEyebrows(event,ui){
-			avatar.faceFeatures[0] = eyebrows[ui.value];
-			avatar.paint(context);
-		}
-		/*
-		 handles eye slider value changes. Updates avatar eye image
-		 @event: object sent by jquery API
-		 @ui: holds jquery-ui slider data
-		 */
-		function refreshEyes(event,ui){
-			avatar.faceFeatures[1] = eyes[ui.value];
+		function bodySliderChanged(newValue){
+			current_selections.body = newValue;
+			avatar.body = bodies[current_selections.body];
 			avatar.paint(context);
 		}
 		
-		//picks a skin color for the avatar
-		function pickedSkinColor(color){
-			var regex = new RegExp(color,RegExp.i, RegExp.g);
-			$('#skin-color-tag').text(color);
-			bodies = allBodies.filter(function(body){
-				return body.alt.match(color_regex) == color;
-			});
-			faceColorPicked('faces-slider',color);
-			buildSimpleSlider('body-slider', bodies, refreshBody, refreshBody);
-			$('#eye-slider').slider('value',0)
-			$('#eyebrow-slider').slider('value',0)
+		function faceSliderChanged(newValue){
+			current_selections.face = newValue;
+			avatar.face = faces[current_selections.face];
+			avatar.paint(context);
 		}
-		
-		//if all face features done loading, then draw the default one on the avatar
-		function checkAllFacesDoneLoading(){
-			if(checkAllImagesLoaded(faces, 'face')){
-				allFaces = faces;
-			}
-		}
-		
-		//if all face features done loading, then draw the default one on the avatar
-		function checkAllPantsDoneLoading(){
-			checkAllImagesLoaded(pants, 'pants');
-		}
-		
-		//if all face features done loading, then draw the default one on the avatar
-		function checkAllShoesDoneLoading(){
-			if(checkAllImagesLoaded(shoes, 'shoes')){
-				$('#shoes-slider .scroll-content-item img').css(shoe_thumbnail_style);
-			}
-		}
-		
-		//if all face features done loading, then draw the default one on the avatar
-		function checkAllShirtsDoneLoading(){
-			checkAllImagesLoaded(shirts, 'shirt');
-		}
-		
-		function checkAllEyesDoneLoading(){
-			if(checkAllImagesLoaded(eyes)){
-				
-			}
-		}
-		
-		function checkAllEyebrowsDoneLoading(){
-			if(checkAllImagesLoaded(eyebrows)){
-				
-			}
-		}
-		
-		var face_thumbnail_style = {
-			'margin-left': '-40px',
-		};
-		var hair_thumbnail_style = {
-			'margin-left': '-40px',
-		};
-		var shoe_thumbnail_style = {
-			
-			'margin-top': '-120px',
-			'margin-left': '-40px',
-		};
-		var pant_thumbnail_style = {
-			'margin-top': '-80px',
-			'margin-left': '-30px',
-			
-		};
-		var shirt_thumbnail_style = {
-			'margin-top': '-40px',
-			'margin-left': '-30px',
-			
-		};
-		var canvas = document.getElementById('canvas');
-		var context = canvas.getContext('2d');
-		var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
-		var color_regex = /[^\s]+(?=( ((hombre)|(mujer))))/gi;
-		var colors = [];
-		var bodies = [];
-		var allBodies = [];
-		var faces = [];
-		var allFaces = [];
-        var faceshapes = [];
-		var pants = [];
-		var allPants = [];
-		var shoes = [];
-		var shirts = [];
-		var allShirts = [];
-		var eyebrows = [];
-		var eyes = [];
-		var current_selection = {
-			pants: 0,
-			shirt: 0,
-			shoes: 0,
-		};
-		var avatar = new serempre.avatars.Avatar();
-		avatar.width = canvas.width;
-		avatar.height = canvas.height;
+
+{% for item in cuerpos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
+{% endfor %}
+{% for item in facciones %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+{% endfor %}
+/*
+{% for cara in facciones %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', allFaces, checkAllFacesDoneLoading);
+{% endfor %}
+{% for pelo in pelos %}
+	setupImage({{ forloop.counter|add:"-1" }}, '{{ pelo.pk }}', '{{ pelo.imagen.url|safe }}', '{{ pelo.etiqueta|safe }}', allHairStyles, checkAllFacesDoneLoading);
+<div class="scroll-content-item ui-widget-header">
+<img src="{{ pelo.imagen.url|safe }}" alt="{{ pelo.etiqueta|safe }}" pk="{{ pelo.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
+onclick="javascript: avatar.hair = this; current_selection.hair = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
+/>
+</div>
+{% endfor %}
 {% for cuerpo in cuerpos %}
 		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.contextura|safe }} {{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
 {% endfor %}
-{% for faccion in facciones %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ faccion.pk }}', '{{ faccion.imagen.url|safe }}', '{{ faccion.etiqueta|safe }}', faces, checkAllFacesDoneLoading, 'face');
-{% endfor %}
+
 {% for pantalon in pantalones %}
 	setupImage({{ forloop.counter|add:"-1" }}, '{{ pantalon.pk }}', '{{ pantalon.imagen.url|safe }}', '{{ pantalon.contextura|safe }} {{ pantalon.etiqueta|safe }}', pants, checkAllPantsDoneLoading, 'pants');
 {% endfor %}
@@ -470,25 +289,9 @@
 {% for ceja in cejas %}
 	setupImage({{ forloop.counter|add:"-1" }}, '{{ ceja.pk }}', '{{ ceja.imagen.url|safe }}', '{{ ceja.etiqueta|safe }}', eyebrows, checkAllEyebrowsDoneLoading);
 {% endfor %}
+*/
 		
 		
-		$(document).ready(function(){
-			serempre.cargos.futurePaths = sessionStorage.futurePaths;
-				if(! serempre.cargos.futurePaths){
-				window.location.href='/';
-			}
-			if(window.location.href.match(/\/ae\/\d+\/\d+\/H\//g)){
-				$('#pants-off').remove();
-			}
-			buildSimpleSlider('body-slider',bodies,refreshBody,refreshBody);
-			setupSliderScrollBar('shoes-slider');
-			setupSliderScrollBar('hair-slider');
-			setupSliderScrollBar('helmet-slider');
-			buildSimpleSlider('eye-slider', eyes, refreshEyes, refreshEyes);
-			buildSimpleSlider('eyebrow-slider',eyebrows, refreshEyebrows, refreshEyebrows);
-			$('#hair-slider .scroll-content-item img').css(hair_thumbnail_style);
-			$('#helmet-slider .scroll-content-item img').css(hair_thumbnail_style);
-		});
 	</script>
 	<!--
 			//this turns an input field into a remote data sourced autocomplete
