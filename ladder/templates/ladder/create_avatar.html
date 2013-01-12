@@ -83,7 +83,6 @@
 		var helmets = [];
 		var canvas = document.getElementById('canvas');
 		var context = canvas.getContext('2d');
-		var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
 		var current_selections = {};
 		var avatar = new serempre.avatars.Avatar();
 		avatar.width = canvas.width;
@@ -234,29 +233,57 @@
 					$('#skin-color-tag').text(colorName);
 					bodies = filterByColor(allBodies, colorName);
 					faces = filterByColor(allFaces, colorName);
-					buildSimpleSlider('body-slider',bodies,function(event,ui){ bodySliderChanged(ui.value); },function(event,ui){ bodySliderChanged(ui.value); });
-					buildSimpleSlider('faces-slider',faces,function(event,ui){ faceSliderChanged(ui.value); },function(event,ui){ faceSliderChanged(ui.value); });
+					buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
+					buildSimpleSlider('faces-slider',faces,function(event,ui){ onFaceSelection(ui.value); },function(event,ui){ onFaceSelection(ui.value); });
 				});
 			}
 		}
-		
-		function bodySliderChanged(newValue){
-			current_selections.body = newValue;
-			avatar.body = bodies[current_selections.body];
+		/*
+		updates avatar image using whatever is selected on a slider
+		@newValue: slider value
+		@imageArray: slider data source
+		@targetAttributeName: attribute to be modified on the avatar
+		*/
+		function sliderChanged(newValue, imageArray, targetAttributeName){
+			current_selections[targetAttributeName] = newValue;
+			avatar[targetAttributeName] = imageArray[current_selections[targetAttributeName]];
 			avatar.paint(context);
 		}
-		
-		function faceSliderChanged(newValue){
-			current_selections.face = newValue;
-			avatar.face = faces[current_selections.face];
-			avatar.paint(context);
+		/*
+		handle body slider changes
+		*/
+		function onBodySelection(arrayIndex){
+			var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
+			var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
+			var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
+			var chosen_pants = current_selections.pants ? current_selections.pants : 0;
+			shirts = filterBySize(allShirts, chosen_size);
+			pants  = filterBySize(allPants,  chosen_size);
+			buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
+			buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
+			$('#shirts-slider').slider('value',chosen_shirt);
+			$('#pants-slider').slider('value',chosen_pants);
+			sliderChanged(arrayIndex, bodies, 'body');
 		}
+		/*
+		handle face slider changes
+		*/
+		function onFaceSelection(arrayIndex){
+			sliderChanged(arrayIndex, faces, 'face');
+		}
+
 
 {% for item in cuerpos %}
 		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
 {% endfor %}
 {% for item in facciones %}
 		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+{% endfor %}
+{% for item in camisas %}
+	setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
+{% endfor %}
+{% for item in pantalones %}
+	setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
 {% endfor %}
 /*
 {% for cara in facciones %}
