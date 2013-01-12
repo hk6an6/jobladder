@@ -99,7 +99,30 @@
 			//ask the user to wait
 			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
 			//start loading all assets
-			
+			//$('#dialog-wait span#msg-content').text('Descargando cuerpos');
+{% for item in cuerpos %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
+{% endfor %}
+			//$('#dialog-wait span#msg-content').text('Descargando facciones');
+{% for item in facciones %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+{% endfor %}
+			//$('#dialog-wait span#msg-content').text('Descargando camisas');
+{% for item in camisas %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
+{% endfor %}
+			//$('#dialog-wait span#msg-content').text('Descargando pantalones');
+{% for item in pantalones %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
+{% endfor %}
+			//$('#dialog-wait span#msg-content').text('Descargando ojos');
+{% for item in ojos %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
+{% endfor %}
+			//$('#dialog-wait span#msg-content').text('Descargando cejas');
+{% for item in cejas %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
+{% endfor %}
 			//dismiss wait dialog
 			serempre.cargos.toggleWaitDialog();
 		});
@@ -239,14 +262,39 @@
 			}
 		}
 		/*
+		when all eyes are done loading, build a slider to pick avatar eyes
+		*/
+		function setupEyes(){
+			if(checkAllImagesLoaded(allEyes)){
+				buildSimpleSlider('eyes-slider', allEyes,function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); },function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); });
+				$('#eyes-slider').slider('value',0);
+			}
+		}
+		/*
+		when all eyebrows are done loading, build a slider to pick avatar eyebrows
+		*/
+		function setupEyebrows(){
+			if(checkAllImagesLoaded(allEyeBrows)){
+				buildSimpleSlider('eyebrows-slider', allEyeBrows, function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); },function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); });
+				$('#eyebrows-slider').slider('value',0);
+			}
+		}
+		/*
 		updates avatar image using whatever is selected on a slider
 		@newValue: slider value
 		@imageArray: slider data source
 		@targetAttributeName: attribute to be modified on the avatar
+		@attributeIndexOrKey: if the property being set is an array or hash table, supply target index/key
 		*/
-		function sliderChanged(newValue, imageArray, targetAttributeName){
-			current_selections[targetAttributeName] = newValue;
-			avatar[targetAttributeName] = imageArray[current_selections[targetAttributeName]];
+		function sliderChanged(newValue, imageArray, targetAttributeName, attributeIndexOrKey){
+			if(!attributeIndexOrKey){
+				current_selections[targetAttributeName] = newValue;
+				avatar[targetAttributeName] = imageArray[current_selections[targetAttributeName]];
+			}else{
+				attributeIndexOrKey -= 1;
+				current_selections[targetAttributeName+attributeIndexOrKey] = newValue;
+				avatar[targetAttributeName][attributeIndexOrKey] = imageArray[current_selections[targetAttributeName+attributeIndexOrKey]];
+			}
 			avatar.paint(context);
 		}
 		/*
@@ -271,20 +319,6 @@
 		function onFaceSelection(arrayIndex){
 			sliderChanged(arrayIndex, faces, 'face');
 		}
-
-
-{% for item in cuerpos %}
-		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
-{% endfor %}
-{% for item in facciones %}
-		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
-{% endfor %}
-{% for item in camisas %}
-	setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
-{% endfor %}
-{% for item in pantalones %}
-	setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
-{% endfor %}
 /*
 {% for cara in facciones %}
 	setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', allFaces, checkAllFacesDoneLoading);
