@@ -121,6 +121,9 @@
 {% for item in zapatos %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
 {% endfor %}
+{% for item in pelos %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
+{% endfor %}
 			//dismiss wait dialog when all images are done loading
 			loadingIntervalReference = window.setInterval(function(){
 				if(closeWaitDialogIfAllThingsLoaded()){
@@ -133,8 +136,8 @@
 		*/
 		function closeWaitDialogIfAllThingsLoaded(){
 			var dismissDialog = true;
-			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows ];
-			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas..." ];
+			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows, allShoes, allHairStyles ];
+			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas...", "zapatos...", "cabelleras..." ];
 			var i = 0;
 			for(i = 0; i < arraysToCheck.length && dismissDialog; i++){
 				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
@@ -316,6 +319,15 @@
 			if(checkAllImagesLoaded(allShoes)){
 				buildSimpleSlider('shoes-slider', allShoes, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); }, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); });
 				$('#shoes-slider').slider('value',0);
+			}
+		}
+		/*
+		builds a hairstyle slider when all hairstyles become available
+		*/
+		function setupHairStyles(){
+			if(checkAllImagesLoaded(allHairStyles)){
+				buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
+				$('#hairStyles-slider').slider('value',0);
 			}
 		}
 		/*
