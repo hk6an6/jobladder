@@ -369,40 +369,7 @@
 		*/
 		function onFaceSelection(arrayIndex){
 			sliderChanged(arrayIndex, faces, 'face');
-		}
-/*
-{% for cara in facciones %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ cara.pk }}', '{{ cara.imagen.url|safe }}', '{{ cara.etiqueta|safe }}', allFaces, checkAllFacesDoneLoading);
-{% endfor %}
-{% for pelo in pelos %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ pelo.pk }}', '{{ pelo.imagen.url|safe }}', '{{ pelo.etiqueta|safe }}', allHairStyles, checkAllFacesDoneLoading);
-<div class="scroll-content-item ui-widget-header">
-<img src="{{ pelo.imagen.url|safe }}" alt="{{ pelo.etiqueta|safe }}" pk="{{ pelo.pk }}" arrayIndex="{{ forloop.counter|add:"-1" }}" index="{{ forloop.counter|add:"-1" }}"
-onclick="javascript: avatar.hair = this; current_selection.hair = {{ forloop.counter|add:"-1" }}; avatar.paint(context);";
-/>
-</div>
-{% endfor %}
-{% for cuerpo in cuerpos %}
-		setupImage({{ forloop.counter|add:"-1" }}, '{{ cuerpo.pk }}', '{{ cuerpo.imagen.url|safe }}', '{{ cuerpo.contextura|safe }} {{ cuerpo.etiqueta|safe }}', bodies, checkAllBodiesDoneLoading);
-{% endfor %}
-
-{% for pantalon in pantalones %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ pantalon.pk }}', '{{ pantalon.imagen.url|safe }}', '{{ pantalon.contextura|safe }} {{ pantalon.etiqueta|safe }}', pants, checkAllPantsDoneLoading, 'pants');
-{% endfor %}
-{% for zapato in zapatos %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ zapato.pk }}', '{{ zapato.imagen.url|safe }}', '{{ zapato.etiqueta|safe }}', shoes, checkAllShoesDoneLoading);
-{% endfor %}
-{% for camisa in camisas %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ camisa.pk }}', '{{ camisa.imagen.url|safe }}', '{{ camisa.contextura|safe }} {{ camisa.etiqueta|safe }}', shirts, checkAllShirtsDoneLoading, 'shirt');
-{% endfor %}
-{% for ojo in ojos %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ ojo.pk }}', '{{ ojo.imagen.url|safe }}', '{{ ojo.etiqueta|safe }}', eyes, checkAllEyesDoneLoading);
-{% endfor %}
-{% for ceja in cejas %}
-	setupImage({{ forloop.counter|add:"-1" }}, '{{ ceja.pk }}', '{{ ceja.imagen.url|safe }}', '{{ ceja.etiqueta|safe }}', eyebrows, checkAllEyebrowsDoneLoading);
-{% endfor %}
-*/
-		
+		}		
 		
 	</script>
 	<!--
