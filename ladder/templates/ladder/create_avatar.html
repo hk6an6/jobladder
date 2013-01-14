@@ -135,7 +135,8 @@
 			var dismissDialog = true;
 			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows ];
 			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas..." ];
-			for(var i = 0; i < arraysToCheck.length && dismissDialog; i++){
+			var i = 0;
+			for(i = 0; i < arraysToCheck.length && dismissDialog; i++){
 				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
 			}
 			if(dismissDialog){
