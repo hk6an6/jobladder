@@ -192,18 +192,6 @@
 		/*
 		returns raw html for a scrollable pane
 		@itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
-		
-		// use as:
-		
-		var scroll = scrollPane(allEyes, 'eyes', function(event){
-			//note that the item index within the source array is available as event.data.index
-			var arrayIndex = event.data.index;
-			//take advantage of the original image's events by changing the already existing simple slider
-			$('#eyes-slider').slider('value',arrayIndex);
-		});
-		//which will create the html needed for the scrollable slider
-		//then append it to the document
-		//once appended to the document, use the build scrollableslider method defined at ladder/javascript/scrollableslider to make it into a scrollable slider
 		*/
 		function scrollPane(sourceArray, scrollablePaneId, itemClickHandler){
 			var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all" id="'+ scrollablePaneId +'"></div>');
@@ -364,7 +352,7 @@
 			}else{
 				$('#scrollable-sliders').append(newScrollableSlider);
 			}
-			setupSliderScrollBar(scrollableSliderId);
+			//setupSliderScrollBar(scrollableSliderId);
 			return newScrollableSlider;
 		}
 		/*
