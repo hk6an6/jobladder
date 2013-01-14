@@ -20,7 +20,7 @@
 		width: 300px;
 		margin: 15px;
 	}
-	.scroll-pane { overflow: auto; width: 300px; margin: 15px; position: relative; }
+	.scroll-pane { overflow: hidden; width: 300px; margin: 15px; position: relative; }
 	.scroll-content { position: relative; float: left; }
 	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
     * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
@@ -57,7 +57,10 @@
 	<div id="pants-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
-
+	
+	<div id="scrollable-sliders">
+	</div>
+	
 {% endblock %}
 
 {% block pagefooter %}
@@ -101,31 +104,31 @@
 			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
 			//start loading all assets
 {% for item in cuerpos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
 {% endfor %}
 {% for item in facciones %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
 {% endfor %}
 {% for item in camisas %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
 {% endfor %}
 {% for item in pantalones %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
 {% endfor %}
 {% for item in ojos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
 {% endfor %}
 {% for item in cejas %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
 {% endfor %}
 {% for item in zapatos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
 {% endfor %}
 {% for item in pelos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
 {% endfor %}
 {% for item in cascos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
 {% endfor %}
 
 			//dismiss wait dialog when all images are done loading
@@ -164,6 +167,66 @@
 			$('#dialog-wait span#msg-content').text(text);
 		}
 		/**
+		 builds an html image element
+		 @itemIndex: array index where image is to be stored at
+		 @imagePk: entity key for the image
+		 @imageURL: where to fetch image data from
+		 @imageAltText: what to display if image loading fails
+		 @imageArray: placeholder for the image object
+		 @onClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
+		 */
+		function createImageItemContent(itemIndex, imagePk, imageURL, imageAltText, imageArray, onClickHandler){
+			var imgDomElement = $('<img src="'+ imageURL +'" alt="'+ imageAltText +'" arrayIndex="'+ itemIndex +'" pk="'+ imagePk +'"></img>');
+			imgDomElement.click({'index': itemIndex, 'pk': imagePk, 'imageAltText': imageAltText}, onClickHandler);
+			return imgDomElement;
+		}
+		/*
+		stores content within a div that uses classes scroll-contet-item and ui-widget-header
+		@content: DOM element to be placed inside a scrollable slider
+		*/
+		function wrapAsScrollableContentItem(content){
+			var container = $(' <div class="scroll-content-item ui-widget-header"></div>');
+			container.append(content);
+			return container;
+		}
+		/*
+		returns raw html for a scrollable pane
+		@itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
+		
+		// use as:
+		
+		var scroll = scrollPane(allEyes, 'eyes', function(event){
+			//note that the item index within the source array is available as event.data.index
+			var arrayIndex = event.data.index;
+			//take advantage of the original image's events by changing the already existing simple slider
+			$('#eyes-slider').slider('value',arrayIndex);
+		});
+		//which will create the html needed for the scrollable slider
+		//then append it to the document
+		//once appended to the document, use the build scrollableslider method defined at ladder/javascript/scrollableslider to make it into a scrollable slider
+		*/
+		function scrollPane(sourceArray, scrollablePaneId, itemClickHandler){
+			var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all" id="'+ scrollablePaneId +'"></div>');
+			var scrollContent = $('<div class="scroll-content"></div>');
+			for(var i = 0; i<sourceArray.length; i++){
+				var item = sourceArray[i];
+				var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
+				scrollableItem = wrapAsScrollableContentItem(scrollableItem);
+				scrollContent.append(scrollableItem);
+			}
+			scrollablePane.append(scrollContent);
+			scrollablePane.append($('<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div>'));
+			scrollablePane.id = scrollablePaneId;
+			return scrollablePane;
+		}
+		/*
+		removes a scrollPane from the document
+		@scrollablePaneId: id for the scrollablePane to be removed from the document
+		*/
+		function deleteScrollPane(scrollablePaneId){
+			$('#'+scrollablePaneId).remove();
+		}
+		/**
 		 prepares an array of images for later use
 		 @itemIndex: array index where image is to be stored at
 		 @imagePk: entity key for the image
@@ -172,7 +235,7 @@
 		 @imageArray: placeholder for the image object
 		 @imageLoadedCallback: function that gets triggered upon image loaded event. The image object is passed as the first parameter to the function
 		 */
-		function setupImage(itemIndex, imagePk, imageURL, imageAltText, imageArray, imageLoadedCallback, targetAttributeName){
+		function setupImage(itemIndex, imagePk, imageURL, thumbnailURL, imageAltText, imageArray, imageLoadedCallback, targetAttributeName){
 			imageArray[itemIndex] = new Image();
 			imageArray[itemIndex].loaded = false;
 			imageArray[itemIndex].onload = function(){
@@ -185,6 +248,7 @@
 			imageArray[itemIndex].alt = imageAltText;
 			imageArray[itemIndex].pk = imagePk;
 			imageArray[itemIndex].arrayIndex = itemIndex;
+			imageArray[itemIndex].thumbnail = thumbnailURL;
 			if(targetAttributeName){
 				imageArray[itemIndex].onclick = function(){
 					avatar[targetAttributeName] = imageArray[itemIndex];
@@ -284,6 +348,26 @@
 			});
 		}
 		/*
+		Adds or replaces a scrollable slider using an image array and a simple slider to handle event callbacks
+		@sourceArray: image array holding slider scrollable content
+		@scrollableSliderId: id for the scrollable slider to be created or replaced
+		@simpleSliderId: simple slider to which all events are forwarded
+		@itemClickHandler: (OPTIONAL) event handler if a simple slider was not provided
+		*/
+		function addOrReplaceScrollableSlider(sourceArray, scrollableSliderId, simpleSliderId, itemClickHandler){
+			var newScrollableSlider = scrollPane(sourceArray, scrollableSliderId, itemClickHandler ? itemClickHandler : function(event){
+				$('#'+simpleSliderId).slider('value', event.data.index);
+			});
+			var oldScrollableSlider = $('#'+scrollableSliderId);
+			if(oldScrollableSlider.length){
+				oldScrollableSlider.replaceWith(newScrollableSlider);
+			}else{
+				$('#scrollable-sliders').append(newScrollableSlider);
+			}
+			setupSliderScrollBar(scrollableSliderId);
+			return newScrollableSlider;
+		}
+		/*
 		 when all bodies are done loading, setup color choices
 		 */
 		function setupColorChoices(){
@@ -295,6 +379,8 @@
 					faces = filterByColor(allFaces, colorName);
 					buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
 					buildSimpleSlider('faces-slider',faces,function(event,ui){ onFaceSelection(ui.value); },function(event,ui){ onFaceSelection(ui.value); });
+					addOrReplaceScrollableSlider(bodies, 'bodies-scrollable-slider', 'body-slider');
+					addOrReplaceScrollableSlider(faces, 'faces-scrollable-slider', 'faces-slider');
 				});
 			}
 		}
