@@ -124,6 +124,10 @@
 {% for item in pelos %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
 {% endfor %}
+{% for item in cascos %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
+{% endfor %}
+
 			//dismiss wait dialog when all images are done loading
 			loadingIntervalReference = window.setInterval(function(){
 				if(closeWaitDialogIfAllThingsLoaded()){
@@ -136,8 +140,8 @@
 		*/
 		function closeWaitDialogIfAllThingsLoaded(){
 			var dismissDialog = true;
-			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows, allShoes, allHairStyles ];
-			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas...", "zapatos...", "cabelleras..." ];
+			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows, allShoes, allHairStyles, allHelmets ];
+			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas...", "zapatos...", "cabelleras...", "cascos..." ];
 			var i = 0;
 			for(i = 0; i < arraysToCheck.length && dismissDialog; i++){
 				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
@@ -328,6 +332,15 @@
 			if(checkAllImagesLoaded(allHairStyles)){
 				buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
 				$('#hairStyles-slider').slider('value',0);
+			}
+		}
+		/*
+		builds a slider to pick helmets once all assets are available
+		*/
+		function setupHelmets(){
+			if(checkAllImagesLoaded(allHelmets)){
+				buildSimpleSlider('helmets-slider', allHelmets, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); }, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); });
+				$('#helmets-slider').slider('value',0);
 			}
 		}
 		/*
