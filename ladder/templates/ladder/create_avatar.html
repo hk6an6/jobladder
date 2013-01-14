@@ -118,6 +118,9 @@
 {% for item in cejas %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
 {% endfor %}
+{% for item in zapatos %}
+			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
+{% endfor %}
 			//dismiss wait dialog when all images are done loading
 			loadingIntervalReference = window.setInterval(function(){
 				if(closeWaitDialogIfAllThingsLoaded()){
@@ -136,6 +139,8 @@
 				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
 			}
 			if(dismissDialog){
+				//pick default skin color
+				$('#skin-choices a')[0].click();
 				//dismiss wait dialog
 				serempre.cargos.toggleWaitDialog();
 			}else {
@@ -301,6 +306,15 @@
 			if(checkAllImagesLoaded(allEyeBrows)){
 				buildSimpleSlider('eyebrows-slider', allEyeBrows, function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); },function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); });
 				$('#eyebrows-slider').slider('value',0);
+			}
+		}
+		/*
+		builds a shoe slider when all shoe images become available
+		*/
+		function setupShoes(){
+			if(checkAllImagesLoaded(allShoes)){
+				buildSimpleSlider('shoes-slider', allShoes, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); }, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); });
+				$('#shoes-slider').slider('value',0);
 			}
 		}
 		/*
