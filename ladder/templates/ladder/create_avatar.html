@@ -41,7 +41,7 @@
 	</canvas>
 	<div id="skin-color" class="btn-group">
 		<a id="skin-color-tag" class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
-			Elija un color de piel
+			Eleg&iacute; un color de piel
 			<span class="caret"></span>
 		</a>
 		<ul id="skin-choices" class="dropdown-menu">
@@ -85,6 +85,7 @@
 		var context = canvas.getContext('2d');
 		var current_selections = {};
 		var avatar = new serempre.avatars.Avatar();
+		var loadingIntervalReference = null;
 		avatar.width = canvas.width;
 		avatar.height = canvas.height;
 		//when document completes loading, execute the following code
@@ -99,33 +100,56 @@
 			//ask the user to wait
 			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
 			//start loading all assets
-			//$('#dialog-wait span#msg-content').text('Descargando cuerpos');
 {% for item in cuerpos %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
 {% endfor %}
-			//$('#dialog-wait span#msg-content').text('Descargando facciones');
 {% for item in facciones %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
 {% endfor %}
-			//$('#dialog-wait span#msg-content').text('Descargando camisas');
 {% for item in camisas %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
 {% endfor %}
-			//$('#dialog-wait span#msg-content').text('Descargando pantalones');
 {% for item in pantalones %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
 {% endfor %}
-			//$('#dialog-wait span#msg-content').text('Descargando ojos');
 {% for item in ojos %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
 {% endfor %}
-			//$('#dialog-wait span#msg-content').text('Descargando cejas');
 {% for item in cejas %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
 {% endfor %}
-			//dismiss wait dialog
-			serempre.cargos.toggleWaitDialog();
+			//dismiss wait dialog when all images are done loading
+			loadingIntervalReference = window.setInterval(function(){
+				if(closeWaitDialogIfAllThingsLoaded()){
+					window.clearInterval(loadingIntervalReference);
+				}
+			}, 5000);
 		});
+		/*
+		checks images to find out if the wait dialog is to be dismissed
+		*/
+		function closeWaitDialogIfAllThingsLoaded(){
+			var dismissDialog = true;
+			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows ];
+			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas..." ];
+			for(var i = 0; i < arraysToCheck.length && dismissDialog; i++){
+				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
+			}
+			if(dismissDialog){
+				//dismiss wait dialog
+				serempre.cargos.toggleWaitDialog();
+			}else {
+				changeWaitDialogText('Descargando '+msgUpdate[i]);
+			}
+			return dismissDialog;
+		}
+		/*
+		updates wait message dialog status
+		@text: what to display on the wait dialog
+		*/
+		function changeWaitDialogText(text){
+			$('#dialog-wait span#msg-content').text(text);
+		}
 		/**
 		 prepares an array of images for later use
 		 @itemIndex: array index where image is to be stored at
