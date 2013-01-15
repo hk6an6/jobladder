@@ -1,0 +1,112 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Crea tu avatar{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+		<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
+{% endblock %}
+
+{% block pagestyle %}
+	
+{% endblock %}
+
+{% block pageheader %}
+	<h1>Crea tu avatar!</h1>
+{% endblock %}
+
+{% block pagebody %}
+	<canvas id='canvas' width='430' height='600'>
+		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
+	</canvas>
+{% endblock %}
+
+{% block pagefooter %}
+	<script>
+		
+		//when document completes loading, execute the following code
+		$(document).ready(function(){
+			//if there is no data about the origin and destination cargos, then redirect the user to the home page
+			serempre.cargos.futurePaths = sessionStorage.futurePaths;
+			if(! serempre.cargos.futurePaths){
+				window.location.href='/';
+			}
+			//get ready to use wait dialogs in this page
+			serempre.cargos.setupWaitDialog();
+			//ask the user to wait
+			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+			//load graph data
+			serempre.cargos.futurePaths = JSON.parse(sessionStorage.futurePaths);
+			//load destinations
+			serempre.cargos.destinations = JSON.parse(sessionStorage.destinations);
+		});
+		/*
+		updates wait message dialog status
+		@text: what to display on the wait dialog
+		*/
+		function changeWaitDialogText(text){
+			$('#dialog-wait span#msg-content').text(text);
+		}
+		
+	</script>
+	<!--
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

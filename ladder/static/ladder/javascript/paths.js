@@ -86,7 +86,7 @@ var serempre = new function(){
 								//if server-side data doesn't point to any other nodes
 								if( data[0].fields.siguientes.length <= 0 ) {
 									//this is a leaf. Save it for later use
-									serempre.cargos.destinations[ serempre.cargos.destinations.length ] = node;
+									serempre.cargos.destinations[ serempre.cargos.destinations.length ] = data[0];
 								}
 							}
 							, error: function(jqXHR, textStatus, errorThrown){

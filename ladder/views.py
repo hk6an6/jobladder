@@ -72,6 +72,10 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	pelos = pelos.order_by('etiqueta')
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
 
+def next_step(request, origin_pk, target_pk, sex):
+	
+	return render_to_response('ladder/next_step.html', locals(), RequestContext(request))
+
 def simulate(request, origin_pk, target_pk, sex):
 	logger.debug('Origin cargo: ' + origin_pk + '. Target cargo: ' + target_pk + '. Sex: ' + sex)
 	origin_cargo = Cargo.objects.all().filter(pk=int(origin_pk))

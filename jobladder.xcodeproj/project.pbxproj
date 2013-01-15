@@ -90,6 +90,7 @@
 		43B471D2166903B9003EB0DC /* Procfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Procfile; sourceTree = "<group>"; };
 		43B471D3166903B9003EB0DC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		43B471D4166903B9003EB0DC /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
+		43FC2FE316A60D5A008EE227 /* next_step.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = next_step.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -318,6 +319,7 @@
 		43B471C9166903B9003EB0DC /* ladder */ = {
 			isa = PBXGroup;
 			children = (
+				43FC2FE316A60D5A008EE227 /* next_step.html */,
 				43B471CA166903B9003EB0DC /* base.html */,
 				43B471CB166903B9003EB0DC /* create_avatar.html */,
 				43B471CC166903B9003EB0DC /* index.html */,
