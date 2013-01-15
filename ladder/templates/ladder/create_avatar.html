@@ -378,6 +378,7 @@
 		function setupEyes(){
 			if(checkAllImagesLoaded(allEyes)){
 				buildSimpleSlider('eyes-slider', allEyes,function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); },function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); });
+				addOrReplaceScrollableSlider(allEyes,'eyes-scrollable-slider', 'eyes-slider');
 				$('#eyes-slider').slider('value',0);
 			}
 		}
@@ -387,6 +388,7 @@
 		function setupEyebrows(){
 			if(checkAllImagesLoaded(allEyeBrows)){
 				buildSimpleSlider('eyebrows-slider', allEyeBrows, function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); },function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); });
+				addOrReplaceScrollableSlider(allEyeBrows, 'eyebrows-scrollable-slider','eyebrows-slider');
 				$('#eyebrows-slider').slider('value',0);
 			}
 		}
@@ -396,6 +398,7 @@
 		function setupShoes(){
 			if(checkAllImagesLoaded(allShoes)){
 				buildSimpleSlider('shoes-slider', allShoes, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); }, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); });
+				addOrReplaceScrollableSlider(allShoes, 'shoes-scrollable-slider', 'shoes-slider');
 				$('#shoes-slider').slider('value',0);
 			}
 		}
@@ -405,6 +408,7 @@
 		function setupHairStyles(){
 			if(checkAllImagesLoaded(allHairStyles)){
 				buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
+				addOrReplaceScrollableSlider(allHairStyles, 'hairstyles-scrollable-slider', 'hairStyles-slider');
 				$('#hairStyles-slider').slider('value',0);
 			}
 		}
@@ -414,6 +418,7 @@
 		function setupHelmets(){
 			if(checkAllImagesLoaded(allHelmets)){
 				buildSimpleSlider('helmets-slider', allHelmets, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); }, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); });
+				addOrReplaceScrollableSlider(allHelmets, 'helmets-scrollable-slider', 'helmets-slider');
 				$('#helmets-slider').slider('value',0);
 			}
 		}
@@ -449,6 +454,8 @@
 			buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
 			$('#shirts-slider').slider('value',chosen_shirt);
 			$('#pants-slider').slider('value',chosen_pants);
+			addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
+			addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
 			sliderChanged(arrayIndex, bodies, 'body');
 		}
 		/*
