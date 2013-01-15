@@ -381,7 +381,7 @@
 			if(checkAllImagesLoaded(allBodies)){
 				var availableColors = getUniqueColorNamesFrom(allBodies);
 				populateColorChoices(availableColors, function(colorName){
-					$('#skin-color-tag').text(colorName);
+					$('#skin-color-tag').text(colorName+' ').append($('<span class="caret"></span>'));
 					bodies = filterByColor(allBodies, colorName);
 					faces = filterByColor(allFaces, colorName);
 					buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
