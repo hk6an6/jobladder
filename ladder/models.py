@@ -155,6 +155,7 @@ class CuerpoAvatar(models.Model):
 	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura - 1 ][1]
 		
@@ -168,6 +169,7 @@ class CamisaAvatar(models.Model):
 	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura - 1 ][1]
 		
@@ -181,6 +183,7 @@ class PantalonAvatar(models.Model):
 	contextura = models.IntegerField(choices=OPCIONES_CONTEXTURA, verbose_name='Volumen')
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura - 1 ][1]
 	
@@ -194,6 +197,7 @@ class CabelloAvatar(models.Model):
 	experiencia = models.IntegerField(choices=OPCIONES_ANIOS_EXPERIENCIA)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
@@ -207,6 +211,7 @@ class PeloAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
@@ -219,6 +224,7 @@ class Faccion(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
@@ -232,6 +238,7 @@ class ZapatosAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 	
@@ -244,6 +251,7 @@ class CaraAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 		
@@ -257,6 +265,7 @@ class AccesoriosAvatar(models.Model):
 	contextura = models.IntegerField(choices = OPCIONES_CONTEXTURA)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta + ". Volumen: " + OPCIONES_CONTEXTURA[ self.contextura - 1 ][1]
 		
@@ -270,6 +279,7 @@ class SombreroAvatar(models.Model):
 	etiqueta = models.CharField(max_length=100)
 	#use the upload_to attribute con configure file upload through boto & django storages
 	imagen = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
+	miniatura = models.ImageField(upload_to='storages.backends.s3boto', blank=True, null=True)
 	def __unicode__(self):
 		return self.etiqueta
 		
