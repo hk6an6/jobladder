@@ -20,7 +20,7 @@
 		width: 300px;
 		margin: 15px;
 	}
-	.scroll-pane { overflow: hidden; width: 300px; margin: 15px; position: relative; }
+	.scroll-pane { overflow: hidden; width: auto; margin: 15px; position: relative; }
 	.scroll-content { position: relative; float: left; }
 	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
     * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
@@ -59,6 +59,17 @@
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
 	
 	<div id="scrollable-sliders">
+		<ul id="tab-controls">
+			<li><a href="#faces-scrollable-slider">Facciones</a></li>
+			<li><a href="#hairstyles-scrollable-slider">Cabelleras</a></li>
+			<li><a href="#eyebrows-scrollable-slider">Cejas</a></li>
+			<li><a href="#eyes-scrollable-slider">Ojos</a></li>
+			<li><a href="#bodies-scrollable-slider">Cuerpos</a></li>
+			<li><a href="#shirts-scrollable-slider">Camisas</a></li>
+			<li><a href="#pants-scrollable-slider">Pantalones</a></li>
+			<li><a href="#shoes-scrollable-slider">Zapatos</a></li>
+			<li><a href="#helmets-scrollable-slider">Cascos</a></li>
+		</ul>
 	</div>
 	
 {% endblock %}
@@ -154,6 +165,8 @@
 				$('#skin-choices a')[0].click();
 				//dismiss wait dialog
 				serempre.cargos.toggleWaitDialog();
+				//init tabs
+				$('#scrollable-sliders').tabs();
 			}else {
 				changeWaitDialogText('Descargando '+msgUpdate[i]);
 			}
@@ -351,6 +364,12 @@
 				oldScrollableSlider.replaceWith(newScrollableSlider);
 			}else{
 				$('#scrollable-sliders').append(newScrollableSlider);
+			}
+			//create tab controls
+			try{
+				$('#scrollable-sliders').tabs('refresh');
+			}catch(e){
+				console.log(e);
 			}
 			//setupSliderScrollBar(scrollableSliderId);
 			return newScrollableSlider;
