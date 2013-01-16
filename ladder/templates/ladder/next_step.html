@@ -31,7 +31,11 @@
 
 {% block pagefooter %}
 	<script>
-		
+		var currentCargo = null;
+		var destinationCargo = null;
+		var avatar = null;
+		var canvas = null;
+		var context = null;
 		//when document completes loading, execute the following code
 		$(document).ready(function(){
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
@@ -43,14 +47,35 @@
 			serempre.cargos.setupWaitDialog();
 			//ask the user to wait
 			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+			//load simulation offset data
+			loadSimulationData();
+			//initialize avatar
+			avatar = new serempre.avatars.Avatar();
+			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
+			//initialize canvas and drawing area
+			canvas = document.getElementById('canvas');
+			context = canvas.getContext('2d');
+			serempre.cargos.toggleWaitDialog();
+			//start drawing
+			window.setInterval(function(){
+				avatar.paint(context);
+			},1000);
+		});
+		/*
+		load data needed to start the simulation
+		*/
+		function loadSimulationData(){
 			//load graph data
 			serempre.cargos.futurePaths = JSON.parse(sessionStorage.futurePaths);
 			//load destinations
 			serempre.cargos.destinations = JSON.parse(sessionStorage.destinations);
 			//load current cargo
 			serempre.cargos.currentCargo = JSON.parse(sessionStorage.currentCargo);
-			
-		});
+			//load current cargo object
+			currentCargo = serempre.cargos.futurePaths[serempre.cargos.currentCargo]
+			//load destination cargo
+			destinationCargo = serempre.cargos.futurePaths[sessionStorage.targetCargo];
+		}
 		/*
 		updates wait message dialog status
 		@text: what to display on the wait dialog
