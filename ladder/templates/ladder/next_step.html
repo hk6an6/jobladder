@@ -46,7 +46,16 @@
 	span.requirement-category-icon {
 		margin: 0px 5px 0px 20px;
 	}
-	
+{% for item in categorias %}
+	/*
+	icon for {{ item.nombre }}
+	*/
+	span.category_{{ item.pk }}{
+{% if item.icono %}
+		background-image: '{{ item.icono.url|safe }}';
+{% endif %}
+	}
+{% endfor %}
 {% endblock %}
 
 {% block pageheader %}
@@ -125,7 +134,7 @@
 		builds an HTML representation for a given requirement
 		*/
 		function buildDisplayForRequirement( requirement ) {
-			return $( '<div class="requirement-item"><span class="requirement-category-icon category-' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '<div>' );
+			return $( '<div class="requirement-item"><span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '<div>' );
 		}
 		/*
 		gets the HTML object that is to contain a given requirement

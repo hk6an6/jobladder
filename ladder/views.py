@@ -73,7 +73,7 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
 
 def next_step(request, origin_pk, target_pk, sex):
-	
+	categorias = Categoria.objects.all().order_by('nombre')
 	return render_to_response('ladder/next_step.html', locals(), RequestContext(request))
 
 def simulate(request, origin_pk, target_pk, sex):
@@ -106,6 +106,11 @@ def zona_by_pk(request, zona_pk):
 
 def requisito_by_pk(request, requisito_pk):
     data = Requisito.objects.all().filter(pk = int(requisito_pk))
+    result = serializers.serialize('json', data)
+    return HttpResponse(result, mimetype='application/json; charset=utf-8')
+	
+def categoria_by_pk(request, categoria_pk):
+    data = Categoria.objects.all().filter(pk = int(categoria_pk))
     result = serializers.serialize('json', data)
     return HttpResponse(result, mimetype='application/json; charset=utf-8')
 
