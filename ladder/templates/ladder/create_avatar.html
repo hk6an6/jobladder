@@ -57,7 +57,6 @@
 	<div id="pants-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
-	{% url 'route-step' origin_pk target_pk sex %}
 	<div id="scrollable-sliders">
 		<ul id="tab-controls">
 			<li><a href="#faces-scrollable-slider">Facciones</a></li>
@@ -71,7 +70,9 @@
 			<li><a href="#helmets-scrollable-slider">Cascos</a></li>
 		</ul>
 	</div>
-	
+	<div>
+		<button id="btn-continue" class="btn btn-primary" onclick="javascript: window.location.href = '{% url 'route-step' origin_pk target_pk sex %}'">Continuar</button>
+	</div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -365,14 +366,22 @@
 			}else{
 				$('#scrollable-sliders').append(newScrollableSlider);
 			}
-			//create tab controls
+			//refresh
+			updateTabControls();
+			//setupSliderScrollBar(scrollableSliderId);
+			return newScrollableSlider;
+		}
+		/*
+		updates tab headers and tab contents, based on available options
+		*/
+		function updateTabControls(){
+			//this method may fail if tab panel hasn't been initialized
 			try{
 				$('#scrollable-sliders').tabs('refresh');
 			}catch(e){
-				console.log(e);
+				//console.log(e);
+				//ignore error and continue
 			}
-			//setupSliderScrollBar(scrollableSliderId);
-			return newScrollableSlider;
 		}
 		/*
 		 when all bodies are done loading, setup color choices

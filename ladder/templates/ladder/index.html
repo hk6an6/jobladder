@@ -81,6 +81,8 @@ static file assets {% endcomment %}
             var origin_cargo = $('#cargo_inicial_nombre option:selected').val();
             var target_cargo = $('#cargo_destino_nombre option:selected').val();
             var target_url = blank_url.replace(/1\/2\/3\/$/gi,origin_cargo+'/'+target_cargo+'/'+sex+'/');
+			sessionStorage.currentCargo = origin_cargo;
+			sessionStorage.targetCargo = target_cargo;
             window.location.href = target_url;
         }
         

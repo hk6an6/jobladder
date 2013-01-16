@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		431E6F1616A6EACD004177CC /* thesans_plain-webfont.eot */ = {isa = PBXFileReference; lastKnownFileType = file; path = "thesans_plain-webfont.eot"; sourceTree = "<group>"; };
+		431E6F1716A6EACD004177CC /* thesans_plain-webfont.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "thesans_plain-webfont.svg"; sourceTree = "<group>"; };
+		431E6F1816A6EACD004177CC /* thesans_plain-webfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "thesans_plain-webfont.ttf"; sourceTree = "<group>"; };
+		431E6F1916A6EACD004177CC /* thesans_plain-webfont.woff */ = {isa = PBXFileReference; lastKnownFileType = file; path = "thesans_plain-webfont.woff"; sourceTree = "<group>"; };
+		431E6F1C16A6FD02004177CC /* avatares-INTRO.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatares-INTRO.png"; sourceTree = "<group>"; };
+		431E6F1D16A6FD02004177CC /* background.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = background.gif; sourceTree = "<group>"; };
+		431E6F1E16A6FD02004177CC /* bg_silouette-01CAMP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-01CAMP.png"; sourceTree = "<group>"; };
+		431E6F1F16A6FD02004177CC /* bg_silouette-02LAB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-02LAB.png"; sourceTree = "<group>"; };
+		431E6F2016A6FD02004177CC /* logo_Pacific.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_Pacific.png; sourceTree = "<group>"; };
+		431E6F2116A6FD02004177CC /* PREicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = PREicon.ico; sourceTree = "<group>"; };
+		431E6F2216A6FD02004177CC /* PREicon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PREicon.jpg; sourceTree = "<group>"; };
 		4322A172169F4A3900CDA646 /* create_backup_on_sandbox.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = create_backup_on_sandbox.sh; sourceTree = "<group>"; };
 		4322A173169F4A3900CDA646 /* fetch_sandobx_db.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = fetch_sandobx_db.sh; sourceTree = "<group>"; };
 		4322A175169F4A3900CDA646 /* run_django_on_sandbox.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run_django_on_sandbox.sh; sourceTree = "<group>"; };
@@ -94,6 +105,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		431E6F1B16A6FD02004177CC /* imagenes */ = {
+			isa = PBXGroup;
+			children = (
+				431E6F1C16A6FD02004177CC /* avatares-INTRO.png */,
+				431E6F1D16A6FD02004177CC /* background.gif */,
+				431E6F1E16A6FD02004177CC /* bg_silouette-01CAMP.png */,
+				431E6F1F16A6FD02004177CC /* bg_silouette-02LAB.png */,
+				431E6F2016A6FD02004177CC /* logo_Pacific.png */,
+				431E6F2116A6FD02004177CC /* PREicon.ico */,
+				431E6F2216A6FD02004177CC /* PREicon.jpg */,
+			);
+			path = imagenes;
+			sourceTree = "<group>";
+		};
 		43B471671669026C003EB0DC = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +243,10 @@
 		43B47192166903B9003EB0DC /* css */ = {
 			isa = PBXGroup;
 			children = (
+				431E6F1616A6EACD004177CC /* thesans_plain-webfont.eot */,
+				431E6F1716A6EACD004177CC /* thesans_plain-webfont.svg */,
+				431E6F1816A6EACD004177CC /* thesans_plain-webfont.ttf */,
+				431E6F1916A6EACD004177CC /* thesans_plain-webfont.woff */,
 				43B47193166903B9003EB0DC /* base.css */,
 				43B47194166903B9003EB0DC /* bootstrap */,
 				43B47199166903B9003EB0DC /* jqueryui */,
@@ -270,6 +299,7 @@
 		43B471AB166903B9003EB0DC /* images */ = {
 			isa = PBXGroup;
 			children = (
+				431E6F1B16A6FD02004177CC /* imagenes */,
 				43B471AC166903B9003EB0DC /* background-01.png */,
 				43B471AD166903B9003EB0DC /* glyphicons-halflings-white.png */,
 				43B471AE166903B9003EB0DC /* glyphicons-halflings.png */,

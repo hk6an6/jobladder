@@ -247,7 +247,7 @@ var serempre = new function(){
 		//vertexTagCallable: a function that takes a vertex as an argument and returns a string representing the provided vertex
 		this.outputVertex = function(vertexes, vertex, prefix, vertexTagCallable){
 			if(!vertex.visited){
-				console.log(vertex.depth +':'+ prefix + '-> ' + vertexTagCallable(vertex));
+				//console.log(vertex.depth +':'+ prefix + '-> ' + vertexTagCallable(vertex));
 				vertex.visited = true;
 				for(var i = 0; i< vertex.adjacent.length; i++){
 					var ith_vertex_pk = vertex.adjacent[i];
@@ -370,7 +370,8 @@ var serempre = new function(){
                         }
                         prefix = tmp;
                     }
-                    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+					vertexTagCallable(vertexes[ start ]);
+                    //console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
                 }
                 vertexes[ start ].visited = true;
                 path[ path.length ] = start;
@@ -415,7 +416,8 @@ var serempre = new function(){
                         }
                         prefix = tmp;
                     }
-                    console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+					vertexTagCallable(vertexes[ start ]);
+                    //console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
                 }
                 vertexes[ start ].visited = true;
                 path[ path.length ] = start;
