@@ -131,6 +131,7 @@
 					"Si": function() {
 						$( this ).dialog( "close" );
 						serempre.cargos.toggleWaitDialog('Iniciando la simulación', 'icon-signal');
+						sessionStorage.avatar = JSON.stringify(avatar);
 						window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
 					},
 					No: function() {
