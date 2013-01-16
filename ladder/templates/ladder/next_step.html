@@ -28,6 +28,25 @@
 	div.next-position {
 	
 	}
+	/*
+	DIV elements containing a single 'requisito' for a given position
+	*/
+	div.requisito-container {
+	
+	}
+	/*
+	DIV elements that hold a SPAN and clear text representing a requirement
+	*/
+	div.requirement-item {
+	
+	}
+	/*
+	holds the icon that stands for requirement categories
+	*/
+	span.requirement-category-icon {
+		margin: 0px 5px 0px 20px;
+	}
+	
 {% endblock %}
 
 {% block pageheader %}
@@ -77,6 +96,73 @@
 				avatar.paint(context);
 			} ,1000 );
 		});
+		/*  
+		displays requirements for a given position
+		*/
+		function displayRequirementsFor( position, jqPositionDOMContainer ){
+			var allRequirements = getDisplayForPositionRequirements( position, function( requirement, containerCollection ){
+				container = getContainerForRequirement( requirement, containerCollection );
+				if( container ){
+					container.append( buildDisplayForRequirement( requirement ) );
+				}
+			} );
+			for( var i = 0; i < allRequirements.length; i++ ){
+				if( jqPositionDOMContainer ) { 
+					jqPositionDOMContainer.append( allRequirements[ i ] ); 
+				}
+			}
+			return allRequirements;
+		}
+		/*
+		builds a URL where a requisito can be looked up using it's entity key
+		*/
+		function getRequisitoURLUsing( pk ){
+			var templateURL = "{% url 'get-requisito-by-pk' 0 %}";
+			var regex = /(requisito)\/(\d+)\/$/ig;
+			return templateURL.replace( regex, "$1/" + pk + "/" );
+		}
+		/*
+		builds an HTML representation for a given requirement
+		*/
+		function buildDisplayForRequirement( requirement ) {
+			return $( '<div class="requirement-item"><span class="requirement-category-icon category-' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '<div>' );
+		}
+		/*
+		gets the HTML object that is to contain a given requirement
+		*/
+		function getContainerForRequirement( requirement, containers ){
+			var target = containers.filter( function ( x ) {
+				return $( x ).attr('id') == 'requisito-' + requirement.pk + '-container';
+			} );
+			if(target && target[0]) {
+				target = target[ 0 ];
+			}else {
+				return null;
+			}
+			return target;
+		}
+		/*
+		returns an array of HTML div objects where each item holds a requisito description
+		*/
+		function getDisplayForPositionRequirements( position, requirementAvailableCallback ){
+			var results = [];
+			for( var i = 0; i < position.fields.requisitos.length; i++ ){
+				results[ i ] = $('<div id="requisito-' + position.fields.requisitos[ i ] +'-container" class="requisito-container"></div>');
+				$.ajax({
+					dataType: 'json'
+					, url: getRequisitoURLUsing( position.fields.requisitos[ i ] )
+					, success: function( data, textStatus, jqXHR ){
+						requirementAvailableCallback( data[0], results );
+					}, error: function( jqXHR, textStatus, errorThrown ){
+						console.log( errorThrown );
+						alert( textStatus );
+					}, complete: function( jqXHR, textStatus ){
+						
+					}
+				});
+			}
+			return results;
+		}
 		/*
 		display available choices starting at current position
 		*/
@@ -85,6 +171,7 @@
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
 				var nextPositionDiv = $( '<div id="position-' + nextPosition.pk + '" class="next-position">' + nextPosition.fields.nombre + '</div>' );
 				$( '#next-steps' ).append( nextPositionDiv );
+				displayRequirementsFor( nextPosition, nextPositionDiv );
 			}
 		}
 		/*
