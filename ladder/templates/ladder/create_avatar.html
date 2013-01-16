@@ -16,6 +16,18 @@
 {% endblock %}
 
 {% block pagestyle %}
+	/*
+	each body part tab uses this class
+	*/
+	div.body-part-picker-tab {
+	
+	}
+	/*
+	container for all body part tabs
+	*/
+	div#scrollable-sliders{
+	
+	}
 	.bodypart-slider {
 		width: 300px;
 		margin: 15px;
@@ -241,7 +253,7 @@
 		@itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
 		*/
 		function scrollPane(sourceArray, scrollablePaneId, itemClickHandler){
-			var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all" id="'+ scrollablePaneId +'"></div>');
+			var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
 			var scrollContent = $('<div class="scroll-content"></div>');
 			for(var i = 0; i<sourceArray.length; i++){
 				var item = sourceArray[i];

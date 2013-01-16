@@ -16,7 +16,18 @@
 {% endblock %}
 
 {% block pagestyle %}
+	/*
+	DIV element that contains all available future position options
+	*/
+	div#next-steps {
 	
+	}
+	/*
+	DIV elements containing an available option for the player's next position
+	*/
+	div.next-position {
+	
+	}
 {% endblock %}
 
 {% block pageheader %}
@@ -27,6 +38,7 @@
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
+	<div id="next-steps"></div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -36,11 +48,12 @@
 		var avatar = null;
 		var canvas = null;
 		var context = null;
+		var path = null;
 		//when document completes loading, execute the following code
 		$(document).ready( function ( ) {
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
 			serempre.cargos.futurePaths = sessionStorage.futurePaths;
-			if(! serempre.cargos.futurePaths ){
+			if( !serempre.cargos.futurePaths ){
 				window.location.href = '/';
 			}
 			//get ready to use wait dialogs in this page
@@ -49,6 +62,7 @@
 			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
 			//load simulation offset data
 			loadSimulationData();
+			markFormerPositions();
 			//initialize avatar
 			avatar = new serempre.avatars.Avatar( );
 			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
@@ -56,11 +70,39 @@
 			canvas = document.getElementById( 'canvas' );
 			context = canvas.getContext( '2d' );
 			serempre.cargos.toggleWaitDialog( );
+			//display available choices
+			displayAvailableChoices( currentCargo );
 			//start drawing
 			window.setInterval(function(){
 				avatar.paint(context);
 			} ,1000 );
 		});
+		/*
+		display available choices starting at current position
+		*/
+		function displayAvailableChoices( position ){
+			for( var i = 0; i < position.fields.siguientes.length; i++ ){
+				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
+				var nextPositionDiv = $( '<div id="position-' + nextPosition.pk + '" class="next-position">' + nextPosition.fields.nombre + '</div>' );
+				$( '#next-steps' ).append( nextPositionDiv );
+			}
+		}
+		/*
+		mark former positions as 'visited'
+		*/
+		function markFormerPositions(){
+			//mark current cargo as visited
+			currentCargo.visited = true;
+			//rebuild ladder breadcrums
+			if( !sessionStorage.path || sessionStorage.path == '' ){
+				sessionStorage.path = '[]';
+			}
+			path = JSON.parse( sessionStorage.path );
+			//mark former positions as visited
+			for( var i = 0; i < path.length; i++ ){
+				serempre.cargos.futurePaths[ path[ i ] ].visited = true;
+			}
+		}
 		/*
 		load data needed to start the simulation
 		*/
