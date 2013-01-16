@@ -71,7 +71,13 @@
 		</ul>
 	</div>
 	<div>
-		<button id="btn-continue" class="btn btn-primary" onclick="javascript: window.location.href = '{% url 'route-step' origin_pk target_pk sex %}'">Continuar</button>
+		<button id="btn-continue" class="btn btn-primary" onclick="javascript: return confirmSimulationStart(); ">Continuar</button>
+	</div>
+	<div id="dialog-confirm" title="Confirma tu avatar">
+		<p>
+			<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+			Est&aacute; completo tu avatar?
+		</p>
 	</div>
 {% endblock %}
 
@@ -112,6 +118,26 @@
 			}
 			//get ready to use wait dialogs in this page
 			serempre.cargos.setupWaitDialog();
+			//build a confirmation dialog for later use
+			$( "#dialog-confirm" ).dialog({
+				open: function(event,ui){
+					$(event.target).parent().find('button:first').addClass('btn').addClass('btn-primary');
+				},
+				autoOpen: false,
+				resizable: false,
+				height:170,
+				modal: true,
+				buttons: {
+					"Si": function() {
+						$( this ).dialog( "close" );
+						serempre.cargos.toggleWaitDialog('Iniciando la simulación', 'icon-signal');
+						window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
+					},
+					No: function() {
+						$( this ).dialog( "close" );
+					}
+				}
+			});
 			//ask the user to wait
 			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
 			//start loading all assets
@@ -142,7 +168,6 @@
 {% for item in cascos %}
 			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
 {% endfor %}
-
 			//dismiss wait dialog when all images are done loading
 			loadingIntervalReference = window.setInterval(function(){
 				if(closeWaitDialogIfAllThingsLoaded()){
@@ -150,6 +175,13 @@
 				}
 			}, 5000);
 		});
+		/*
+			ask for user confirmation before proceeding
+		*/
+		function confirmSimulationStart(){
+			$( '#dialog-confirm' ).dialog( 'open' );
+			return false;
+		}
 		/*
 		checks images to find out if the wait dialog is to be dismissed
 		*/
