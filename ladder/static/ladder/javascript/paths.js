@@ -518,6 +518,34 @@ var serempre = new function(){
 			}
 		}
 		
+		this.Avatar.prototype.buildImageFrom = function ( imageData ) {
+			var result = new Image();
+			result.pk = imageData.pk;
+			result.fetchFrom = imageData.fetchFrom;
+			result.thumbnail = imageData.thumbnail;
+			result.src = imageData.fetchFrom;
+			return result;
+		}
+		
+		this.Avatar.prototype.restoreFromRawData = function ( avatarData ) {
+			for( attr in avatarData ){
+				var val = avatarData[ attr ];
+				if( val != null && typeof val == 'object' && !Array.isArray( val ) ){
+					this[ attr ] = this.buildImageFrom( val );
+				}else if( val != null && typeof val == 'object' && Array.isArray( val ) ){
+					var container = [];
+					for(var i = 0; i < val.length; i++){
+						var item = val[ i ];
+						if( item != null && typeof item == 'object'){
+							item = this.buildImageFrom( item );
+						}
+						container[ i ] = item;
+					}
+					this[ attr ] = container;
+				}
+			}
+		}
+		
 		this.Avatar.prototype.paint = function(context){
 			var images = [
 						  this.background,
