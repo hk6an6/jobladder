@@ -500,21 +500,21 @@ var serempre = new function(){
 			var currentObject = 'empty';
 		}
 		
-		this.Avatar.prototype.setImage = function(attributeName, attributeValue, bindOnLoad){
-			if(this[attributeName]){
-				this[attributeName] = attributeValue;
-				if(bindOnLoad){
+		this.Avatar.prototype.setImage = function( attributeName, attributeValue, bindOnLoad ){
+			if( this[ attributeName ] ){
+				this[ attributeName ] = attributeValue;
+				if( bindOnLoad ){
 					attributeValue.loaded = false;
-					attributeValue.onload = this.imageLoaded(attributeName);
+					attributeValue.onload = this.imageLoaded( attributeName );
 				}
 			}
 		}
 		
-		this.Avatar.prototype.imageLoaded = function(attributeName){
+		this.Avatar.prototype.imageLoaded = function( attributeName ){
 			this[attributeName].loaded = true;
 			this.doneLoading += 1;
-			if(this.itemLoaded){
-				this.itemLoaded(this[attributeName]);
+			if( this.itemLoaded ){
+				this.itemLoaded( this[ attributeName ] );
 			}
 		}
 		
@@ -546,7 +546,7 @@ var serempre = new function(){
 			}
 		}
 		
-		this.Avatar.prototype.paint = function(context){
+		this.Avatar.prototype.paint = function( context ){
 			var images = [
 						  this.background,
 						  this.body,
@@ -561,14 +561,14 @@ var serempre = new function(){
 			];
 			context.save();
 			context.fillStyle = 'white';
-			context.fillRect(0,0, this.width, this.height);
-			for(var i = 0; i < images.length; i++){
-				if(images[i] != 'empty' && !(images[i] instanceof Array)){
-					context.drawImage(images[i],0,0,this.width, this.height);
-				}else if(images[i] instanceof Array){
-					for(var j = 0; j < images[i].length; j++){
-						if(images[i][j] != null){
-							context.drawImage(images[i][j],0,0,this.width, this.height);
+			context.fillRect( 0,0, this.width, this.height );
+			for( var i = 0; i < images.length; i++ ){
+				if( images[ i ] != 'empty' && !( images[i] instanceof Array ) ){
+					context.drawImage( images[i], 0, 0, this.width, this.height );
+				}else if( images[ i ] instanceof Array ){
+					for( var j = 0; j < images[ i ].length; j++ ){
+						if( images[ i ][ j ] != null ){
+							context.drawImage( images[ i ][ j ], 0, 0, this.width, this.height );
 						}
 					}
 				}

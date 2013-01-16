@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block pageheader %}
-	<h1>Crea tu avatar!</h1>
+	<h1>Planea tu ascenso</h1>
 {% endblock %}
 
 {% block pagebody %}
@@ -37,51 +37,51 @@
 		var canvas = null;
 		var context = null;
 		//when document completes loading, execute the following code
-		$(document).ready(function(){
+		$(document).ready( function ( ) {
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
 			serempre.cargos.futurePaths = sessionStorage.futurePaths;
-			if(! serempre.cargos.futurePaths){
-				window.location.href='/';
+			if(! serempre.cargos.futurePaths ){
+				window.location.href = '/';
 			}
 			//get ready to use wait dialogs in this page
-			serempre.cargos.setupWaitDialog();
+			serempre.cargos.setupWaitDialog( );
 			//ask the user to wait
-			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
 			//load simulation offset data
 			loadSimulationData();
 			//initialize avatar
-			avatar = new serempre.avatars.Avatar();
+			avatar = new serempre.avatars.Avatar( );
 			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
 			//initialize canvas and drawing area
-			canvas = document.getElementById('canvas');
-			context = canvas.getContext('2d');
-			serempre.cargos.toggleWaitDialog();
+			canvas = document.getElementById( 'canvas' );
+			context = canvas.getContext( '2d' );
+			serempre.cargos.toggleWaitDialog( );
 			//start drawing
 			window.setInterval(function(){
 				avatar.paint(context);
-			},1000);
+			} ,1000 );
 		});
 		/*
 		load data needed to start the simulation
 		*/
 		function loadSimulationData(){
 			//load graph data
-			serempre.cargos.futurePaths = JSON.parse(sessionStorage.futurePaths);
+			serempre.cargos.futurePaths = JSON.parse( sessionStorage.futurePaths );
 			//load destinations
-			serempre.cargos.destinations = JSON.parse(sessionStorage.destinations);
+			serempre.cargos.destinations = JSON.parse( sessionStorage.destinations );
 			//load current cargo
-			serempre.cargos.currentCargo = JSON.parse(sessionStorage.currentCargo);
+			serempre.cargos.currentCargo = JSON.parse( sessionStorage.currentCargo );
 			//load current cargo object
-			currentCargo = serempre.cargos.futurePaths[serempre.cargos.currentCargo]
+			currentCargo = serempre.cargos.futurePaths[ serempre.cargos.currentCargo ]
 			//load destination cargo
-			destinationCargo = serempre.cargos.futurePaths[sessionStorage.targetCargo];
+			destinationCargo = serempre.cargos.futurePaths[ sessionStorage.targetCargo ];
 		}
 		/*
 		updates wait message dialog status
 		@text: what to display on the wait dialog
 		*/
-		function changeWaitDialogText(text){
-			$('#dialog-wait span#msg-content').text(text);
+		function changeWaitDialogText( text ){
+			$( '#dialog-wait span#msg-content' ).text( text );
 		}
 		
 	</script>
