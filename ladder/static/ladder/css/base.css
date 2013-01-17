@@ -5,6 +5,22 @@ Use this file to override anything from bootstrap. This is the last CSS loaded, 
 This styles may only be overridden by using page style or inline styles
 
 */
+@font-face {
+    font-family: 'thesansplain';
+    src: url('thesans_plain-webfont.eot');
+    src: url('thesans_plain-webfont.eot?#iefix') format('embedded-opentype'),
+         url('thesans_plain-webfont.woff') format('woff'),
+         url('thesans_plain-webfont.ttf') format('truetype'),
+         url('thesans_plain-webfont.svg#thesansplain') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+body {
+	font-family: 'thesansplain';
+	background-image: url(../images/background.gif);
+	background-repeat: repeat;
+}
 header {
 	background-color: black;
 	color: white;
