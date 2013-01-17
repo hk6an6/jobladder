@@ -38,13 +38,21 @@
 	DIV elements that hold a SPAN and clear text representing a requirement
 	*/
 	div.requirement-item {
-	
+		height: 50px;
+		overflow: hidden;
 	}
 	/*
 	holds the icon that stands for requirement categories
 	*/
 	span.requirement-category-icon {
-		margin: 0px 5px 0px 20px;
+		width: 39px;
+		height: 39px;
+		background-repeat: no-repeat;
+		display: block;
+		overflow: hidden;
+		text-indent: -99999px;
+		float: left;
+		margin: 0 7px 20px 0;
 	}
 {% for item in categorias %}
 	/*
@@ -52,7 +60,7 @@
 	*/
 	span.category_{{ item.pk }}{
 {% if item.icono %}
-		background-image: '{{ item.icono.url|safe }}';
+		background-image:url('{{ item.icono.url|safe }}');
 {% endif %}
 	}
 {% endfor %}
@@ -134,7 +142,7 @@
 		builds an HTML representation for a given requirement
 		*/
 		function buildDisplayForRequirement( requirement ) {
-			return $( '<div class="requirement-item"><span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '<div>' );
+			return $( '<div class="requirement-item"><span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '</div>' );
 		}
 		/*
 		gets the HTML object that is to contain a given requirement
