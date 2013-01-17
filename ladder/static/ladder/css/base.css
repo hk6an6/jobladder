@@ -17,18 +17,31 @@ This styles may only be overridden by using page style or inline styles
 
 }
 body {
+	font-family: 'thesansplain';
 	background-image: url(../images/background.gif);
 	background-repeat: repeat;
 }
 header {
+	background-color: rgba(255, 255, 255, 0.55);
+	/*height: 123px;*/
+	padding: 35px;
+	/*width: auto;*/
+	
 	background-color: black;
 	color: white;
-	padding: 50px 50px;
-	margin-bottom: 50px;
+	/*padding: 50px 50px;
+	margin-bottom: 50px;*/
 }
 
 #main{
-	padding: 25px 25px;
+	padding: 35px;
+	margin: 0px auto auto;
+	font-size: 15px;
+	line-height: 28px;
+	color: #4D4D4D;
+	text-align: justify;
+	
+	/*padding: 25px 25px;*/
 }
 
 .ui-autocomplete-loading {
