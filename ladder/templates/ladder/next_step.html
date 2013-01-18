@@ -188,14 +188,14 @@
 		*/
 		function setRequirementFulfilled( requirementPK ){
 			$( 'div#modal' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
-			allRequirements[ requirementPK ].fulfilled = true;
+			requirements[ requirementPK ].fulfilled = true;
 		}
 		/*
 		marks a requirement as unfulfilled
 		*/
 		function setUnfulfilledRequirement( requirementPK ){
 			$( 'div#modal' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
-			allRequirements[ requirementPK ].fulfilled = false;
+			requirements[ requirementPK ].fulfilled = false;
 		}
 		/*
 		builds an HTML representation for a given requirement
