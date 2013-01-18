@@ -26,9 +26,10 @@ header {
 	/*height: 123px;*/
 	padding: 35px;
 	/*width: auto;*/
+	color: #C2C2C2;
 	
-	background-color: black;
-	color: white;
+	/*background-color: black;*/
+	/*color: white;*/
 	/*padding: 50px 50px;
 	margin-bottom: 50px;*/
 }
@@ -82,4 +83,10 @@ header {
 .ui-combobox-input {
 	margin: 0;
 	padding: 0.3em;
+}
+
+/* /////// ESTILOS PROPUESTA GRÁFICA ADVÁNTIKA /////// */
+
+#logoPRE {
+	float: right;
 }
