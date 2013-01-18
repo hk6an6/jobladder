@@ -184,18 +184,46 @@
 			return templateURL.replace( regex, "$1/" + pk + "/" );
 		}
 		/*
+		marks a requirement as fulfilled
+		*/
+		function setRequirementFulfilled( requirementPK ){
+			$( 'div#modal' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
+			allRequirements[ requirementPK ].fulfilled = true;
+		}
+		/*
+		marks a requirement as unfulfilled
+		*/
+		function setUnfulfilledRequirement( requirementPK ){
+			$( 'div#modal' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
+			allRequirements[ requirementPK ].fulfilled = false;
+		}
+		/*
 		builds an HTML representation for a given requirement
 		*/
 		function buildDisplayForRequirement( requirement ) {
-			
-			var requirementStatus =		$( '<div class="btn-group" data-toggle="buttons-radio">'
-											+'<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '">Ok</button>'
-											+'<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '">Pendiente</button>'
-										+'</div>' );
 			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
-												+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre
+												+ '<a href="#modal' + requirement.pk + '" role="button" class="btn" data-toggle="modal">'
+													+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+													+ requirement.fields.nombre
+												+ '</a>'
+												+'<div id="modal' + requirement.pk + '" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
+													+'<div class="modal-header">'
+														+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+														+'<h3>' + requirement.fields.nombre + '</h3>'
+													+'</div>'
+													+'<div class="modal-body">'
+														+'<p>'
+															+ requirement.fields.descripcion
+														+'</p>'
+													+'</div>'
+													+'<div class="modal-footer">'
+														+'<div class="btn-group" data-toggle="buttons-radio">'
+															+'<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" data-dismiss="modal" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
+															+'<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" data-dismiss="modal" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
+														+'</div>'
+													+'</div>'
+												+'</div>'
 										+ '</div>' );
-			requirementBlock.append( requirementStatus );
 			return requirementBlock;
 		}
 		/*
