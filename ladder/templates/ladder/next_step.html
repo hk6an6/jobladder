@@ -38,8 +38,14 @@
 	DIV elements that hold a SPAN and clear text representing a requirement
 	*/
 	div.requirement-item {
-		height: 50px;
+		height: 75px;
 		overflow: hidden;
+	}
+	/*
+	DIV elements that hold a SPAN and clear text representing a requirement that's been fulfilled
+	*/
+	div.requirement-item-fulfilled {
+		
 	}
 	/*
 	holds the icon that stands for requirement categories
@@ -52,7 +58,7 @@
 		overflow: hidden;
 		text-indent: -99999px;
 		float: left;
-		margin: 0 7px 20px 0;
+		margin: 5px 7px 20px 0;
 	}
 {% for item in categorias %}
 	/*
@@ -85,6 +91,8 @@
 		var canvas = null;
 		var context = null;
 		var path = null;
+		var requirements = {};
+		var fulfilledRequirements = [];
 		//when document completes loading, execute the following code
 		$(document).ready( function ( ) {
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
@@ -113,16 +121,53 @@
 				avatar.paint(context);
 			} ,1000 );
 		});
+		/*
+		builds an array holding only those requirements that have been fulfilled so far
+		*/
+		function updateFulfilledRequirements() {
+			var all = [];
+			var counter = 0;
+			for( a in requirements ){
+				all[ counter++ ] = requirements[ a ]
+			}
+			fulfilledRequirements = all.filter( function ( o ) { return o.fulfilled } );
+			return fulfilledRequirements;
+		}
+		/*
+		marks a requirement as fulfilled if it belongs to the player's position
+		*/
+		function checkForCompliance( requirement ){
+			for( var i = 0; i < currentCargo.fields.requisitos.length && !requirement.fulfilled; i++ ){
+				if( currentCargo.fields.requisitos[ i ] == requirement.pk ){
+					requirement.fulfilled = true;
+					requirement.fulfilledAt = currentCargo;
+				}
+			}
+			for( var i = 0; i < fulfilledRequirements.length && !requirement.fulfilled; i++ ){
+				requirement.fulfilled = requirement.fulfilled || ( fulfilledRequirements[ i ].pk == requirement.pk );
+			}
+			return requirement.fulfilled;
+		}
+		/*
+		store a requirement. Then append it's graphical representation to the provided container
+		*/
+		function onRequirementDownloaded ( requirement, containerCollection ){
+			if( !requirements[ requirement.pk ] ){
+				requirements[ requirement.pk ] = requirement;
+			}
+			requirement = requirements[ requirement.pk ];
+			checkForCompliance( requirement );
+			container = getContainerForRequirement( requirement, containerCollection );
+			if( container ){
+				container.append( buildDisplayForRequirement( requirement ) );
+			}
+		}
 		/*  
 		displays requirements for a given position
 		*/
 		function displayRequirementsFor( position, jqPositionDOMContainer ){
-			var allRequirements = getDisplayForPositionRequirements( position, function( requirement, containerCollection ){
-				container = getContainerForRequirement( requirement, containerCollection );
-				if( container ){
-					container.append( buildDisplayForRequirement( requirement ) );
-				}
-			} );
+			updateFulfilledRequirements();
+			var allRequirements = getDisplayForPositionRequirements( position, onRequirementDownloaded );
 			for( var i = 0; i < allRequirements.length; i++ ){
 				if( jqPositionDOMContainer ) { 
 					jqPositionDOMContainer.append( allRequirements[ i ] ); 
@@ -142,7 +187,16 @@
 		builds an HTML representation for a given requirement
 		*/
 		function buildDisplayForRequirement( requirement ) {
-			return $( '<div class="requirement-item"><span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '</div>' );
+			
+			var requirementStatus =		$( '<div class="btn-group" data-toggle="buttons-radio">'
+											+'<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '">Ok</button>'
+											+'<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '">Pendiente</button>'
+										+'</div>' );
+			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
+												+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre
+										+ '</div>' );
+			requirementBlock.append( requirementStatus );
+			return requirementBlock;
 		}
 		/*
 		gets the HTML object that is to contain a given requirement
@@ -164,7 +218,7 @@
 		function getDisplayForPositionRequirements( position, requirementAvailableCallback ){
 			var results = [];
 			for( var i = 0; i < position.fields.requisitos.length; i++ ){
-				results[ i ] = $('<div id="requisito-' + position.fields.requisitos[ i ] +'-container" class="requisito-container"></div>');
+				results[ i ] = $( '<div id="requisito-' + position.fields.requisitos[ i ] +'-container" class="requisito-container"></div>' );
 				$.ajax({
 					dataType: 'json'
 					, url: getRequisitoURLUsing( position.fields.requisitos[ i ] )
