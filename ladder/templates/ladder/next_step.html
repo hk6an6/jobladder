@@ -48,6 +48,18 @@
 		
 	}
 	/*
+	this link lets a worker occupy a different position
+	*/
+	a.next-step {
+		margin: 5px 7px 5px 20px;
+	}
+	/*
+	displays a position in the breadcrums
+	*/
+	div.cargo-summary {
+	
+	}
+	/*
 	holds the icon that stands for requirement categories
 	*/
 	span.requirement-category-icon {
@@ -81,6 +93,7 @@
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
 	<div id="next-steps"></div>
+	<div id="breadcrums"></div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -114,8 +127,7 @@
 			canvas = document.getElementById( 'canvas' );
 			context = canvas.getContext( '2d' );
 			serempre.cargos.toggleWaitDialog( );
-			//display available choices
-			displayAvailableChoices( currentCargo );
+			pushPosition( currentCargo.pk );
 			//start drawing
 			window.setInterval(function(){
 				avatar.paint(context);
@@ -189,6 +201,7 @@
 		function setRequirementFulfilled( requirementPK ){
 			$( 'div#modal' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = true;
+			updatePositionElligibility();
 		}
 		/*
 		marks a requirement as unfulfilled
@@ -196,6 +209,7 @@
 		function setUnfulfilledRequirement( requirementPK ){
 			$( 'div#modal' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = false;
+			updatePositionElligibility();
 		}
 		/*
 		builds an HTML representation for a given requirement
@@ -268,7 +282,7 @@
 		function displayAvailableChoices( position ){
 			for( var i = 0; i < position.fields.siguientes.length; i++ ){
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
-				var nextPositionDiv = $( '<div id="position-' + nextPosition.pk + '" class="next-position">' + nextPosition.fields.nombre + '</div>' );
+				var nextPositionDiv = buildFullPositionDisplay( nextPosition );
 				$( '#next-steps' ).append( nextPositionDiv );
 				displayRequirementsFor( nextPosition, nextPositionDiv );
 			}
@@ -310,6 +324,56 @@
 		*/
 		function changeWaitDialogText( text ){
 			$( '#dialog-wait span#msg-content' ).text( text );
+		}
+		/*
+		builds a summary display for a given position. Use this when displaying breadcrums about the player's carreer
+		*/
+		function buildPositionSummaryDisplay( positionPK ){
+			return  $( '<div class="cargo-summary">' + serempre.cargos.futurePaths[ positionPK ].fields.nombre + '</div>' );
+		}
+		/*
+		builds an HTML view of the given position
+		*/
+		function buildFullPositionDisplay( position ){
+			return $( 
+				 '<div id="position-' + position.pk + '" class="next-position">' 
+					+ position.fields.nombre 
+					+'<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+						+'Ocupar este cargo'
+					+'</a>'
+				+'</div>' );
+		}
+		/*
+		append a position to the player's carreer
+		*/
+		function pushPosition( positionPK ){
+			displayAvailableChoices( currentCargo );
+			displayRequirementsFor( currentCargo, null );
+			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
+			path[ path.length ] = positionPK;
+		}
+		/*
+		true if all requirements for a position are fulfilled
+		*/
+		function allRequirementsMetFor( position ){
+			var allMet = true;
+			for( var i = 0; i < position.fields.requisitos.length && allMet; i++ ){
+				allMet = allMet && checkForCompliance( requirements[ position.fields.requisitos[ i ] ] );
+			}
+			return allMet;
+		}
+		/*
+		shows or hides a link to advance to a position in the job ladder
+		*/
+		function updatePositionElligibility(){
+			for( var i = 0; i < currentCargo.fields.siguientes.length; i++){
+				var nextStepLink = $( '#next-step-' + currentCargo.fields.siguientes[ i ] );
+				if( allRequirementsMetFor( serempre.cargos.futurePaths[ currentCargo.fields.siguientes[ i ] ] ) ){
+					nextStepLink.css('visibility','visible');
+				}else {
+					nextStepLink.css('visibility','hidden');
+				}
+			}
 		}
 		
 	</script>
