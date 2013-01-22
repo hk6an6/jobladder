@@ -5,15 +5,44 @@ Use this file to override anything from bootstrap. This is the last CSS loaded, 
 This styles may only be overridden by using page style or inline styles
 
 */
+@font-face {
+    font-family: 'thesansplain';
+    src: url('thesans_plain-webfont.eot');
+    src: url('thesans_plain-webfont.eot?#iefix') format('embedded-opentype'),
+         url('thesans_plain-webfont.woff') format('woff'),
+         url('thesans_plain-webfont.ttf') format('truetype'),
+         url('thesans_plain-webfont.svg#thesansplain') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+body {
+	font-family: 'thesansplain';
+	background-image: url(../images/background.gif);
+	background-repeat: repeat;
+}
 header {
-	background-color: black;
-	color: white;
-	padding: 50px 50px;
-	margin-bottom: 50px;
+	background-color: rgba(255, 255, 255, 0.55);
+	/*height: 123px;*/
+	padding: 35px;
+	/*width: auto;*/
+	color: #C2C2C2;
+	
+	/*background-color: black;*/
+	/*color: white;*/
+	/*padding: 50px 50px;
+	margin-bottom: 50px;*/
 }
 
 #main{
-	padding: 25px 25px;
+	padding: 35px;
+	margin: 0px auto auto;
+	font-size: 15px;
+	line-height: 28px;
+	color: #4D4D4D;
+	text-align: justify;
+	
+	/*padding: 25px 25px;*/
 }
 
 .ui-autocomplete-loading {
@@ -54,4 +83,10 @@ header {
 .ui-combobox-input {
 	margin: 0;
 	padding: 0.3em;
+}
+
+/* /////// ESTILOS PROPUESTA GRÁFICA ADVÁNTIKA /////// */
+
+#logoPRE {
+	float: right;
 }
