@@ -524,6 +524,8 @@ var serempre = new function(){
 			result.fetchFrom = imageData.fetchFrom;
 			result.thumbnail = imageData.thumbnail;
 			result.src = imageData.fetchFrom;
+			result.alt = imageData.imageAltText;
+			result.imageAltText = imageData.imageAltText;
 			return result;
 		}
 		
