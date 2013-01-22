@@ -282,7 +282,11 @@
 		function displayAvailableChoices( position ){
 			for( var i = 0; i < position.fields.siguientes.length; i++ ){
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
-				var nextPositionDiv = buildFullPositionDisplay( nextPosition );
+				var nextPositionDiv = null;
+				if( nextPosition.visited ){
+					continue;
+				}
+				nextPositionDiv = buildFullPositionDisplay( nextPosition );
 				$( '#next-steps' ).append( nextPositionDiv );
 				displayRequirementsFor( nextPosition, nextPositionDiv );
 			}
@@ -350,7 +354,10 @@
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
 			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
-			path[ path.length ] = positionPK;
+			if( !path.filter( function( pk ){ return pk == positionPK; } ) ){
+				path[ path.length ] = positionPK;
+			}
+			sessionStorage.path = JSON.stringify( path );
 		}
 		/*
 		true if all requirements for a position are fulfilled
