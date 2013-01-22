@@ -318,28 +318,7 @@
 			}
 			return allImagesLoaded;
 		}
-		/*
-		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
-		 @imageArray: collection to use as a data source
-		 @color: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
-		 */
-		function filterByColor(imageArray, color){
-			var regex = new RegExp(color,RegExp.i, RegExp.g);
-			return imageArray.filter(function(testValue){
-				return testValue.alt.match(regex);
-			});
-		}
-		/*
-		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
-		 @imageArray: collection to use as a data source
-		 @size: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
-		 */
-		function filterBySize(imageArray, size){
-			var regex = new RegExp(size+'(?= \.+)',RegExp.i, RegExp.g);
-			return imageArray.filter(function(testValue){
-				return testValue.alt.match(regex) == size;
-			});
-		}
+		
 		/**
 		 saves whatever raw strings are found within 'colors' as choices for #skin-choices
 		 @colors: an array of strings holding color names
@@ -438,8 +417,8 @@
 				var availableColors = getUniqueColorNamesFrom(allBodies);
 				populateColorChoices(availableColors, function(colorName){
 					$('#skin-color-tag').text(colorName+' ').append($('<span class="caret"></span>'));
-					bodies = filterByColor(allBodies, colorName);
-					faces = filterByColor(allFaces, colorName);
+					bodies = serempre.avatars.filterByColor(allBodies, colorName);
+					faces = serempre.avatars.filterByColor(allFaces, colorName);
 					buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
 					buildSimpleSlider('faces-slider',faces,function(event,ui){ onFaceSelection(ui.value); },function(event,ui){ onFaceSelection(ui.value); });
 					addOrReplaceScrollableSlider(bodies, 'bodies-scrollable-slider', 'body-slider');
@@ -523,8 +502,8 @@
 			var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
 			var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
 			var chosen_pants = current_selections.pants ? current_selections.pants : 0;
-			shirts = filterBySize(allShirts, chosen_size);
-			pants  = filterBySize(allPants,  chosen_size);
+			shirts = serempre.avatars.filterBySize(allShirts, chosen_size);
+			pants  = serempre.avatars.filterBySize(allPants,  chosen_size);
 			buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
 			buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
 			$('#shirts-slider').slider('value',chosen_shirt);
