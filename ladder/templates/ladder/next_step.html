@@ -119,7 +119,6 @@
 			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
 			//load simulation offset data
 			loadSimulationData();
-			markFormerPositions();
 			//initialize avatar
 			avatar = new serempre.avatars.Avatar( );
 			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
@@ -353,6 +352,7 @@
 		function pushPosition( positionPK ){
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
+			markFormerPositions();
 			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
 			if( !path.filter( function( pk ){ return pk == positionPK; } ) ){
 				path[ path.length ] = positionPK;
