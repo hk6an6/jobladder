@@ -334,7 +334,25 @@
 		builds a summary display for a given position. Use this when displaying breadcrums about the player's carreer
 		*/
 		function buildPositionSummaryDisplay( positionPK ){
-			return  $( '<div class="cargo-summary">' + serempre.cargos.futurePaths[ positionPK ].fields.nombre + '</div>' );
+			return  $( '<div class="cargo-summary">'
+							+'<canvas id="position' + positionPK + '" width="' + Math.floor( avatar.width / 7 ) + '" height="' + Math.floor( avatar.height / 7 ) + '">'
+							+'</canvas>' 
+							+ serempre.cargos.futurePaths[ positionPK ].fields.nombre 
+					+ '</div>' );
+		}
+		/*
+		draws a thumbnail for the specified position in the 'path' summary div
+		*/
+		function buildPositionSummaryThumbnail( positionPK ){
+			var mCanvas = document.getElementById( 'position' + positionPK );
+			var mContext = mCanvas.getContext( '2d' );
+			var originalWidth = avatar.width;
+			var originalHeight = avatar.height;
+			avatar.width = Math.floor( avatar.width / 7 );
+			avatar.height = Math.floor( avatar.height / 7 );
+			avatar.paint( mContext );
+			avatar.width = originalWidth;
+			avatar.height = originalHeight;
 		}
 		/*
 		builds an HTML view of the given position
@@ -357,6 +375,7 @@
 			displayRequirementsFor( currentCargo, null );
 			markFormerPositions();
 			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
+			buildPositionSummaryThumbnail( positionPK );
 			if( !path.filter( function( pk ){ return pk == positionPK; } ) ){
 				path[ path.length ] = positionPK;
 			}
