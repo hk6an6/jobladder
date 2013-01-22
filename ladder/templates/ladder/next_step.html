@@ -279,6 +279,8 @@
 		display available choices starting at current position
 		*/
 		function displayAvailableChoices( position ){
+			var next_steps = $( '#next-steps' );
+			next_steps.empty();
 			for( var i = 0; i < position.fields.siguientes.length; i++ ){
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
 				var nextPositionDiv = null;
@@ -286,7 +288,7 @@
 					continue;
 				}
 				nextPositionDiv = buildFullPositionDisplay( nextPosition );
-				$( '#next-steps' ).append( nextPositionDiv );
+				next_steps.append( nextPositionDiv );
 				displayRequirementsFor( nextPosition, nextPositionDiv );
 			}
 		}
@@ -350,6 +352,7 @@
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
+			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
 			markFormerPositions();
