@@ -60,6 +60,18 @@
 	
 	}
 	/*
+	future critical positions found further ahead
+	*/
+	div.critical-cargo {
+	
+	}
+	/*
+	the player should choose this option to end the simulation
+	*/
+	div.best-choice {
+	
+	}
+	/*
 	holds the icon that stands for requirement categories
 	*/
 	span.requirement-category-icon {
@@ -358,13 +370,25 @@
 		builds an HTML view of the given position
 		*/
 		function buildFullPositionDisplay( position ){
-			return $( 
+			var result = $( 
 				 '<div id="position-' + position.pk + '" class="next-position">' 
 					+ position.fields.nombre 
 					+'<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
 						+'Ocupar este cargo'
 					+'</a>'
 				+'</div>' );
+			var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
+			for( var i = 0; i < futureCriticalPositions.length; i++ ){
+				if( futureCriticalPositions[ i ] == destinationCargo.pk ){
+					result.addClass( 'best-choice' );
+				}else {
+					var positionSummary = buildPositionSummaryDisplay( futureCriticalPositions[ i ] );
+					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
+					positionSummary.find('canvas').remove();
+					result.append( positionSummary );
+				}
+			}
+			return result;
 		}
 		/*
 		append a position to the player's carreer
@@ -373,7 +397,6 @@
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
-			markFormerPositions();
 			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
 			buildPositionSummaryThumbnail( positionPK );
 			if( !path.filter( function( pk ){ return pk == positionPK; } ) ){
@@ -404,7 +427,36 @@
 				}
 			}
 		}
-		
+		/*
+		returns an array of critial positions further down the ladder
+		*/
+		function getFutureCriticalPositionsFor( positionPK ){
+			var vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+			var edges = serempre.graphs.buildEdgeArray( vertexes );
+			var criticos = vertexes.filter( function( position ) { return position.fields.cargo_critico; } );
+			var start = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == positionPK } );
+			var destination = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == destinationCargo.pk } );
+			var result = [];
+			for( var i = 0; i < criticos.length; i++ ){    
+				var critico = criticos[ i ].pk;
+				var end = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == critico } );
+				vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+				edges = serempre.graphs.buildEdgeArray( vertexes );
+				if( serempre.graphs.bfs( vertexes, edges, start, end ) ){
+					result[ result.length ] = criticos[ i ].pk;
+				}
+			}
+			vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+			edges = serempre.graphs.buildEdgeArray( vertexes );
+			if( serempre.graphs.bfs( vertexes, edges, start, destination ) ){
+				result[ result.length ] = destinationCargo.pk;
+			}
+			for( var i = 0; i < vertexes.length; i++ ){
+				vertexes[ i ].visited = false;
+			}
+			markFormerPositions();
+			return result;
+		}
 	</script>
 	<!--
 			//this turns an input field into a remote data sourced autocomplete
