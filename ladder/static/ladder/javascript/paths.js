@@ -552,9 +552,24 @@ var serempre = new function(){
 			return result;
 		}
 		
+		this.Avatar.prototype.serializeImageFrom = function ( imageObject ) {
+			var result = {
+				pk : imageObject.pk
+				, fetchFrom: imageObject.fetchFrom
+				, thumbnail: imageObject.thumbnail
+				, src: imageObject.src
+				, imageAltText: imageObject.alt
+				, alt: imageObject.alt
+			};
+			return result;
+		}
+		
 		this.Avatar.prototype.restoreFromRawData = function ( avatarData ) {
 			for( attr in avatarData ){
 				var val = avatarData[ attr ];
+				if(typeof val == "function" || !val ){
+					continue;
+				}
 				if( val != null && typeof val == 'object' && !Array.isArray( val ) ){
 					this[ attr ] = this.buildImageFrom( val );
 				}else if( val != null && typeof val == 'object' && Array.isArray( val ) ){
@@ -567,8 +582,34 @@ var serempre = new function(){
 						container[ i ] = item;
 					}
 					this[ attr ] = container;
+				}else {
+					this[ attr ] = val;
 				}
 			}
+		}
+		
+		this.Avatar.prototype.dumpToRawData = function ( ){
+			var raw = {};
+			for( attr in this ){
+				var val = this[ attr ];
+				if( typeof val == "function" || !val ){
+					continue;
+				}
+				if( val != null && typeof val == 'object' && !Array.isArray( val ) ){
+					raw[ attr ] = this.serializeImageFrom( val );
+				}else if( val != null && typeof val == 'object' && Array.isArray( val ) ){
+					var container = [];
+					for(var i = 0; i < val.length; i++){
+						var item = val[ i ];
+						if( item != null && typeof item == 'object'){
+							item = this.serializeImageFrom( item );
+						}
+						container[ i ] = item;
+					}
+					raw[ attr ] = container;
+				}
+			}
+			return raw;
 		}
 		
 		this.Avatar.prototype.paint = function( context ){
