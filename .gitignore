@@ -2,3 +2,4 @@ venv
 *.pyc
 cenv
 *~
+.DS*
