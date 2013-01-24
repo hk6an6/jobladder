@@ -71,6 +71,15 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	camisas = camisas.order_by('etiqueta','contextura')
 	pelos = pelos.order_by('etiqueta')
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
+	
+def avatar_by( request, cargo_pk, sex ):
+	data = None
+	if sex == 'H':
+		data = Avatar.objects.filter( cargos_hombre__pk__exact = int(cargo_pk) )
+	else:
+		data = Avatar.objects.filter( cargos_mujer__pk__exact = int(cargo_pk) )
+	result = serializers.serialize( 'json', data )
+	return HttpResponse( result, mimetype='application/json; charset=utf-8' )
 
 def next_step(request, origin_pk, target_pk, sex):
 	categorias = Categoria.objects.all().order_by('nombre')
