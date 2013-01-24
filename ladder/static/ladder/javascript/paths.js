@@ -470,16 +470,39 @@ var serempre = new function(){
 	
 	this.avatars = new function(){
 		//creates a random number
-		this.randomNumber = function (max){
+		this.randomNumber = function ( max ){
 			return Math.floor(Math.random() * max + 1);
 		}
 		//x-browser event helper
-		this.addEvent = function(node, name, func, supressDefault) {
-			if(node.addEventListener){
-				node.addEventListener(name, func, supressDefault);
-			}else if(node.attachEvent) {
-				node.attachEvent(name, func);
+		this.addEvent = function( node, name, func, supressDefault ) {
+			if( node.addEventListener ){
+				node.addEventListener( name, func, supressDefault );
+			}else if( node.attachEvent ) {
+				node.attachEvent( name, func );
 			}
+		}
+		
+		/*
+		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
+		 @imageArray: collection to use as a data source
+		 @color: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
+		 */
+		this.filterByColor = function ( imageArray, color ){
+			var regex = new RegExp( color,RegExp.i, RegExp.g );
+			return imageArray.filter( function( testValue ){
+				return testValue.alt.match( regex );
+			});
+		}
+		/*
+		 returns a subset from an image array, filtering images according to the contents of the 'alt' attribute
+		 @imageArray: collection to use as a data source
+		 @size: plain text that should be contained by the images' alt attribute to be allowed to pass the filter
+		 */
+		this.filterBySize = function ( imageArray, size ){
+			var regex = new RegExp( size+'(?= \.+)',RegExp.i, RegExp.g );
+			return imageArray.filter( function( testValue ){
+				return testValue.alt.match( regex ) == size;
+			});
 		}
 		
 		this.Avatar = function (){
@@ -524,6 +547,8 @@ var serempre = new function(){
 			result.fetchFrom = imageData.fetchFrom;
 			result.thumbnail = imageData.thumbnail;
 			result.src = imageData.fetchFrom;
+			result.alt = imageData.imageAltText;
+			result.imageAltText = imageData.imageAltText;
 			return result;
 		}
 		

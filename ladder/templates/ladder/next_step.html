@@ -38,13 +38,51 @@
 	DIV elements that hold a SPAN and clear text representing a requirement
 	*/
 	div.requirement-item {
+		height: 75px;
+		overflow: hidden;
+	}
+	/*
+	DIV elements that hold a SPAN and clear text representing a requirement that's been fulfilled
+	*/
+	div.requirement-item-fulfilled {
+		
+	}
+	/*
+	this link lets a worker occupy a different position
+	*/
+	a.next-step {
+		margin: 5px 7px 5px 20px;
+	}
+	/*
+	displays a position in the breadcrums
+	*/
+	div.cargo-summary {
+	
+	}
+	/*
+	future critical positions found further ahead
+	*/
+	div.critical-cargo {
+	
+	}
+	/*
+	the player should choose this option to end the simulation
+	*/
+	div.best-choice {
 	
 	}
 	/*
 	holds the icon that stands for requirement categories
 	*/
 	span.requirement-category-icon {
-		margin: 0px 5px 0px 20px;
+		width: 39px;
+		height: 39px;
+		background-repeat: no-repeat;
+		display: block;
+		overflow: hidden;
+		text-indent: -99999px;
+		float: left;
+		margin: 5px 7px 20px 0;
 	}
 {% for item in categorias %}
 	/*
@@ -52,7 +90,7 @@
 	*/
 	span.category_{{ item.pk }}{
 {% if item.icono %}
-		background-image: '{{ item.icono.url|safe }}';
+		background-image:url('{{ item.icono.url|safe }}');
 {% endif %}
 	}
 {% endfor %}
@@ -67,6 +105,7 @@
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
 	<div id="next-steps"></div>
+	<div id="breadcrums"></div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -77,6 +116,8 @@
 		var canvas = null;
 		var context = null;
 		var path = null;
+		var requirements = {};
+		var fulfilledRequirements = [];
 		//when document completes loading, execute the following code
 		$(document).ready( function ( ) {
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
@@ -90,7 +131,6 @@
 			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
 			//load simulation offset data
 			loadSimulationData();
-			markFormerPositions();
 			//initialize avatar
 			avatar = new serempre.avatars.Avatar( );
 			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
@@ -98,23 +138,59 @@
 			canvas = document.getElementById( 'canvas' );
 			context = canvas.getContext( '2d' );
 			serempre.cargos.toggleWaitDialog( );
-			//display available choices
-			displayAvailableChoices( currentCargo );
+			pushPosition( currentCargo.pk );
 			//start drawing
 			window.setInterval(function(){
 				avatar.paint(context);
 			} ,1000 );
 		});
+		/*
+		builds an array holding only those requirements that have been fulfilled so far
+		*/
+		function updateFulfilledRequirements() {
+			var all = [];
+			var counter = 0;
+			for( a in requirements ){
+				all[ counter++ ] = requirements[ a ]
+			}
+			fulfilledRequirements = all.filter( function ( o ) { return o.fulfilled } );
+			return fulfilledRequirements;
+		}
+		/*
+		marks a requirement as fulfilled if it belongs to the player's position
+		*/
+		function checkForCompliance( requirement ){
+			for( var i = 0; i < currentCargo.fields.requisitos.length && !requirement.fulfilled; i++ ){
+				if( currentCargo.fields.requisitos[ i ] == requirement.pk ){
+					requirement.fulfilled = true;
+					requirement.fulfilledAt = currentCargo;
+				}
+			}
+			for( var i = 0; i < fulfilledRequirements.length && !requirement.fulfilled; i++ ){
+				requirement.fulfilled = requirement.fulfilled || ( fulfilledRequirements[ i ].pk == requirement.pk );
+			}
+			return requirement.fulfilled;
+		}
+		/*
+		store a requirement. Then append it's graphical representation to the provided container
+		*/
+		function onRequirementDownloaded ( requirement, containerCollection ){
+			if( !requirements[ requirement.pk ] ){
+				requirements[ requirement.pk ] = requirement;
+			}
+			requirement = requirements[ requirement.pk ];
+			checkForCompliance( requirement );
+			container = getContainerForRequirement( requirement, containerCollection );
+			if( container ){
+				container.append( buildDisplayForRequirement( requirement ) );
+			}
+		}
 		/*  
 		displays requirements for a given position
 		*/
 		function displayRequirementsFor( position, jqPositionDOMContainer ){
-			var allRequirements = getDisplayForPositionRequirements( position, function( requirement, containerCollection ){
-				container = getContainerForRequirement( requirement, containerCollection );
-				if( container ){
-					container.append( buildDisplayForRequirement( requirement ) );
-				}
-			} );
+			updateFulfilledRequirements();
+			var allRequirements = getDisplayForPositionRequirements( position, onRequirementDownloaded );
 			for( var i = 0; i < allRequirements.length; i++ ){
 				if( jqPositionDOMContainer ) { 
 					jqPositionDOMContainer.append( allRequirements[ i ] ); 
@@ -131,10 +207,49 @@
 			return templateURL.replace( regex, "$1/" + pk + "/" );
 		}
 		/*
+		marks a requirement as fulfilled
+		*/
+		function setRequirementFulfilled( requirementPK ){
+			$( 'div#modal' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
+			requirements[ requirementPK ].fulfilled = true;
+			updatePositionElligibility();
+		}
+		/*
+		marks a requirement as unfulfilled
+		*/
+		function setUnfulfilledRequirement( requirementPK ){
+			$( 'div#modal' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
+			requirements[ requirementPK ].fulfilled = false;
+			updatePositionElligibility();
+		}
+		/*
 		builds an HTML representation for a given requirement
 		*/
 		function buildDisplayForRequirement( requirement ) {
-			return $( '<div class="requirement-item"><span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>' + requirement.fields.nombre + '<div>' );
+			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
+												+ '<a href="#modal' + requirement.pk + '" role="button" class="btn" data-toggle="modal">'
+													+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+													+ requirement.fields.nombre
+												+ '</a>'
+												+'<div id="modal' + requirement.pk + '" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
+													+'<div class="modal-header">'
+														+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+														+'<h3>' + requirement.fields.nombre + '</h3>'
+													+'</div>'
+													+'<div class="modal-body">'
+														+'<p>'
+															+ requirement.fields.descripcion
+														+'</p>'
+													+'</div>'
+													+'<div class="modal-footer">'
+														+'<div class="btn-group" data-toggle="buttons-radio">'
+															+'<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" data-dismiss="modal" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
+															+'<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" data-dismiss="modal" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
+														+'</div>'
+													+'</div>'
+												+'</div>'
+										+ '</div>' );
+			return requirementBlock;
 		}
 		/*
 		gets the HTML object that is to contain a given requirement
@@ -156,7 +271,7 @@
 		function getDisplayForPositionRequirements( position, requirementAvailableCallback ){
 			var results = [];
 			for( var i = 0; i < position.fields.requisitos.length; i++ ){
-				results[ i ] = $('<div id="requisito-' + position.fields.requisitos[ i ] +'-container" class="requisito-container"></div>');
+				results[ i ] = $( '<div id="requisito-' + position.fields.requisitos[ i ] +'-container" class="requisito-container"></div>' );
 				$.ajax({
 					dataType: 'json'
 					, url: getRequisitoURLUsing( position.fields.requisitos[ i ] )
@@ -176,10 +291,16 @@
 		display available choices starting at current position
 		*/
 		function displayAvailableChoices( position ){
+			var next_steps = $( '#next-steps' );
+			next_steps.empty();
 			for( var i = 0; i < position.fields.siguientes.length; i++ ){
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
-				var nextPositionDiv = $( '<div id="position-' + nextPosition.pk + '" class="next-position">' + nextPosition.fields.nombre + '</div>' );
-				$( '#next-steps' ).append( nextPositionDiv );
+				var nextPositionDiv = null;
+				if( nextPosition.visited ){
+					continue;
+				}
+				nextPositionDiv = buildFullPositionDisplay( nextPosition );
+				next_steps.append( nextPositionDiv );
 				displayRequirementsFor( nextPosition, nextPositionDiv );
 			}
 		}
@@ -221,7 +342,121 @@
 		function changeWaitDialogText( text ){
 			$( '#dialog-wait span#msg-content' ).text( text );
 		}
-		
+		/*
+		builds a summary display for a given position. Use this when displaying breadcrums about the player's carreer
+		*/
+		function buildPositionSummaryDisplay( positionPK ){
+			return  $( '<div class="cargo-summary">'
+							+'<canvas id="position' + positionPK + '" width="' + Math.floor( avatar.width / 7 ) + '" height="' + Math.floor( avatar.height / 7 ) + '">'
+							+'</canvas>' 
+							+ serempre.cargos.futurePaths[ positionPK ].fields.nombre 
+					+ '</div>' );
+		}
+		/*
+		draws a thumbnail for the specified position in the 'path' summary div
+		*/
+		function buildPositionSummaryThumbnail( positionPK ){
+			var mCanvas = document.getElementById( 'position' + positionPK );
+			var mContext = mCanvas.getContext( '2d' );
+			var originalWidth = avatar.width;
+			var originalHeight = avatar.height;
+			avatar.width = Math.floor( avatar.width / 7 );
+			avatar.height = Math.floor( avatar.height / 7 );
+			avatar.paint( mContext );
+			avatar.width = originalWidth;
+			avatar.height = originalHeight;
+		}
+		/*
+		builds an HTML view of the given position
+		*/
+		function buildFullPositionDisplay( position ){
+			var result = $( 
+				 '<div id="position-' + position.pk + '" class="next-position">' 
+					+ position.fields.nombre 
+					+'<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+						+'Ocupar este cargo'
+					+'</a>'
+				+'</div>' );
+			var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
+			for( var i = 0; i < futureCriticalPositions.length; i++ ){
+				if( futureCriticalPositions[ i ] == destinationCargo.pk ){
+					result.addClass( 'best-choice' );
+				}else {
+					var positionSummary = buildPositionSummaryDisplay( futureCriticalPositions[ i ] );
+					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
+					positionSummary.find('canvas').remove();
+					result.append( positionSummary );
+				}
+			}
+			return result;
+		}
+		/*
+		append a position to the player's carreer
+		*/
+		function pushPosition( positionPK ){
+			currentCargo = serempre.cargos.futurePaths[ positionPK ];
+			displayAvailableChoices( currentCargo );
+			displayRequirementsFor( currentCargo, null );
+			$( '#breadcrums' ).append( buildPositionSummaryDisplay( positionPK ) );
+			buildPositionSummaryThumbnail( positionPK );
+			if( !path.filter( function( pk ){ return pk == positionPK; } ) ){
+				path[ path.length ] = positionPK;
+			}
+			sessionStorage.path = JSON.stringify( path );
+		}
+		/*
+		true if all requirements for a position are fulfilled
+		*/
+		function allRequirementsMetFor( position ){
+			var allMet = true;
+			for( var i = 0; i < position.fields.requisitos.length && allMet; i++ ){
+				allMet = allMet && checkForCompliance( requirements[ position.fields.requisitos[ i ] ] );
+			}
+			return allMet;
+		}
+		/*
+		shows or hides a link to advance to a position in the job ladder
+		*/
+		function updatePositionElligibility(){
+			for( var i = 0; i < currentCargo.fields.siguientes.length; i++){
+				var nextStepLink = $( '#next-step-' + currentCargo.fields.siguientes[ i ] );
+				if( allRequirementsMetFor( serempre.cargos.futurePaths[ currentCargo.fields.siguientes[ i ] ] ) ){
+					nextStepLink.css('visibility','visible');
+				}else {
+					nextStepLink.css('visibility','hidden');
+				}
+			}
+		}
+		/*
+		returns an array of critial positions further down the ladder
+		*/
+		function getFutureCriticalPositionsFor( positionPK ){
+			var vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+			var edges = serempre.graphs.buildEdgeArray( vertexes );
+			var criticos = vertexes.filter( function( position ) { return position.fields.cargo_critico; } );
+			var start = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == positionPK } );
+			var destination = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == destinationCargo.pk } );
+			var result = [];
+			for( var i = 0; i < criticos.length; i++ ){    
+				var critico = criticos[ i ].pk;
+				var end = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == critico } );
+				vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+				edges = serempre.graphs.buildEdgeArray( vertexes );
+				if( serempre.graphs.bfs( vertexes, edges, start, end ) ){
+					result[ result.length ] = criticos[ i ].pk;
+				}
+			}
+			vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
+			edges = serempre.graphs.buildEdgeArray( vertexes );
+			if( serempre.graphs.bfs( vertexes, edges, start, destination ) ){
+				result[ result.length ] = destinationCargo.pk;
+			}
+			for( var i = 0; i < vertexes.length; i++ ){
+				vertexes[ i ].visited = false;
+			}
+			markFormerPositions();
+			return result;
+		}
 	</script>
 	<!--
 			//this turns an input field into a remote data sourced autocomplete
