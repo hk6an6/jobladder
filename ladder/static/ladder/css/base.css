@@ -18,7 +18,7 @@ This styles may only be overridden by using page style or inline styles
 }
 body {
 	font-family: 'thesansplain';
-	background-image: url(../images/background.gif);
+	background-image: url"{% static "ladder/images/imagenes/background.gif" %}";
 	background-repeat: repeat;
 }
 header {
