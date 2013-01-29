@@ -133,9 +133,20 @@ def avatar_cuerpo_by_pk(request, cuerpo_pk):
 	item = get_object_or_404(CuerpoAvatar, pk=int(cuerpo_pk))
 	return redirect(item.imagen.url)
 
-def avatar_camisa_by_pk( request, camisa_pk, size ):
+def avatar_camisa_by_pk( request, camisa_pk ):
 	item = get_object_or_404(CamisaAvatar, pk=int(camisa_pk))
 	return redirect(item.imagen.url)
+	
+def shirt_by( request, pk ):
+	item = CamisaAvatar.objects.filter( pk=int( pk ) )
+	item = serializers.serialize( 'json', item )
+	return HttpResponse( item, mimetype='application/json; charset=utf-8' )
+	
+def pants_by( request, pk ):
+	item = PantalonAvatar.objects.filter( pk=int( pk ) )
+	item = serializers.serialize( 'json', item )
+	return HttpResponse( item, mimetype='application/json; charset=utf-8' )
+
 
 def avatar_camisa_by_tag_n_size( request, tag, size ):
 	item = CamisaAvatar.objects.filter( etiqueta = tag, contextura = size )

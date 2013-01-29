@@ -394,6 +394,7 @@
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
+			downloadModelAvatarFor( positionPK, avatarAvailable );
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
@@ -491,6 +492,135 @@
 				size = size[0];
 			}
 			return size;
+		}
+		/*
+		builds a function to get raw data for pants
+		*/
+		function buildPantsURL( pk ){
+			var url ='{% url 'pants_by_pk' pk=1 %}';
+			var regex = new RegExp( '(/pantalon/)(\\d+)(/)', RegExp.g );
+			return url.replace( regex, '$1' + pk + '$3' );
+		}
+		/*
+		builds a function to get raw data for shirts
+		*/
+		function buildShirtURL( pk ){
+			var url = '{% url 'shirt_by_pk' pk=1 %}';
+			var regex = new RegExp( '(/camisa/)(\\d+)(/)', RegExp.g );
+			return url.replace( regex, '$1' + pk + '$3' );
+		}
+		/*
+		downloads avatar specs for a given position key. Performs a callback when specs become available
+		*/
+		function downloadModelAvatarFor( cargo_pk, modelAvatarCallBack ){
+			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			$.ajax({
+				url: buildURLForAvatarByCargo( cargo_pk )
+				, dataType: "json"
+				, success: function( data, textStatus, jqXHR ){
+					if( data && data[ 0 ] ){
+						modelAvatarCallBack( data[ 0 ] );
+					}
+				}, complete: function( jqXHR, textStatus ){
+					serempre.cargos.toggleWaitDialog( );
+				}, error: function( jqXHR, textStatus, errorThrown ){
+					alert( errorThrown );
+				}
+			});
+		}
+		/*
+		downloads pant data for given entity key
+		*/
+		function downloadPantsData( pk, pantsAvailableCallback ){
+			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			$.ajax({
+				url: buildPantsURL( pk )
+				, dataType: "json"
+				, success: function( data, textStatus, jqXHR ){
+					if( data && data[ 0 ] ){
+						pantsAvailableCallback( data[ 0 ] );
+					}
+				}, complete: function( jqXHR, textStatus ){
+					serempre.cargos.toggleWaitDialog( );
+				}, error: function( jqXHR, textStatus, errorThrown ){
+					alert( errorThrown );
+				}
+			});
+		}
+		/*
+		downloads shirt data for a given entity key
+		*/
+		function downloadShirtData( pk, shirtAvailableCallback ){
+			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			$.ajax({
+				url: buildShirtURL( pk )
+				, dataType: "json"
+				, success: function( data, textStatus, jqXHR ){
+					if( data && data[ 0 ] ){
+						shirtAvailableCallback( data[ 0 ] );
+					}
+				}, complete: function( jqXHR, textStatus ){
+					serempre.cargos.toggleWaitDialog( );
+				}, error: function( jqXHR, textStatus, errorThrown ){
+					alert( errorThrown );
+				}
+			});
+		}
+		/*
+		uses downloaded avatar data to change avatar clothing
+		*/
+		function avatarAvailable( downloaded ){
+			console.log( downloaded );
+			if( downloaded.fields.camisa ){
+				downloadShirtData( downloaded.fields.camisa, function( shirt ){
+					$.ajax({
+						url: buildURLForAvatarShirt( shirt.fields.etiqueta, getBodySize() )
+						, success: function( data, textStatus, jqXHR ){
+							var imgURL = '{% url 'get-avatar-camisa-by-pk' camisa_pk=1 %}'.replace( /(\/avatar\/camisa\/)(\d+)(\/)/g, '$1' + data[0].pk + '$3' );
+							var img = new Image();
+							img.alt = data[0].fields.etiqueta;
+							img.src = imgURL;
+							avatar.shirt = img;
+							console.log( avatar.shirt );
+						}
+					});
+				} );
+			}
+			if( downloaded.fields.pantalon ){
+				downloadPantsData( downloaded.fields.pantalon, function( pants ){
+					$.ajax({
+						url: buildURLForAvatarPants( pants.fields.etiqueta, getBodySize() )
+						, success: function( data, textStatus, jqXHR ){
+							var imgURL = '{% url 'get-avatar-pantalon-by-pk' pantalon_pk=1 %}'.replace( /(\/avatar\/pantalon\/)(\d+)(\/)/g, '$1' + data[0].pk + '$3' );
+							var img = new Image();
+							img.alt = data[0].fields.etiqueta;
+							img.src = imgURL;
+							avatar.pants = img;
+							console.log( avatar.pants );
+						}
+					});
+				} );
+			}
+			if( downloaded.fields.accesorios ){
+			
+			}
+			if( downloaded.fields.cabello ){
+			
+			}
+			if( downloaded.fields.sombrero ){
+				var imgURL = '{% url 'get-avatar-sombrero-by-pk' sombrero_pk=1 %}'.replace( /(\/avatar\/sombrero\/)(\d+)(\/)/g, '$1' + downloaded.fields.sombrero + '$3' );
+				var img = new Image();
+				img.src = imgURL;
+				avatar.helmet = img;
+				console.log( avatar.helmet );
+			}
+			if( downloaded.fields.zapatos ){
+				var imgURL = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=1 %}'.replace( /(\/avatar\/zapatos\/)(\d+)(\/)/g, '$1' + downloaded.fields.zapatos + '$3' );
+				var img = new Image();
+				img.src = imgURL;
+				avatar.shoes = img;
+				console.log( avatar.shoes );
+			}
 		}
 	</script>
 	<!--
