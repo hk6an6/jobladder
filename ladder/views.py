@@ -5,6 +5,7 @@ from django.core import serializers
 from models import *
 from django.db.models import F
 import logging
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 # Create your views here.
 # see https://docs.djangoproject.com/en/dev/topics/db/queries/
@@ -132,13 +133,27 @@ def avatar_cuerpo_by_pk(request, cuerpo_pk):
 	item = get_object_or_404(CuerpoAvatar, pk=int(cuerpo_pk))
 	return redirect(item.imagen.url)
 
-def avatar_camisa_by_pk(request, camisa_pk):
+def avatar_camisa_by_pk( request, camisa_pk, size ):
 	item = get_object_or_404(CamisaAvatar, pk=int(camisa_pk))
 	return redirect(item.imagen.url)
+
+def avatar_camisa_by_tag_n_size( request, tag, size ):
+	item = CamisaAvatar.objects.filter( etiqueta = tag, contextura = size )
+	if item:
+		return HttpResponse( serializers.serialize( 'json', item ) , mimetype='application/json; charset=utf-8' )
+	else:
+		raise Http404
 	
-def	avatar_pantalon_by_pk(request, pantalon_pk):
+def	avatar_pantalon_by_pk( request, pantalon_pk ):
 	item = get_object_or_404(PantalonAvatar, pk=int(pantalon_pk))
 	return redirect(item.imagen.url)
+	
+def avatar_pantalon_by_tag_n_size( request, tag, size ):
+	item = item = PantalonAvatar.objects.filter( etiqueta = tag, contextura = size )
+	if item:
+		return HttpResponse( serializers.serialize( 'json', item ) , mimetype='application/json; charset=utf-8' )
+	else:
+		raise Http404
 	
 def avatar_cabello_by_pk(request, cabello_pk):
 	item = get_object_or_404(CabelloAvatar, pk=int(cabello_pk))

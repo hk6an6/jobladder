@@ -457,6 +457,40 @@
 			markFormerPositions();
 			return result;
 		}
+		/*
+		builds a URL to fetch an avatar using the cargo it belongs to
+		*/
+		function buildURLForAvatarByCargo( cargo_pk ) {
+			var url = '{% url 'avatar_by_cargo' origin_pk sex %}';
+			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H|M/)$', RegExp.g );
+			return url.replace( regex, '$1' + cargo_pk + '$3' );
+		}
+		/*
+		finds a url to retrieve proper avatar image using body size and a clothing label
+		*/
+		function buildURLForAvatarShirt( label, size ){
+			var url = '{% url 'get-avatar-camisa-by-tag-n-size' tag='blanco' size=1 %}';
+			var regex = new RegExp( '(/avatar/camisa/)(blanco)(/)(1)(/)', RegExp.g );
+			return url.replace( regex, '$1' + escape( label ) + '$3' + size + '$5' );
+		}
+		/*
+		finds a url to retrieve proper avatar image using body size and a clothing label
+		*/
+		function buildURLForAvatarPants( label, size ){
+			var url = '{% url 'get-avatar-pantalon-by-tag-n-size' tag='blanco' size=1 %}';
+			var regex = new RegExp( '(/avatar/pantalon/)(blanco)(/)(1)(/)', RegExp.g );
+			return url.replace( regex, '$1' + escape( label ) + '$3' + size + '$5' );
+		}
+		/*
+		gets a body size digit from the avatar's body
+		*/
+		function getBodySize() {
+			var size = avatar.body.alt.match( /^\d+/ );
+			if( size ){
+				size = size[0];
+			}
+			return size;
+		}
 	</script>
 	<!--
 			//this turns an input field into a remote data sourced autocomplete
