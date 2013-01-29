@@ -462,8 +462,9 @@
 		*/
 		function buildURLForAvatarByCargo( cargo_pk ) {
 			var url = '{% url 'avatar_by_cargo' origin_pk sex %}';
-			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H|M/)$', RegExp.g );
-			return url.replace( regex, '$1' + cargo_pk + '$3' );
+			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H|M/)', RegExp.g );
+			url = url.replace( regex, '$1' + cargo_pk + '$3' );
+			return url;
 		}
 		/*
 		finds a url to retrieve proper avatar image using body size and a clothing label
