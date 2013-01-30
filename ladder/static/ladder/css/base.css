@@ -94,7 +94,7 @@ h2{
 	line-height: 28px;
 	color: #4D4D4D;
 	text-align: justify;
-    min-width:1000px;
+    min-width:1010px;
 	
 	/*padding: 25px 25px;*/
 }
@@ -116,8 +116,8 @@ canvas{
 }
 .col1{
     float:left;
-    width:500px;
-    padding:0 30px 30px;
+    width:54%;
+    padding:0 0 30px 30px;
 }
 ul.tab-controls{
     width:60px;
