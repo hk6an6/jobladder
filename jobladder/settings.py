@@ -5,8 +5,9 @@ import os
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladder')
 DEBUG = True
-USING_FOREMAN = os.getenv('USE_FOREMAN', False);
+USING_FOREMAN = os.getenv('USE_FOREMAN', False)
 USE_POSGRES_USER = False
+#USE_POSGRES_USER = os.getenv('USE_POSGRES_USER', False)
 USE_AWS_S3_STORAGE = True
 TEMPLATE_DEBUG = DEBUG
 #set the following to true to inspect database queries
