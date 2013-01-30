@@ -5,33 +5,86 @@ Use this file to override anything from bootstrap. This is the last CSS loaded, 
 This styles may only be overridden by using page style or inline styles
 
 */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none inside;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
 @font-face {
     font-family: 'thesansplain';
-    src: url"{% static 'ladder/css/thesans_plain-webfont.eot' %}";
-    src: url"{% static 'thesans_plain-webfont.eot?#iefix' %}" format('embedded-opentype'),
-         url"{% static 'thesans_plain-webfont.woff' %}" format('woff'),
-         url"{% static 'thesans_plain-webfont.ttf' %}" format('truetype'),
-         url"{% static 'thesans_plain-webfont.svg#thesansplain' %}" format('svg');
+    src: url('thesans_plain-webfont.eot');
+    src: url('thesans_plain-webfont.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 
 }
 body {
 	font-family: 'thesansplain';
-	background-image: url"{% static "ladder/images/imagenes/background.gif" %}";
+	background-image:url('../images/imagenes/background.gif');
 	background-repeat: repeat;
 }
 header {
 	background-color: rgba(255, 255, 255, 0.55);
-	/*height: 123px;*/
 	padding: 35px;
-	/*width: auto;*/
 	color: #C2C2C2;
-	
-	/*background-color: black;*/
-	/*color: white;*/
-	/*padding: 50px 50px;
-	margin-bottom: 50px;*/
+	padding:10px 35px;
+	min-height:125px;
+}
+header div{
+	float:left;
+	text-align:right;
+}
+h1{
+	font-size:120px;
+	line-height:0.7;
+	letter-spacing:-8px;
+	margin-top:15px;
+}
+h2{
+	font-size:50px;
+	line-height:1;
+	letter-spacing:-4px;
+}
+#rutas{
+    display:none;
 }
 
 #main{
@@ -41,10 +94,35 @@ header {
 	line-height: 28px;
 	color: #4D4D4D;
 	text-align: justify;
+    min-width:1000px;
 	
 	/*padding: 25px 25px;*/
 }
-
+canvas{
+    float:left;
+}
+.boton{
+	border:2px solid #025084;
+	padding:4px;
+	float:right;
+}
+.boton button{
+	background:#025084;
+	padding:0.3em 1em;
+	color:#FFF;
+	text-decoration:none;
+	display:block;
+    border:none;
+}
+.col1{
+    float:left;
+    width:500px;
+    padding:0 30px 30px;
+}
+ul.tab-controls{
+    width:60px;
+    display:inline-block;
+}
 .ui-autocomplete-loading {
 	background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
 }
@@ -56,7 +134,82 @@ header {
 	margin: 3px 3px;
 	float: left;
 }
-
+#eyebrows-scrollable-slider:before{
+    content:url(../images/imagenes/icono-cejas.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#eyes-scrollable-slider:before{
+    content:url(../images/imagenes/icono-ojos.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#shoes-scrollable-slider:before{
+    content:url(../images/imagenes/icono-zapatos.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#hairstyles-scrollable-slider:before{
+    content:url(../images/imagenes/icono-pelo.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#helmets-scrollable-slider:before{
+    content:url(../images/imagenes/icono-cascos.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#bodies-scrollable-slider:before{
+    content:url(../images/imagenes/icono-cuerpo.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#faces-scrollable-slider:before{
+    content:url(../images/imagenes/icono-facciones.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#shirts-scrollable-slider:before{
+    content:url(../images/imagenes/icono-camisa.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+#pants-scrollable-slider:before{
+    content:url(../images/imagenes/icono-pantalones.png);
+    display:block;
+    height:60px;
+    width:60px;
+    float:left;
+}
+.bodypart-slider{
+    display:none;
+    }
+.scroll-pane{
+    background:none !important;
+    border:none !important;
+}
+.scroll-content-item{
+    background:url(../images/imagenes/bg_item.png) no-repeat !important;
+    border:none !important;
+    width:40px !important;
+    height:40px !important;
+}
 .ui-autocomplete {
 	max-height: 100px;
 	max-width: 250px;
@@ -89,4 +242,60 @@ header {
 
 #logoPRE {
 	float: right;
+}
+ol {
+    counter-reset:li; /* Initiate a counter */
+    margin-left:0; /* Remove the default left margin */
+    padding-left:0; /* Remove the default left padding */
+}
+ol > li {
+    position:relative; /* Create a positioning context */
+    margin:0 0 6px 60px; /* Give each list item a left margin to make room for the numbers */
+    padding:2px 20px; /* Add some spacing around the content */
+    list-style:none; /* Disable the normal item numbering */
+}
+ol > li:before {
+    content:counter(li); /* Use the counter as content */
+    counter-increment:li; /* Increment the counter by 1 */
+    /* Position and style the number */
+    position:absolute;
+    top:0px;
+    left:-60px;
+    width:55px;
+	height:55px;
+    /* Some space between the number and the content in browsers that support
+       generated content but not positioning it (Camino 2 is one example) */
+    margin-right:8px;
+    padding:0px;
+	color:#025084;
+    background: url(bg-list.png);
+	font-size:40px;
+	line-height:1.2;
+    font-family:'thesansplain';
+    text-align:center;
+}
+li ol,
+li ul {margin-top:6px;}
+ol ol li:last-child {margin-bottom:0;}
+li h3{
+	color:#990033;
+	font-size:40px;
+	padding-bottom:15px;
+}
+li h4{
+	color:#990033;
+	font-size:24px;
+}
+li p{
+	color:#666;
+	line-height:1.2;
+}
+li p span{
+	font-size:1.2em;
+	color:#025084;
+	line-height:1.5em;
+}
+.contenido{
+	width:60%;
+	min-width:600px;
 }

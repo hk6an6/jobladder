@@ -7,50 +7,53 @@
 {% block pagetitle %}Crea tu avatar{% endblock %}
 
 {% block includestylesheet %}
-		{{ block.super }}
+{{ block.super }}
 {% endblock %}
 
 {% block includejavascript %}
-		{{ block.super }}
-		<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
+{{ block.super }}
+<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
 {% endblock %}
 
 {% block pagestyle %}
-	/*
-	each body part tab uses this class
-	*/
-	div.body-part-picker-tab {
-	
-	}
-	/*
-	container for all body part tabs
-	*/
-	div#scrollable-sliders{
-	
-	}
-	.bodypart-slider {
-		width: 300px;
-		margin: 15px;
-	}
-	.scroll-pane { overflow: hidden; width: auto; margin: 15px; position: relative; }
-	.scroll-content { position: relative; float: left; }
-	.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
-    * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
-    .scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
-    .scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
-    .scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
-    .scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
-    .scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
+/*
+each body part tab uses this class
+*/
+div.body-part-picker-tab {
+
+}
+/*
+container for all body part tabs
+*/
+div#scrollable-sliders{
+
+}
+.bodypart-slider {
+width: 300px;
+margin: 15px;
+}
+.scroll-pane { overflow: hidden; width: auto; margin: 15px; position: relative; }
+.scroll-content { position: relative; float: left; }
+.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
+* html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
+.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
+.scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
+.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
+.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
+.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 {% endblock %}
 
 {% block pageheader %}
+<div>
 	<h1>Crea tu avatar!</h1>
+</div>
 {% endblock %}
 
 {% block pagebody %}
-	<canvas id='canvas' width='430' height='600'>
-		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
-	</canvas>
+<canvas id='canvas' width='430' height='600'>
+    Your browser doesn't support HTML 5. Please upgrade to a more current browser.
+</canvas>
+<div class="col1">
 	<div id="skin-color" class="btn-group">
 		<a id="skin-color-tag" class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
 			Eleg&iacute; un color de piel
@@ -70,506 +73,496 @@
 	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="scrollable-sliders">
-		<ul id="tab-controls">
-			<li><a href="#faces-scrollable-slider">Facciones</a></li>
-			<li><a href="#hairstyles-scrollable-slider">Cabelleras</a></li>
-			<li><a href="#eyebrows-scrollable-slider">Cejas</a></li>
-			<li><a href="#eyes-scrollable-slider">Ojos</a></li>
-			<li><a href="#bodies-scrollable-slider">Cuerpos</a></li>
-			<li><a href="#shirts-scrollable-slider">Camisas</a></li>
-			<li><a href="#pants-scrollable-slider">Pantalones</a></li>
-			<li><a href="#shoes-scrollable-slider">Zapatos</a></li>
-			<li><a href="#helmets-scrollable-slider">Cascos</a></li>
-		</ul>
 	</div>
-	<div>
-		<button id="btn-continue" class="btn btn-primary" onclick="javascript: return confirmSimulationStart(); ">Continuar</button>
+    <br/>
+    <div class="boton">
+		<button id="btn-continue" onclick="javascript: return confirmSimulationStart(); ">Continuar</button>
 	</div>
-	<div id="dialog-confirm" title="Confirma tu avatar">
-		<p>
-			<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
-			Est&aacute; completo tu avatar?
-		</p>
-	</div>
+    <br/>
+</div>
+<div id="dialog-confirm" title="Confirma tu avatar">
+    <p>
+    <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+    Est&aacute; completo tu avatar?
+    </p>
+</div>
 {% endblock %}
 
 {% block pagefooter %}
-	<script>
-		var colors = [];
-		var allFaces = [];
-		var	allHairStyles = [];
-		var allEyeBrows = [];
-		var allEyes = [];
-		var allBodies = [];
-		var allShirts = [];
-		var allPants = [];
-		var allShoes = [];
-		var allHelmets = [];
-		var faces = [];
-		var hairStyles = [];
-		var eyeBrows = [];
-		var eyes = [];
-		var bodies = [];
-		var shirts = [];
-		var pants = [];
-		var shoes = [];
-		var helmets = [];
-		var canvas = document.getElementById('canvas');
-		var context = canvas.getContext('2d');
-		var current_selections = {};
-		var avatar = new serempre.avatars.Avatar();
-		var loadingIntervalReference = null;
-		avatar.width = canvas.width;
-		avatar.height = canvas.height;
-		//when document completes loading, execute the following code
-		$(document).ready(function(){
-			//if there is no data about the origin and destination cargos, then redirect the user to the home page
-			serempre.cargos.futurePaths = sessionStorage.futurePaths;
-			if(! serempre.cargos.futurePaths){
-				window.location.href='/';
-			}
-			//get ready to use wait dialogs in this page
-			serempre.cargos.setupWaitDialog();
-			//build a confirmation dialog for later use
-			$( "#dialog-confirm" ).dialog({
-				open: function(event,ui){
-					$(event.target).parent().find('button:first').addClass('btn').addClass('btn-primary');
-				},
-				autoOpen: false,
-				resizable: false,
-				height:170,
-				modal: true,
-				buttons: {
-					"Si": function() {
-						$( this ).dialog( "close" );
-						serempre.cargos.toggleWaitDialog('Iniciando la simulación', 'icon-signal');
-						sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
-						window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
-					},
-					No: function() {
-						$( this ).dialog( "close" );
-					}
-				}
-			});
-			//ask the user to wait
-			serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
-			//start loading all assets
-{% for item in cuerpos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
-{% endfor %}
-{% for item in facciones %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
-{% endfor %}
-{% for item in camisas %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
-{% endfor %}
-{% for item in pantalones %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
-{% endfor %}
-{% for item in ojos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
-{% endfor %}
-{% for item in cejas %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
-{% endfor %}
-{% for item in zapatos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
-{% endfor %}
-{% for item in pelos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
-{% endfor %}
-{% for item in cascos %}
-			setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
-{% endfor %}
-			//dismiss wait dialog when all images are done loading
-			loadingIntervalReference = window.setInterval(function(){
-				if(closeWaitDialogIfAllThingsLoaded()){
-					window.clearInterval(loadingIntervalReference);
-				}
-			}, 1000);
-		});
-		/*
-			ask for user confirmation before proceeding
-		*/
-		function confirmSimulationStart(){
-			$( '#dialog-confirm' ).dialog( 'open' );
-			return false;
-		}
-		/*
-		checks images to find out if the wait dialog is to be dismissed
-		*/
-		function closeWaitDialogIfAllThingsLoaded(){
-			var dismissDialog = true;
-			var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows, allShoes, allHairStyles, allHelmets ];
-			var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas...", "zapatos...", "cabelleras...", "cascos..." ];
-			var i = 0;
-			for(i = 0; i < arraysToCheck.length && dismissDialog; i++){
-				dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
-			}
-			if(dismissDialog){
-				//pick default skin color
-				$('#skin-choices a')[0].click();
-				//dismiss wait dialog
-				serempre.cargos.toggleWaitDialog();
-				//init tabs
-				$('#scrollable-sliders').tabs();
-			}else {
-				changeWaitDialogText('Descargando '+msgUpdate[i]);
-			}
-			return dismissDialog;
-		}
-		/*
-		updates wait message dialog status
-		@text: what to display on the wait dialog
-		*/
-		function changeWaitDialogText(text){
-			$('#dialog-wait span#msg-content').text(text);
-		}
-		/**
-		 builds an html image element
-		 @itemIndex: array index where image is to be stored at
-		 @imagePk: entity key for the image
-		 @imageURL: where to fetch image data from
-		 @imageAltText: what to display if image loading fails
-		 @imageArray: placeholder for the image object
-		 @onClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
-		 */
-		function createImageItemContent( itemIndex, imagePk, imageURL, imageAltText, imageArray, onClickHandler ){
-			var imgDomElement = $('<img src="'+ imageURL +'" alt="'+ imageAltText +'" arrayIndex="'+ itemIndex +'" pk="'+ imagePk +'"></img>');
-			imgDomElement.click( {'index': itemIndex, 'pk': imagePk, 'imageAltText': imageAltText}, onClickHandler );
-			return imgDomElement;
-		}
-		/*
-		stores content within a div that uses classes scroll-contet-item and ui-widget-header
-		@content: DOM element to be placed inside a scrollable slider
-		*/
-		function wrapAsScrollableContentItem( content ){
-			var container = $(' <div class="scroll-content-item ui-widget-header"></div>');
-			container.append(content);
-			return container;
-		}
-		/*
-		returns raw html for a scrollable pane
-		@itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
-		*/
-		function scrollPane( sourceArray, scrollablePaneId, itemClickHandler ){
-			var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
-			var scrollContent = $('<div class="scroll-content"></div>');
-			for(var i = 0; i<sourceArray.length; i++){
-				var item = sourceArray[i];
-				var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
-				scrollableItem = wrapAsScrollableContentItem(scrollableItem);
-				scrollContent.append(scrollableItem);
-			}
-			scrollablePane.append(scrollContent);
-			scrollablePane.append($('<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div>'));
-			scrollablePane.id = scrollablePaneId;
-			return scrollablePane;
-		}
-		/*
-		removes a scrollPane from the document
-		@scrollablePaneId: id for the scrollablePane to be removed from the document
-		*/
-		function deleteScrollPane(scrollablePaneId){
-			$('#'+scrollablePaneId).remove();
-		}
-		/**
-		 prepares an array of images for later use
-		 @itemIndex: array index where image is to be stored at
-		 @imagePk: entity key for the image
-		 @imageURL: where to fetch image data from
-		 @imageAltText: what to display if image loading fails
-		 @imageArray: placeholder for the image object
-		 @imageLoadedCallback: function that gets triggered upon image loaded event. The image object is passed as the first parameter to the function
-		 */
-		function setupImage(itemIndex, imagePk, imageURL, thumbnailURL, imageAltText, imageArray, imageLoadedCallback, targetAttributeName){
-			imageArray[ itemIndex ] = new Image();
-			imageArray[ itemIndex ].loaded = false;
-			imageArray[ itemIndex ].onload = function(){
-				imageArray[ itemIndex ].loaded = true;
-				if( imageLoadedCallback ){
-					imageLoadedCallback( imageArray[ itemIndex ] );
-				}
-			};
-			imageArray[ itemIndex ].src = imageURL;
-			imageArray[ itemIndex ].alt = imageAltText;
-			imageArray[ itemIndex ].pk = imagePk;
-			imageArray[ itemIndex ].arrayIndex = itemIndex;
-			imageArray[ itemIndex ].thumbnail = thumbnailURL;
-			imageArray[ itemIndex ].fetchFrom = imageURL;
-			imageArray[ itemIndex ].imageAltText = imageAltText;
-			if( targetAttributeName ){
-				imageArray[ itemIndex ].onclick = function(){
-					avatar[ targetAttributeName ] = imageArray[ itemIndex ];
-					//save selection
-					current_selection[ targetAttributeName ] = imageArray[ itemIndex ].index;
-					avatar.paint( context );
-				};
-			}
-		}
-		/* 
-		 returns true if all images loaded within an array
-		 @imageArray: array of images to check. Note that images should have been built using 'setupImage' or at least have a loaded attribute
-		 */
-		function checkAllImagesLoaded(imageArray){
-			var allImagesLoaded = true;
-			for(var i = 0; i<imageArray.length && allImagesLoaded; i++){
-				allImagesLoaded = allImagesLoaded && imageArray[i].loaded;
-			}
-			return allImagesLoaded;
-		}
-		
-		/**
-		 saves whatever raw strings are found within 'colors' as choices for #skin-choices
-		 @colors: an array of strings holding color names
-		 @colorChosenHandler: a function of the form function(colorName){ ... } where colorName is plain text
-		 */
-		function populateColorChoices(colors, colorChosenHandler){
-			for(var i = 0; i<colors.length;i++){
-				var optionContainer = $('<li></li>');
-				var colorOption = $('<a tabindex="-1" href="#">'+ colors[i] +'</a>');
-				colorOption.click(function(){
-					var face = current_selections.face ? current_selections.face : 0;
-					var body = current_selections.body ? current_selections.body : 0;
-					colorChosenHandler( $(this).text() );
-					$('#faces-slider').slider('value',face);
-					$('#body-slider').slider('value',body);
-				});
-				optionContainer.append(colorOption);
-				$('#skin-choices').append(optionContainer);
-			}
-		}
-		/**
-		 reads the 'alt' attribute for each image in the imageArray. Saves unique values for color which is extracted using a regular expression. Returns an array of strings holding unique color names
-		 @imageArray: array of images where colors are to be extracted from
-		 */
-		function getUniqueColorNamesFrom(imageArray){
-			var color_regex = /[^\s]+(?=( ((hombre)|(mujer))))/gi;
-			var availableColors = {};
-			var counter = 0;
-			colors = [];
-			for(var i = 0; i < imageArray.length; i++){
-				var color = imageArray[i].alt.match(color_regex)+'';
-				availableColors[color] = color;
-			}
-			for(color in availableColors){
-				colors[counter++] = color;
-			}
-			return colors;
-		}
-		/*
-		 turns a div into a slider using an array as the slider's data source
-		 @sliderId: domID for the div to be converted to a slider
-		 @sourceArray: elements over which the slider iterates
-		 @onSlide: handle to a function definition matching function(event,ui) { ... }
-		 @onChange: handle to a function definition matching function(event,ui) { ... }
-		 */
-		function buildSimpleSlider(sliderId, sourceArray, onSlide, onChange){
-			$('#'+sliderId).slider({
-				orientation: "horizontal",
-				range: "min",
-				max: sourceArray.length - 1,
-				value: 0,
-				step: 1,
-				slide: onSlide,
-				change: onChange,
-			});
-		}
-		/*
-		Adds or replaces a scrollable slider using an image array and a simple slider to handle event callbacks
-		@sourceArray: image array holding slider scrollable content
-		@scrollableSliderId: id for the scrollable slider to be created or replaced
-		@simpleSliderId: simple slider to which all events are forwarded
-		@itemClickHandler: (OPTIONAL) event handler if a simple slider was not provided
-		*/
-		function addOrReplaceScrollableSlider(sourceArray, scrollableSliderId, simpleSliderId, itemClickHandler){
-			var newScrollableSlider = scrollPane(sourceArray, scrollableSliderId, itemClickHandler ? itemClickHandler : function(event){
-				$('#'+simpleSliderId).slider('value', event.data.index);
-			});
-			var oldScrollableSlider = $('#'+scrollableSliderId);
-			if(oldScrollableSlider.length){
-				oldScrollableSlider.replaceWith(newScrollableSlider);
-			}else{
-				$('#scrollable-sliders').append(newScrollableSlider);
-			}
-			//refresh
-			updateTabControls();
-			//setupSliderScrollBar(scrollableSliderId);
-			return newScrollableSlider;
-		}
-		/*
-		updates tab headers and tab contents, based on available options
-		*/
-		function updateTabControls(){
-			//this method may fail if tab panel hasn't been initialized
-			try{
-				$('#scrollable-sliders').tabs('refresh');
-			}catch(e){
-				//console.log(e);
-				//ignore error and continue
-			}
-		}
-		/*
-		 when all bodies are done loading, setup color choices
-		 */
-		function setupColorChoices(){
-			if(checkAllImagesLoaded(allBodies)){
-				var availableColors = getUniqueColorNamesFrom(allBodies);
-				populateColorChoices(availableColors, function(colorName){
-					$('#skin-color-tag').text(colorName+' ').append($('<span class="caret"></span>'));
-					bodies = serempre.avatars.filterByColor(allBodies, colorName);
-					faces = serempre.avatars.filterByColor(allFaces, colorName);
-					buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
-					buildSimpleSlider('faces-slider',faces,function(event,ui){ onFaceSelection(ui.value); },function(event,ui){ onFaceSelection(ui.value); });
-					addOrReplaceScrollableSlider(bodies, 'bodies-scrollable-slider', 'body-slider');
-					addOrReplaceScrollableSlider(faces, 'faces-scrollable-slider', 'faces-slider');
-				});
-			}
-		}
-		/*
-		when all eyes are done loading, build a slider to pick avatar eyes
-		*/
-		function setupEyes(){
-			if(checkAllImagesLoaded(allEyes)){
-				buildSimpleSlider('eyes-slider', allEyes,function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); },function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); });
-				addOrReplaceScrollableSlider(allEyes,'eyes-scrollable-slider', 'eyes-slider');
-				$('#eyes-slider').slider('value',0);
-			}
-		}
-		/*
-		when all eyebrows are done loading, build a slider to pick avatar eyebrows
-		*/
-		function setupEyebrows(){
-			if(checkAllImagesLoaded(allEyeBrows)){
-				buildSimpleSlider('eyebrows-slider', allEyeBrows, function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); },function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); });
-				addOrReplaceScrollableSlider(allEyeBrows, 'eyebrows-scrollable-slider','eyebrows-slider');
-				$('#eyebrows-slider').slider('value',0);
-			}
-		}
-		/*
-		builds a shoe slider when all shoe images become available
-		*/
-		function setupShoes(){
-			if(checkAllImagesLoaded(allShoes)){
-				buildSimpleSlider('shoes-slider', allShoes, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); }, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); });
-				addOrReplaceScrollableSlider(allShoes, 'shoes-scrollable-slider', 'shoes-slider');
-				$('#shoes-slider').slider('value',0);
-			}
-		}
-		/*
-		builds a hairstyle slider when all hairstyles become available
-		*/
-		function setupHairStyles(){
-			if(checkAllImagesLoaded(allHairStyles)){
-				buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
-				addOrReplaceScrollableSlider(allHairStyles, 'hairstyles-scrollable-slider', 'hairStyles-slider');
-				$('#hairStyles-slider').slider('value',0);
-			}
-		}
-		/*
-		builds a slider to pick helmets once all assets are available
-		*/
-		function setupHelmets(){
-			if(checkAllImagesLoaded(allHelmets)){
-				buildSimpleSlider('helmets-slider', allHelmets, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); }, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); });
-				addOrReplaceScrollableSlider(allHelmets, 'helmets-scrollable-slider', 'helmets-slider');
-				$('#helmets-slider').slider('value',0);
-			}
-		}
-		/*
-		updates avatar image using whatever is selected on a slider
-		@newValue: slider value
-		@imageArray: slider data source
-		@targetAttributeName: attribute to be modified on the avatar
-		@attributeIndexOrKey: if the property being set is an array or hash table, supply target index/key
-		*/
-		function sliderChanged(newValue, imageArray, targetAttributeName, attributeIndexOrKey){
-			if(!attributeIndexOrKey){
-				current_selections[targetAttributeName] = newValue;
-				avatar[targetAttributeName] = imageArray[current_selections[targetAttributeName]];
-			}else{
-				attributeIndexOrKey -= 1;
-				current_selections[targetAttributeName+attributeIndexOrKey] = newValue;
-				avatar[targetAttributeName][attributeIndexOrKey] = imageArray[current_selections[targetAttributeName+attributeIndexOrKey]];
-			}
-			avatar.paint(context);
-		}
-		/*
-		handle body slider changes
-		*/
-		function onBodySelection(arrayIndex){
-			var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
-			var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
-			var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
-			var chosen_pants = current_selections.pants ? current_selections.pants : 0;
-			shirts = serempre.avatars.filterBySize(allShirts, chosen_size);
-			pants  = serempre.avatars.filterBySize(allPants,  chosen_size);
-			buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
-			buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
-			$('#shirts-slider').slider('value',chosen_shirt);
-			$('#pants-slider').slider('value',chosen_pants);
-			addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
-			addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
-			sliderChanged(arrayIndex, bodies, 'body');
-		}
-		/*
-		handle face slider changes
-		*/
-		function onFaceSelection(arrayIndex){
-			sliderChanged(arrayIndex, faces, 'face');
-		}		
-		
+<script>
+    var colors = [];
+    var allFaces = [];
+    var	allHairStyles = [];
+    var allEyeBrows = [];
+    var allEyes = [];
+    var allBodies = [];
+    var allShirts = [];
+    var allPants = [];
+    var allShoes = [];
+    var allHelmets = [];
+    var faces = [];
+    var hairStyles = [];
+    var eyeBrows = [];
+    var eyes = [];
+    var bodies = [];
+    var shirts = [];
+    var pants = [];
+    var shoes = [];
+    var helmets = [];
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var current_selections = {};
+    var avatar = new serempre.avatars.Avatar();
+    var loadingIntervalReference = null;
+    avatar.width = canvas.width;
+    avatar.height = canvas.height;
+    //when document completes loading, execute the following code
+    $(document).ready(function(){
+                      //if there is no data about the origin and destination cargos, then redirect the user to the home page
+                      serempre.cargos.futurePaths = sessionStorage.futurePaths;
+                      if(! serempre.cargos.futurePaths){
+                      window.location.href='/';
+                      }
+                      //get ready to use wait dialogs in this page
+                      serempre.cargos.setupWaitDialog();
+                      //build a confirmation dialog for later use
+                      $( "#dialog-confirm" ).dialog({
+                                                    open: function(event,ui){
+                                                    $(event.target).parent().find('button:first').addClass('btn').addClass('btn-primary');
+                                                    },
+                                                    autoOpen: false,
+                                                    resizable: false,
+                                                    height:170,
+                                                    modal: true,
+                                                    buttons: {
+                                                    "Si": function() {
+                                                    $( this ).dialog( "close" );
+                                                    serempre.cargos.toggleWaitDialog('Iniciando la simulación', 'icon-signal');
+                                                    sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
+                                                    window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
+                                                    },
+                                                    No: function() {
+                                                    $( this ).dialog( "close" );
+                                                    }
+                                                    }
+                                                    });
+                      //ask the user to wait
+                      serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+                      //start loading all assets
+                      {% for item in cuerpos %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
+                      {% endfor %}
+                      {% for item in facciones %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+                      {% endfor %}
+                      {% for item in camisas %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
+                      {% endfor %}
+                      {% for item in pantalones %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
+                      {% endfor %}
+                      {% for item in ojos %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
+                      {% endfor %}
+                      {% for item in cejas %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
+                      {% endfor %}
+                      {% for item in zapatos %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
+                      {% endfor %}
+                      {% for item in pelos %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
+                      {% endfor %}
+                      {% for item in cascos %}
+                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
+                      {% endfor %}
+                      //dismiss wait dialog when all images are done loading
+                      loadingIntervalReference = window.setInterval(function(){
+                                                                    if(closeWaitDialogIfAllThingsLoaded()){
+                                                                    window.clearInterval(loadingIntervalReference);
+                                                                    }
+                                                                    }, 1000);
+                      });
+    /*
+     ask for user confirmation before proceeding
+     */
+    function confirmSimulationStart(){
+        $( '#dialog-confirm' ).dialog( 'open' );
+        return false;
+    }
+    /*
+     checks images to find out if the wait dialog is to be dismissed
+     */
+    function closeWaitDialogIfAllThingsLoaded(){
+        var dismissDialog = true;
+        var arraysToCheck = [ allBodies, allFaces, allShirts, allPants, allEyes, allEyeBrows, allShoes, allHairStyles, allHelmets ];
+        var msgUpdate = [ "cuerpos...", "caras...", "camisas...", "pantalones...", "ojos...", "cejas...", "zapatos...", "cabelleras...", "cascos..." ];
+        var i = 0;
+        for(i = 0; i < arraysToCheck.length && dismissDialog; i++){
+            dismissDialog = dismissDialog && checkAllImagesLoaded(arraysToCheck[i]);
+        }
+        if(dismissDialog){
+            //pick default skin color
+            $('#skin-choices a')[0].click();
+            //dismiss wait dialog
+            serempre.cargos.toggleWaitDialog();
+        }else {
+            changeWaitDialogText('Descargando '+msgUpdate[i]);
+        }
+        return dismissDialog;
+    }
+    /*
+     updates wait message dialog status
+     @text: what to display on the wait dialog
+     */
+    function changeWaitDialogText(text){
+        $('#dialog-wait span#msg-content').text(text);
+    }
+    /**
+     builds an html image element
+     @itemIndex: array index where image is to be stored at
+     @imagePk: entity key for the image
+     @imageURL: where to fetch image data from
+     @imageAltText: what to display if image loading fails
+     @imageArray: placeholder for the image object
+     @onClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
+     */
+    function createImageItemContent( itemIndex, imagePk, imageURL, imageAltText, imageArray, onClickHandler ){
+        var imgDomElement = $('<img src="'+ imageURL +'" alt="'+ imageAltText +'" arrayIndex="'+ itemIndex +'" pk="'+ imagePk +'"></img>');
+        imgDomElement.click( {'index': itemIndex, 'pk': imagePk, 'imageAltText': imageAltText}, onClickHandler );
+        return imgDomElement;
+    }
+    /*
+     stores content within a div that uses classes scroll-contet-item and ui-widget-header
+     @content: DOM element to be placed inside a scrollable slider
+     */
+    function wrapAsScrollableContentItem( content ){
+        var container = $(' <div class="scroll-content-item ui-widget-header"></div>');
+        container.append(content);
+        return container;
+    }
+    /*
+     returns raw html for a scrollable pane
+     @itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
+     */
+    function scrollPane( sourceArray, scrollablePaneId, itemClickHandler ){
+        var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
+        var scrollContent = $('<div class="scroll-content"></div>');
+        for(var i = 0; i<sourceArray.length; i++){
+            var item = sourceArray[i];
+            var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
+            scrollableItem = wrapAsScrollableContentItem(scrollableItem);
+            scrollContent.append(scrollableItem);
+        }
+        scrollablePane.append(scrollContent);
+        scrollablePane.append($('<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div>'));
+        scrollablePane.id = scrollablePaneId;
+        return scrollablePane;
+    }
+    /*
+     removes a scrollPane from the document
+     @scrollablePaneId: id for the scrollablePane to be removed from the document
+     */
+    function deleteScrollPane(scrollablePaneId){
+        $('#'+scrollablePaneId).remove();
+    }
+    /**
+     prepares an array of images for later use
+     @itemIndex: array index where image is to be stored at
+     @imagePk: entity key for the image
+     @imageURL: where to fetch image data from
+     @imageAltText: what to display if image loading fails
+     @imageArray: placeholder for the image object
+     @imageLoadedCallback: function that gets triggered upon image loaded event. The image object is passed as the first parameter to the function
+     */
+    function setupImage(itemIndex, imagePk, imageURL, thumbnailURL, imageAltText, imageArray, imageLoadedCallback, targetAttributeName){
+        imageArray[ itemIndex ] = new Image();
+        imageArray[ itemIndex ].loaded = false;
+        imageArray[ itemIndex ].onload = function(){
+            imageArray[ itemIndex ].loaded = true;
+            if( imageLoadedCallback ){
+                imageLoadedCallback( imageArray[ itemIndex ] );
+            }
+        };
+        imageArray[ itemIndex ].src = imageURL;
+        imageArray[ itemIndex ].alt = imageAltText;
+        imageArray[ itemIndex ].pk = imagePk;
+        imageArray[ itemIndex ].arrayIndex = itemIndex;
+        imageArray[ itemIndex ].thumbnail = thumbnailURL;
+        imageArray[ itemIndex ].fetchFrom = imageURL;
+        imageArray[ itemIndex ].imageAltText = imageAltText;
+        if( targetAttributeName ){
+            imageArray[ itemIndex ].onclick = function(){
+                avatar[ targetAttributeName ] = imageArray[ itemIndex ];
+                //save selection
+                current_selection[ targetAttributeName ] = imageArray[ itemIndex ].index;
+                avatar.paint( context );
+            };
+        }
+    }
+    /*
+     returns true if all images loaded within an array
+     @imageArray: array of images to check. Note that images should have been built using 'setupImage' or at least have a loaded attribute
+     */
+    function checkAllImagesLoaded(imageArray){
+        var allImagesLoaded = true;
+        for(var i = 0; i<imageArray.length && allImagesLoaded; i++){
+            allImagesLoaded = allImagesLoaded && imageArray[i].loaded;
+        }
+        return allImagesLoaded;
+    }
+    
+    /**
+     saves whatever raw strings are found within 'colors' as choices for #skin-choices
+     @colors: an array of strings holding color names
+     @colorChosenHandler: a function of the form function(colorName){ ... } where colorName is plain text
+     */
+    function populateColorChoices(colors, colorChosenHandler){
+        for(var i = 0; i<colors.length;i++){
+            var optionContainer = $('<li></li>');
+            var colorOption = $('<a tabindex="-1" href="#">'+ colors[i] +'</a>');
+            colorOption.click(function(){
+                              var face = current_selections.face ? current_selections.face : 0;
+                              var body = current_selections.body ? current_selections.body : 0;
+                              colorChosenHandler( $(this).text() );
+                              $('#faces-slider').slider('value',face);
+                              $('#body-slider').slider('value',body);
+                              });
+            optionContainer.append(colorOption);
+            $('#skin-choices').append(optionContainer);
+        }
+    }
+    /**
+     reads the 'alt' attribute for each image in the imageArray. Saves unique values for color which is extracted using a regular expression. Returns an array of strings holding unique color names
+     @imageArray: array of images where colors are to be extracted from
+     */
+    function getUniqueColorNamesFrom(imageArray){
+        var color_regex = /[^\s]+(?=( ((hombre)|(mujer))))/gi;
+        var availableColors = {};
+        var counter = 0;
+        colors = [];
+        for(var i = 0; i < imageArray.length; i++){
+            var color = imageArray[i].alt.match(color_regex)+'';
+            availableColors[color] = color;
+        }
+        for(color in availableColors){
+            colors[counter++] = color;
+        }
+        return colors;
+    }
+    /*
+     turns a div into a slider using an array as the slider's data source
+     @sliderId: domID for the div to be converted to a slider
+     @sourceArray: elements over which the slider iterates
+     @onSlide: handle to a function definition matching function(event,ui) { ... }
+     @onChange: handle to a function definition matching function(event,ui) { ... }
+     */
+    function buildSimpleSlider(sliderId, sourceArray, onSlide, onChange){
+        $('#'+sliderId).slider({
+                               orientation: "horizontal",
+                               range: "min",
+                               max: sourceArray.length - 1,
+                               value: 0,
+                               step: 1,
+                               slide: onSlide,
+                               change: onChange,
+                               });
+    }
+    /*
+     Adds or replaces a scrollable slider using an image array and a simple slider to handle event callbacks
+     @sourceArray: image array holding slider scrollable content
+     @scrollableSliderId: id for the scrollable slider to be created or replaced
+     @simpleSliderId: simple slider to which all events are forwarded
+     @itemClickHandler: (OPTIONAL) event handler if a simple slider was not provided
+     */
+    function addOrReplaceScrollableSlider(sourceArray, scrollableSliderId, simpleSliderId, itemClickHandler){
+        var newScrollableSlider = scrollPane(sourceArray, scrollableSliderId, itemClickHandler ? itemClickHandler : function(event){
+                                             $('#'+simpleSliderId).slider('value', event.data.index);
+                                             });
+        var oldScrollableSlider = $('#'+scrollableSliderId);
+        if(oldScrollableSlider.length){
+            oldScrollableSlider.replaceWith(newScrollableSlider);
+        }else{
+            $('#scrollable-sliders').append(newScrollableSlider);
+        }
+        //refresh
+        updateTabControls();
+        //setupSliderScrollBar(scrollableSliderId);
+        return newScrollableSlider;
+    }
+    /*
+     updates tab headers and tab contents, based on available options
+     */
+    function updateTabControls(){
+        //this method may fail if tab panel hasn't been initialized
+        try{
+            $('#scrollable-sliders').tabs('refresh');
+        }catch(e){
+            //console.log(e);
+            //ignore error and continue
+        }
+    }
+    /*
+     when all bodies are done loading, setup color choices
+     */
+    function setupColorChoices(){
+        if(checkAllImagesLoaded(allBodies)){
+            var availableColors = getUniqueColorNamesFrom(allBodies);
+            populateColorChoices(availableColors, function(colorName){
+                                 $('#skin-color-tag').text(colorName+' ').append($('<span class="caret"></span>'));
+                                 bodies = serempre.avatars.filterByColor(allBodies, colorName);
+                                 faces = serempre.avatars.filterByColor(allFaces, colorName);
+                                 buildSimpleSlider('body-slider',bodies,function(event,ui){ onBodySelection(ui.value); },function(event,ui){ onBodySelection(ui.value); });
+                                 buildSimpleSlider('faces-slider',faces,function(event,ui){ onFaceSelection(ui.value); },function(event,ui){ onFaceSelection(ui.value); });
+                                 addOrReplaceScrollableSlider(bodies, 'bodies-scrollable-slider', 'body-slider');
+                                 addOrReplaceScrollableSlider(faces, 'faces-scrollable-slider', 'faces-slider');
+                                 });
+        }
+    }
+    /*
+     when all eyes are done loading, build a slider to pick avatar eyes
+     */
+    function setupEyes(){
+        if(checkAllImagesLoaded(allEyes)){
+            buildSimpleSlider('eyes-slider', allEyes,function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); },function(event,ui){ sliderChanged(ui.value, allEyes, 'faceFeatures',1); });
+            addOrReplaceScrollableSlider(allEyes,'eyes-scrollable-slider', 'eyes-slider');
+            $('#eyes-slider').slider('value',0);
+        }
+    }
+    /*
+     when all eyebrows are done loading, build a slider to pick avatar eyebrows
+     */
+    function setupEyebrows(){
+        if(checkAllImagesLoaded(allEyeBrows)){
+            buildSimpleSlider('eyebrows-slider', allEyeBrows, function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); },function(event,ui){ sliderChanged(ui.value, allEyeBrows, 'faceFeatures',2); });
+            addOrReplaceScrollableSlider(allEyeBrows, 'eyebrows-scrollable-slider','eyebrows-slider');
+            $('#eyebrows-slider').slider('value',0);
+        }
+    }
+    /*
+     builds a shoe slider when all shoe images become available
+     */
+    function setupShoes(){
+        if(checkAllImagesLoaded(allShoes)){
+            buildSimpleSlider('shoes-slider', allShoes, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); }, function(event,ui){ sliderChanged(ui.value, allShoes, 'shoes'); });
+            addOrReplaceScrollableSlider(allShoes, 'shoes-scrollable-slider', 'shoes-slider');
+            $('#shoes-slider').slider('value',0);
+        }
+    }
+    /*
+     builds a hairstyle slider when all hairstyles become available
+     */
+    function setupHairStyles(){
+        if(checkAllImagesLoaded(allHairStyles)){
+            buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
+            addOrReplaceScrollableSlider(allHairStyles, 'hairstyles-scrollable-slider', 'hairStyles-slider');
+            $('#hairStyles-slider').slider('value',0);
+        }
+    }
+    /*
+     builds a slider to pick helmets once all assets are available
+     */
+    function setupHelmets(){
+        if(checkAllImagesLoaded(allHelmets)){
+            buildSimpleSlider('helmets-slider', allHelmets, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); }, function(event,ui){ sliderChanged(ui.value, allHelmets, 'helmet'); });
+            addOrReplaceScrollableSlider(allHelmets, 'helmets-scrollable-slider', 'helmets-slider');
+            $('#helmets-slider').slider('value',0);
+        }
+    }
+    /*
+     updates avatar image using whatever is selected on a slider
+     @newValue: slider value
+     @imageArray: slider data source
+     @targetAttributeName: attribute to be modified on the avatar
+     @attributeIndexOrKey: if the property being set is an array or hash table, supply target index/key
+     */
+    function sliderChanged(newValue, imageArray, targetAttributeName, attributeIndexOrKey){
+        if(!attributeIndexOrKey){
+            current_selections[targetAttributeName] = newValue;
+            avatar[targetAttributeName] = imageArray[current_selections[targetAttributeName]];
+        }else{
+            attributeIndexOrKey -= 1;
+            current_selections[targetAttributeName+attributeIndexOrKey] = newValue;
+            avatar[targetAttributeName][attributeIndexOrKey] = imageArray[current_selections[targetAttributeName+attributeIndexOrKey]];
+        }
+        avatar.paint(context);
+    }
+    /*
+     handle body slider changes
+     */
+    function onBodySelection(arrayIndex){
+        var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
+        var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
+        var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
+        var chosen_pants = current_selections.pants ? current_selections.pants : 0;
+        shirts = serempre.avatars.filterBySize(allShirts, chosen_size);
+        pants  = serempre.avatars.filterBySize(allPants,  chosen_size);
+        buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
+        buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
+        $('#shirts-slider').slider('value',chosen_shirt);
+        $('#pants-slider').slider('value',chosen_pants);
+        addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
+        addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
+        sliderChanged(arrayIndex, bodies, 'body');
+    }
+    /*
+     handle face slider changes
+     */
+    function onFaceSelection(arrayIndex){
+        sliderChanged(arrayIndex, faces, 'face');
+    }		
+    
 	</script>
-	<!--
-			//this turns an input field into a remote data sourced autocomplete
-			$('#cargo_inicial_nombre').autocomplete({
-				source: function(request, response){
-					console.log("{% url 'get-cargos' %}" + request.term + "/");
-					$.ajax({
-						url: "{% url 'get-cargos' %}" + request.term
-						, dataType: "json"
-						, data: {
-							//don't send any data to the service
-						}, success: function(data, textStatus, jqXHR){
-							response( $.map( data, function( item ) {
-								return {
-									label: item.fields.nombre,
-									value: item.pk
-								}
-							}));
-						}, complete: function(jqXHR, textStatus){
-							//done requesting data
-						}, error: function(jqXHR, textStatus, errorThrown){
-							alert(textStatus);
-						}
-					});
-				}, minLength: 2,
-				select: function(event, ui){
-					if(ui.item){
-						console.log(ui.item.value);
-						$('#cargo_inicial_nombre').val(ui.item.label);
-						$('#cargo_inicial').val(ui.item.value);
-						return false;
-					}
-				}, open: function(){
-					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
-				}, close: function(){
-					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
-				}
-			}).data("autocomplete")._renderItem = function( ul, item ){
-				return $( "<li>" )
-                .data( "item.autocomplete", item )
-                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
-                .appendTo( ul );
-			}
-	-->
+<!--
+ //this turns an input field into a remote data sourced autocomplete
+ $('#cargo_inicial_nombre').autocomplete({
+ source: function(request, response){
+ console.log("{% url 'get-cargos' %}" + request.term + "/");
+ $.ajax({
+ url: "{% url 'get-cargos' %}" + request.term
+ , dataType: "json"
+ , data: {
+ //don't send any data to the service
+ }, success: function(data, textStatus, jqXHR){
+ response( $.map( data, function( item ) {
+ return {
+ label: item.fields.nombre,
+ value: item.pk
+ }
+ }));
+ }, complete: function(jqXHR, textStatus){
+ //done requesting data
+ }, error: function(jqXHR, textStatus, errorThrown){
+ alert(textStatus);
+ }
+ });
+ }, minLength: 2,
+ select: function(event, ui){
+ if(ui.item){
+ console.log(ui.item.value);
+ $('#cargo_inicial_nombre').val(ui.item.label);
+ $('#cargo_inicial').val(ui.item.value);
+ return false;
+ }
+ }, open: function(){
+ $(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+ }, close: function(){
+ $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+ }
+ }).data("autocomplete")._renderItem = function( ul, item ){
+ return $( "<li>" )
+ .data( "item.autocomplete", item )
+ .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+ .appendTo( ul );
+ }
+ -->
 {% endblock %}
 {% comment %}
-	See built in thempalte tags and filters at:
-	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
-	
-	See basic template syntax at:
-	https://docs.djangoproject.com/en/dev/ref/templates/api/
-	
-	https://docs.djangoproject.com/en/1.4/topics/templates/
+See built in thempalte tags and filters at:
+https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+
+See basic template syntax at:
+https://docs.djangoproject.com/en/dev/ref/templates/api/
+
+https://docs.djangoproject.com/en/1.4/topics/templates/
 {% endcomment %}

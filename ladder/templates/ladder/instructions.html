@@ -1,0 +1,111 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-02LAB.png" %}) no-repeat right 0px;
+}
+{% endblock %}
+
+{% block pageheader %}
+<div>
+	<h1>Instrucciones</h1>
+</div>
+{% endblock %}
+
+{% block pagebody %}
+<div class="contenido">
+    <ol>
+        <li><h3>Crea tu Avatar</h3>
+            <p>Para empezar debes ubicar tus características físicas y escoger los accesorios y el
+            vestuario que más te guste y se ajuste al cargo que estás ocupando actualemente</p>
+        </li>
+        <li><h3>Empieza tu simulación</h3>
+            <p>Dentro de las casillas escribe tu nombre, cargo actual, años de experiencia y
+            ubicación geográfica.
+            <br /><br />
+            Seguidamente responde a la pregunta :<br />
+            <span>¿Cuál es el objetivo al que deseas llegar en Pacific Rubiales?</span>
+            <br /><br />
+            Dentro de la simulación recuerda que para pasar de un cargo a otro deberás
+            seleccionar y aprobar las competencias requeridas para cada cargo, que están
+            representadas por íconos dentro de la herramienta, cuando logres conseguir
+            cada uno de los íconos avanzarás al cargo siguiente
+            </p><br />
+            <h4>¡Ahora solo debes empezar! Crea tu propia ruta de carrera,
+                incrementa tu talento y evoluciona de una manera integral</h4>
+        </li>
+    </ol>
+</div>
+<span class="boton"><a href="#">Continuar</a></span>
+{% endblock %}
+
+{% block pagefooter %}
+
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

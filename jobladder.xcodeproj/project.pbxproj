@@ -102,6 +102,7 @@
 		43B471D3166903B9003EB0DC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		43B471D4166903B9003EB0DC /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
 		43FC2FE316A60D5A008EE227 /* next_step.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = next_step.html; sourceTree = "<group>"; };
+		5DB4157C16B92502001D91DA /* instructions.html */ = {isa = PBXFileReference; explicitFileType = text.html.documentation; fileEncoding = 4; path = instructions.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -354,6 +355,7 @@
 				43B471CB166903B9003EB0DC /* create_avatar.html */,
 				43B471CC166903B9003EB0DC /* index.html */,
 				43B471CD166903B9003EB0DC /* simulation.html */,
+				5DB4157C16B92502001D91DA /* instructions.html */,
 			);
 			path = ladder;
 			sourceTree = "<group>";
@@ -380,7 +382,7 @@
 		43B471691669026C003EB0DC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Nicolas Diaz Aragon";
 			};
 			buildConfigurationList = 43B4716C1669026C003EB0DC /* Build configuration list for PBXProject "jobladder" */;
@@ -450,6 +452,7 @@
 		43B471721669026C003EB0DC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -462,6 +465,7 @@
 		43B471731669026C003EB0DC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

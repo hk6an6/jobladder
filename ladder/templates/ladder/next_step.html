@@ -97,15 +97,19 @@
 {% endblock %}
 
 {% block pageheader %}
-	<h1>Planea tu ascenso</h1>
+<div>
+    <h1>Planea tu ascenso</h1>
+</div>
 {% endblock %}
 
 {% block pagebody %}
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
+<div class="col1">
 	<div id="next-steps"></div>
 	<div id="breadcrums"></div>
+</div>
 {% endblock %}
 
 {% block pagefooter %}
