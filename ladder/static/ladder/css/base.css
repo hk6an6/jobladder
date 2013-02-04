@@ -52,6 +52,7 @@ table {
     font-family: 'thesansplain';
     src: url('thesans_plain-webfont.eot');
     src: url('thesans_plain-webfont.ttf') format('truetype');
+    src: local(thesansplain), url('thesans_plain-webfont.ttf');
     font-weight: normal;
     font-style: normal;
 
@@ -106,7 +107,7 @@ canvas{
 	padding:4px;
 	float:right;
 }
-.boton button{
+.boton button, .boton a{
 	background:#025084;
 	padding:0.3em 1em;
 	color:#FFF;
@@ -202,7 +203,7 @@ ul.tab-controls{
     }
 .scroll-pane{
     background:none !important;
-    border:none !important;
+    border:0 !important;
 }
 .scroll-content-item{
     background:url(../images/imagenes/bg_item.png) no-repeat !important;
@@ -210,6 +211,9 @@ ul.tab-controls{
     width:40px !important;
     height:40px !important;
 }
+.scroll-pane .ui-widget-content{
+    border:none !important;
+    }
 .ui-autocomplete {
 	max-height: 100px;
 	max-width: 250px;
