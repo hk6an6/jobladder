@@ -213,6 +213,7 @@ ul.tab-controls{
     border:0 !important;
 }
 .scroll-content-item{
+    background:none !important;
     border:none !important;
     width:40px !important;
     height:40px !important;
