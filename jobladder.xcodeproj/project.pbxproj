@@ -102,6 +102,19 @@
 		43B471D3166903B9003EB0DC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		43B471D4166903B9003EB0DC /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
 		43FC2FE316A60D5A008EE227 /* next_step.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = next_step.html; sourceTree = "<group>"; };
+		5D442F4916C427AC00021B9F /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
+		5D442F4A16C42B4200021B9F /* bg_item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_item.png; sourceTree = "<group>"; };
+		5D442F4B16C42B4200021B9F /* icono-camisa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-camisa.png"; sourceTree = "<group>"; };
+		5D442F4C16C42B4300021B9F /* icono-cascos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-cascos.png"; sourceTree = "<group>"; };
+		5D442F4D16C42B4300021B9F /* icono-cejas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-cejas.png"; sourceTree = "<group>"; };
+		5D442F4E16C42B4300021B9F /* icono-color-pelo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-color-pelo.png"; sourceTree = "<group>"; };
+		5D442F4F16C42B4300021B9F /* icono-color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-color.png"; sourceTree = "<group>"; };
+		5D442F5016C42B4300021B9F /* icono-cuerpo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-cuerpo.png"; sourceTree = "<group>"; };
+		5D442F5116C42B4300021B9F /* icono-facciones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-facciones.png"; sourceTree = "<group>"; };
+		5D442F5216C42B4300021B9F /* icono-ojos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-ojos.png"; sourceTree = "<group>"; };
+		5D442F5316C42B4300021B9F /* icono-pantalones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pantalones.png"; sourceTree = "<group>"; };
+		5D442F5416C42B4300021B9F /* icono-pelo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pelo.png"; sourceTree = "<group>"; };
+		5D442F5516C42B4300021B9F /* icono-zapatos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-zapatos.png"; sourceTree = "<group>"; };
 		5DB4157C16B92502001D91DA /* instructions.html */ = {isa = PBXFileReference; explicitFileType = text.html.documentation; fileEncoding = 4; path = instructions.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +122,18 @@
 		431E6F1B16A6FD02004177CC /* imagenes */ = {
 			isa = PBXGroup;
 			children = (
+				5D442F4A16C42B4200021B9F /* bg_item.png */,
+				5D442F4B16C42B4200021B9F /* icono-camisa.png */,
+				5D442F4C16C42B4300021B9F /* icono-cascos.png */,
+				5D442F4D16C42B4300021B9F /* icono-cejas.png */,
+				5D442F4E16C42B4300021B9F /* icono-color-pelo.png */,
+				5D442F4F16C42B4300021B9F /* icono-color.png */,
+				5D442F5016C42B4300021B9F /* icono-cuerpo.png */,
+				5D442F5116C42B4300021B9F /* icono-facciones.png */,
+				5D442F5216C42B4300021B9F /* icono-ojos.png */,
+				5D442F5316C42B4300021B9F /* icono-pantalones.png */,
+				5D442F5416C42B4300021B9F /* icono-pelo.png */,
+				5D442F5516C42B4300021B9F /* icono-zapatos.png */,
 				431E6F1C16A6FD02004177CC /* avatares-INTRO.png */,
 				431E6F1D16A6FD02004177CC /* background.gif */,
 				431E6F1E16A6FD02004177CC /* bg_silouette-01CAMP.png */,
@@ -356,6 +381,7 @@
 				43B471CC166903B9003EB0DC /* index.html */,
 				43B471CD166903B9003EB0DC /* simulation.html */,
 				5DB4157C16B92502001D91DA /* instructions.html */,
+				5D442F4916C427AC00021B9F /* home.html */,
 			);
 			path = ladder;
 			sourceTree = "<group>";

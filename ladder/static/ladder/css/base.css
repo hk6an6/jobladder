@@ -65,18 +65,18 @@ body {
 header {
 	background-color: rgba(255, 255, 255, 0.55);
 	padding: 35px;
-	color: #C2C2C2;
+	color: #025084;
 	padding:10px 35px;
-	min-height:125px;
+	min-height:70px;
 }
 header div{
 	float:left;
 	text-align:right;
 }
 h1{
-	font-size:120px;
+	font-size:70px;
 	line-height:0.7;
-	letter-spacing:-8px;
+	letter-spacing:-6px;
 	margin-top:15px;
 }
 h2{
@@ -120,6 +120,13 @@ canvas{
     width:54%;
     padding:0 0 30px 30px;
 }
+.col2{
+float:left;
+width:40%;
+padding:0px;
+text-align:center;
+}
+
 ul.tab-controls{
     width:60px;
     display:inline-block;
@@ -206,7 +213,6 @@ ul.tab-controls{
     border:0 !important;
 }
 .scroll-content-item{
-    background:url(../images/imagenes/bg_item.png) no-repeat !important;
     border:none !important;
     width:40px !important;
     height:40px !important;
@@ -281,16 +287,19 @@ ol > li:before {
 li ol,
 li ul {margin-top:6px;}
 ol ol li:last-child {margin-bottom:0;}
-li h3{
+li h3, h3{
 	color:#990033;
 	font-size:40px;
 	padding-bottom:15px;
 }
-li h4{
+li h4, h4{
 	color:#990033;
 	font-size:24px;
 }
-li p{
+h4 span{
+    color:#025084;
+}
+li p, p{
 	color:#666;
 	line-height:1.2;
 }

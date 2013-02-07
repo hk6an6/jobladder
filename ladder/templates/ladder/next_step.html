@@ -231,9 +231,8 @@
 		*/
 		function buildDisplayForRequirement( requirement ) {
 			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
-												+ '<a href="#modal' + requirement.pk + '" role="button" class="btn" data-toggle="modal">'
-													+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
-													+ requirement.fields.nombre
+												+ '<a href="#modal' + requirement.pk + '" role="button" class="btn" data-toggle="modal">'+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+													+requirement.fields.nombre
 												+ '</a>'
 												+'<div id="modal' + requirement.pk + '" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
 													+'<div class="modal-header">'

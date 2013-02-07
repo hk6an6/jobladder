@@ -1,0 +1,104 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+}
+.col1{
+padding-top:50px;
+}
+{% endblock %}
+
+{% block pageheader %}
+<div>
+	<h1>¡Hola!</h1>
+</div>
+{% endblock %}
+
+{% block pagebody %}
+<div class="col2">
+<img src="{% static "ladder/images/imagenes/avatares-INTRO.png" %}" alt="Avatares Pacific Rubiales" />
+ </div>
+<div class="col1">
+ 
+    <h3><span>¡Bienvenido a<span><br/>Rutas de carrera</h3>
+    <p>Una herramienta de simulación en la que visualizarás las mejores oportunidades
+que existen dentro de la compañía mostrándote como trabajador, cómo puedes 
+potenciar tu plan individual de carrera,  fortalecer e incrementar tu talento y 
+evolucionar de una manera integral</p>
+<h4>¡Animate a partipar!</h4>
+</div>
+</div>
+<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+{% endblock %}
+
+{% block pagefooter %}
+
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}
