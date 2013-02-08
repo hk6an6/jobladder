@@ -137,7 +137,7 @@ margin: 15px;
                                                     buttons: {
                                                     "Si": function() {
                                                     $( this ).dialog( "close" );
-                                                    serempre.cargos.toggleWaitDialog('Iniciando la simulación', 'icon-signal');
+                                                    serempre.cargos.toggleWaitDialog('', 'icon-signal');
                                                     sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
                                                     window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
                                                     },
@@ -147,7 +147,7 @@ margin: 15px;
                                                     }
                                                     });
                       //ask the user to wait
-                      serempre.cargos.toggleWaitDialog('Cargando imágenes', 'icon-signal');
+                      serempre.cargos.toggleWaitDialog('', 'icon-signal');
                       //start loading all assets
                       {% for item in cuerpos %}
                       setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
@@ -207,7 +207,7 @@ margin: 15px;
             //dismiss wait dialog
             serempre.cargos.toggleWaitDialog();
         }else {
-            changeWaitDialogText('Descargando '+msgUpdate[i]);
+            //changeWaitDialogText('Descargando '+msgUpdate[i]);
         }
         return dismissDialog;
     }

@@ -132,7 +132,7 @@
 			//get ready to use wait dialogs in this page
 			serempre.cargos.setupWaitDialog( );
 			//ask the user to wait
-			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			//load simulation offset data
 			loadSimulationData();
 			//initialize avatar
@@ -516,7 +516,7 @@
 		downloads avatar specs for a given position key. Performs a callback when specs become available
 		*/
 		function downloadModelAvatarFor( cargo_pk, modelAvatarCallBack ){
-			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			$.ajax({
 				url: buildURLForAvatarByCargo( cargo_pk )
 				, dataType: "json"
@@ -535,7 +535,7 @@
 		downloads pant data for given entity key
 		*/
 		function downloadPantsData( pk, pantsAvailableCallback ){
-			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			$.ajax({
 				url: buildPantsURL( pk )
 				, dataType: "json"
@@ -554,7 +554,7 @@
 		downloads shirt data for a given entity key
 		*/
 		function downloadShirtData( pk, shirtAvailableCallback ){
-			serempre.cargos.toggleWaitDialog( 'Cargando imágenes', 'icon-signal' );
+			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			$.ajax({
 				url: buildShirtURL( pk )
 				, dataType: "json"

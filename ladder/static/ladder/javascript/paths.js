@@ -162,7 +162,7 @@ var serempre = new function(){
 		
 		//prepare wait dialog
 		this.setupWaitDialog = function(){
-			$(document.body).append("<div id='dialog-wait' title='Por favor espera...'><div class='control-group warning'><p style='margin-top: 5px;'><i class='icon-road' style='margin: 3px 7px 0px 7px; float: left;'></i><span id='msg-content'>Estamos calculando tus planes de carrera</span><p></div></div>");
+			$(document.body).append( "<div id='dialog-wait' title='Por favor espera...'><div class='control-group warning'><p style='margin-top: 5px;'><i class='icon-road' style='margin: 3px 7px 0px 7px; float: left;'></i><span id='msg-content'></span><p></div></div>" );
 			$( "#dialog-wait" ).dialog({
 				resizable: false,
 				height:140,
@@ -177,34 +177,36 @@ var serempre = new function(){
 		//hides or shows the please wait dialog
 		//text: text you want displayed by the wait dialog
 		//icon: bootstrap glyphicon style for the dialog image
-		this.toggleWaitDialog = function(text, icon){
+		this.toggleWaitDialog = function( text, icon ){
 			//find out if dialog is opened up
 			if($("#dialog-wait").dialog( "isOpen" )){
 				//if dialog is opened up, then close it
 				$("#dialog-wait").dialog( "close" );
 			}else {
-				if(text){
-					$('#dialog-wait #msg-content').text(text);
+				if( text ){
+					$( '#dialog-wait #msg-content' ).text( text );
+				} else if ( text === '' ){
+					$( '#dialog-wait i' ).css( 'visibility','hidden' );
 				}
 				if(icon){
-					var iconImage = $('#dialog-wait i');
-					var currentStyle = iconImage.attr('class');
-					iconImage.removeClass(currentStyle).addClass(icon);
+					var iconImage = $( '#dialog-wait i' );
+					var currentStyle = iconImage.attr( 'class' );
+					iconImage.removeClass( currentStyle ).addClass( icon );
 				}
 				//display dialog
 				$("#dialog-wait").dialog( "open" );
 				//hide the close dialog handle
-				var closeLink = $('a.ui-dialog-titlebar-close', $('#dialog-wait').prev()).remove();
-				if(closeLink.length>0)
-					$('#dialog-wait').prev().prepend($("<span class='background_jobs_pending'></span>"));
+				var closeLink = $( 'a.ui-dialog-titlebar-close', $( '#dialog-wait' ).prev() ).remove();
+				if( closeLink.length > 0 )
+					$('#dialog-wait').prev().prepend( $( "<span class='background_jobs_pending'></span>" ) );
 			}
 		}
 		
 		//iterates trough whatever contents are in the array or object represented by 'data'
 		//data: info to be used when populating a drop down list
 		//jqSelectorForDropown: jquery selector that points to the dropdown where data is to be appended
-		this.populateDropdownOptions = function(data, jqSelectorForDropown){
-			$(jqSelectorForDropown+' option').remove()
+		this.populateDropdownOptions = function( data, jqSelectorForDropown ){
+			$( jqSelectorForDropown+' option' ).remove()
 			$.map( data, function( item ) {
 				$(jqSelectorForDropown).append(
 					$('<option value="' + item.pk + '">' + item.fields.nombre + '</option>')
