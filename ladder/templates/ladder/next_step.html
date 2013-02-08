@@ -103,9 +103,14 @@
 {% endblock %}
 
 {% block pagebody %}
+<div id="alerts">
+	
+</div>
+<div>
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
+</div>
 <div class="col1">
 	<div id="next-steps"></div>
 	<div id="breadcrums"></div>
@@ -394,6 +399,21 @@
 			return result;
 		}
 		/*
+		let the user know the simulation can be ended
+		*/
+		function goalReached(){
+			var alertMsg = 
+				 '<div class="alert alert-block alert-info fade in" id="alert_done">'
+					+'<a class="close" data-dismiss="alert" href="#">&times;</a>'
+					+'<h4 class="alert-heading">Alcanzaste tu meta!</h4>'
+					+'<p>'
+						+'<a class="btn btn-primary" href="#">Terminar</a>'
+						+'<a class="btn" href="#" data-dismiss="alert">Continuar la simulaci&oacute;n</a>'
+					+'</p>'
+				+'</div>';
+				$( '#alerts' ).append( $( alertMsg ) );
+		}
+		/*
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
@@ -407,6 +427,9 @@
 				path[ path.length ] = positionPK;
 			}
 			sessionStorage.path = JSON.stringify( path );
+			if( currentCargo.pk == destinationCargo.pk ){
+				goalReached();
+			}
 		}
 		/*
 		true if all requirements for a position are fulfilled
