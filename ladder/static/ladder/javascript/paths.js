@@ -623,6 +623,7 @@ var serempre = new function(){
 						  this.pants,
 						  this.shoes,
 						  this.shirt,
+						  this.misc,
 						  this.hair,
 						  this.hairFeatures,
 						  this.helmet,
