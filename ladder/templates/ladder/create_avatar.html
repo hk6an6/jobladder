@@ -118,71 +118,68 @@ margin: 15px;
     avatar.height = canvas.height;
     //when document completes loading, execute the following code
     $(document).ready(function(){
-                      //if there is no data about the origin and destination cargos, then redirect the user to the home page
-                      serempre.cargos.futurePaths = sessionStorage.futurePaths;
-                      if(! serempre.cargos.futurePaths){
-                      window.location.href='/';
-                      }
-                      //get ready to use wait dialogs in this page
-                      serempre.cargos.setupWaitDialog();
-                      //build a confirmation dialog for later use
-                      $( "#dialog-confirm" ).dialog({
-                                                    open: function(event,ui){
-                                                    $(event.target).parent().find('button:first').addClass('btn').addClass('btn-primary');
-                                                    },
-                                                    autoOpen: false,
-                                                    resizable: false,
-                                                    height:170,
-                                                    modal: true,
-                                                    buttons: {
-                                                    "Si": function() {
-                                                    $( this ).dialog( "close" );
-                                                    serempre.cargos.toggleWaitDialog('', 'icon-signal');
-                                                    sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
-                                                    window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
-                                                    },
-                                                    No: function() {
-                                                    $( this ).dialog( "close" );
-                                                    }
-                                                    }
-                                                    });
-                      //ask the user to wait
-                      serempre.cargos.toggleWaitDialog('', 'icon-signal');
-                      //start loading all assets
-                      {% for item in cuerpos %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
-                      {% endfor %}
-                      {% for item in facciones %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
-                      {% endfor %}
-                      {% for item in camisas %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
-                      {% endfor %}
-                      {% for item in pantalones %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
-                      {% endfor %}
-                      {% for item in ojos %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
-                      {% endfor %}
-                      {% for item in cejas %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
-                      {% endfor %}
-                      {% for item in zapatos %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
-                      {% endfor %}
-                      {% for item in pelos %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
-                      {% endfor %}
-                      {% for item in cascos %}
-                      setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
-                      {% endfor %}
-                      //dismiss wait dialog when all images are done loading
-                      loadingIntervalReference = window.setInterval(function(){
-                                                                    if(closeWaitDialogIfAllThingsLoaded()){
-                                                                    window.clearInterval(loadingIntervalReference);
-                                                                    }
-                                                                    }, 1000);
-                      });
+		//if there is no data about the origin and destination cargos, then redirect the user to the home page
+		serempre.cargos.futurePaths = sessionStorage.futurePaths;
+		if(! serempre.cargos.futurePaths){
+			window.location.href='/';
+		}
+		//get ready to use wait dialogs in this page
+		serempre.cargos.setupWaitDialog();
+		//build a confirmation dialog for later use
+		$( "#dialog-confirm" ).dialog({
+			open: function(event,ui) {
+				$(event.target).parent().find('button:first').addClass('btn').addClass('btn-primary');
+			}, autoOpen: false,
+			resizable: false,
+			height:170,
+			modal: true,
+			buttons: {
+				"Si": function() {
+					$( this ).dialog( "close" );
+					serempre.cargos.toggleWaitDialog('', 'icon-signal');
+					sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
+					window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
+				}, No: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		//ask the user to wait
+		serempre.cargos.toggleWaitDialog('', 'icon-signal');
+		//start loading all assets
+		{% for item in cuerpos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allBodies, setupColorChoices);
+		{% endfor %}
+		{% for item in facciones %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allFaces);
+		{% endfor %}
+		{% for item in camisas %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allShirts);
+		{% endfor %}
+		{% for item in pantalones %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allPants);
+		{% endfor %}
+		{% for item in ojos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyes, setupEyes);
+		{% endfor %}
+		{% for item in cejas %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allEyeBrows, setupEyebrows);
+		{% endfor %}
+		{% for item in zapatos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allShoes, setupShoes);
+		{% endfor %}
+		{% for item in pelos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHairStyles, setupHairStyles);
+		{% endfor %}
+		{% for item in cascos %}
+		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
+		{% endfor %}
+		//dismiss wait dialog when all images are done loading
+		loadingIntervalReference = window.setInterval( function(){
+		if( closeWaitDialogIfAllThingsLoaded() ){
+			window.clearInterval( loadingIntervalReference );
+		}}, 1000);
+	});
     /*
      ask for user confirmation before proceeding
      */
