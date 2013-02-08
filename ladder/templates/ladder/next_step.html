@@ -53,6 +53,12 @@
 	
 	}
 	/*
+	SPAN displaying a requirement name
+	*/
+	SPAN.requirement_tag {
+	
+	}
+	/*
 	this link lets a worker occupy a different position
 	*/
 	a.next-step {
@@ -91,11 +97,16 @@
 	}
 {% for item in categorias %}
 	/*
-	icon for {{ item.nombre }}
+	icon for {{ item.nombre }} when requirement is fulfilled
 	*/
-	span.category_{{ item.pk }}{
+	div.requirement-item-fulfilled span.category_{{ item.pk }}{
 {% if item.icono %}
-		background-image:url('{{ item.icono.url|safe }}');
+		background-image:url('{{ item.icono.url|safe }}') !important;
+{% endif %}
+	}
+	span.category_{{ item.pk }}{
+{% if item.icono_default %}
+		background-image:url('{{ item.item.icono_default.url|safe }}') !important;
 {% endif %}
 	}
 {% endfor %}
@@ -241,9 +252,10 @@
 		*/
 		function buildDisplayForRequirement( requirement ) {
 			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
-												+ '<a href="#" role="button" class="btn">'+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+												+ '<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+												+ '<span class="requirement_tag">'
 													+requirement.fields.nombre
-												+ '</a>'
+												+ '</span>'
 												+ '<div id="requirementButtons' + requirement.pk + '" class="btn-group requirement-buttons" data-toggle="buttons-radio">'
 													+ '<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
 													+ '<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
