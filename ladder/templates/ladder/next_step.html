@@ -38,14 +38,19 @@
 	DIV elements that hold a SPAN and clear text representing a requirement
 	*/
 	div.requirement-item {
-		height: 75px;
-		overflow: hidden;
+		height: 120px;
 	}
 	/*
 	DIV elements that hold a SPAN and clear text representing a requirement that's been fulfilled
 	*/
 	div.requirement-item-fulfilled {
 		
+	}
+	/*
+	DIV holdign buttons to toggle requirement fulfillement
+	*/
+	DIV.requirementButtons {
+	
 	}
 	/*
 	this link lets a worker occupy a different position
@@ -219,7 +224,7 @@
 		marks a requirement as fulfilled
 		*/
 		function setRequirementFulfilled( requirementPK ){
-			$( 'div#modal' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
+			$( 'div#requirementButtons' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = true;
 			updatePositionElligibility();
 		}
@@ -227,7 +232,7 @@
 		marks a requirement as unfulfilled
 		*/
 		function setUnfulfilledRequirement( requirementPK ){
-			$( 'div#modal' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
+			$( 'div#requirementButtons' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = false;
 			updatePositionElligibility();
 		}
@@ -236,26 +241,13 @@
 		*/
 		function buildDisplayForRequirement( requirement ) {
 			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
-												+ '<a href="#modal' + requirement.pk + '" role="button" class="btn" data-toggle="modal">'+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+												+ '<a href="#" role="button" class="btn">'+'<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
 													+requirement.fields.nombre
 												+ '</a>'
-												+'<div id="modal' + requirement.pk + '" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">'
-													+'<div class="modal-header">'
-														+'<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
-														+'<h3>' + requirement.fields.nombre + '</h3>'
-													+'</div>'
-													+'<div class="modal-body">'
-														+'<p>'
-															+ requirement.fields.descripcion
-														+'</p>'
-													+'</div>'
-													+'<div class="modal-footer">'
-														+'<div class="btn-group" data-toggle="buttons-radio">'
-															+'<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" data-dismiss="modal" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
-															+'<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" data-dismiss="modal" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
-														+'</div>'
-													+'</div>'
-												+'</div>'
+												+ '<div id="requirementButtons' + requirement.pk + '" class="btn-group requirement-buttons" data-toggle="buttons-radio">'
+													+ '<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
+													+ '<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
+												+ '</div>'
 										+ '</div>' );
 			return requirementBlock;
 		}
