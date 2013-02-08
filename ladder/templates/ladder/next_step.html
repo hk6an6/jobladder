@@ -106,7 +106,7 @@
 	}
 	span.category_{{ item.pk }}{
 {% if item.icono_default %}
-		background-image:url('{{ item.item.icono_default.url|safe }}') !important;
+		background-image:url('{{ item.item.icono_default.url|safe }}');
 {% endif %}
 	}
 {% endfor %}
