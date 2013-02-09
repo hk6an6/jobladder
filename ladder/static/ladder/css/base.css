@@ -142,67 +142,67 @@ ul.tab-controls{
 	margin: 3px 3px;
 	float: left;
 }
-#eyebrows-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cejas.png);
+span.iconoeyebrows-scrollable-slider{
+    background:url(../images/imagenes/icono-cejas.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#eyes-scrollable-slider:before{
-    content:url(../images/imagenes/icono-ojos.png);
+span.iconoeyes-scrollable-slider{
+    background:url(../images/imagenes/icono-ojos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#shoes-scrollable-slider:before{
-    content:url(../images/imagenes/icono-zapatos.png);
+span.iconoshoes-scrollable-slider{
+    background:url(../images/imagenes/icono-zapatos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#hairstyles-scrollable-slider:before{
-    content:url(../images/imagenes/icono-pelo.png);
+span.iconohairstyles-scrollable-slider{
+    background:url(../images/imagenes/icono-pelo.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#helmets-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cascos.png);
+span.iconohelmets-scrollable-slider{
+    background:url(../images/imagenes/icono-cascos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#bodies-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cuerpo.png);
+span.iconobodies-scrollable-slider{
+    background:url(../images/imagenes/icono-cuerpo.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#faces-scrollable-slider:before{
-    content:url(../images/imagenes/icono-facciones.png);
+span.iconofaces-scrollable-slider{
+    background:url(../images/imagenes/icono-facciones.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#shirts-scrollable-slider:before{
-    content:url(../images/imagenes/icono-camisa.png);
+span.iconoshirts-scrollable-slider{
+    background:url(../images/imagenes/icono-camisa.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
-#pants-scrollable-slider:before{
-    content:url(../images/imagenes/icono-pantalones.png);
+span.iconopants-scrollable-slider {
+    background:url(../images/imagenes/icono-pantalones.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:40px;
+    width:40px;
     float:left;
 }
 .bodypart-slider{
@@ -266,7 +266,7 @@ ol > li {
     list-style:none; /* Disable the normal item numbering */
 }
 ol > li:before {
-    content:counter(li); /* Use the counter as content */
+    backgroundcounter(li); /* Use the counter as content */
     counter-increment:li; /* Increment the counter by 1 */
     /* Position and style the number */
     position:absolute;
