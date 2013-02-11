@@ -43,7 +43,7 @@ width:320px;
 }
 .scroll-pane { overflow: hidden; margin: 15px; position: relative; width:420px;}
 .scroll-content { white-space: nowrap; position: relative; float: left; }
-.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; text-align: center; display: inline; position: relative; }
+.scroll-content-item { margin: 0 5px; font-size: 3em; text-align: center; display: inline-block; position: relative; }
 * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
 .scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
 .scroll-bar-wrap .ui-slider { background: #666; border:0; height: 7px; margin: 6px auto;  }
@@ -54,14 +54,17 @@ width:320px;
 background:#09C !important;
 border: 1px solid #09c !important;
 }
-.jThumbnailScroller{position:relative; width:420px; height:50px; margin:5px;  background:#bbb; padding:0; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+.scroll-content-item a{
+display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius:15px; border:thin solid #999; margin:10px;
+}
+.jThumbnailScroller{position:relative; width:420px; height:50px; margin:5px; padding:0; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
 .jThumbnailScroller .jTscrollerContainer{position:absolute;}
 .jThumbnailScroller .jTscroller{position:relative; height:100%; margin:0; left:0; top:0; display:inline-block; *display:inline;}
 .jThumbnailScroller .jTscrollerNextButton,.jThumbnailScroller .jTscrollerPrevButton{position:absolute; display:block; width:40px; height:40px; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; opacity:0.7;}
 .jThumbnailScroller .jTscrollerNextButton{background:#000 url(nextArrow.png) center center;}
 .jThumbnailScroller .jTscrollerPrevButton{background:#000 url(prevArrow.png) center center;}
 .jThumbnailScroller .jTscrollerNextButton:hover,.jThumbnailScroller .jTscrollerPrevButton:hover{background-color:#d56916; opacity:1;}
-.jThumbnailScroller .jTscroller div{display:block; float:left; border:5px solid #ddd; margin:6px 10px 6px 0; background:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
+.jThumbnailScroller .jTscroller div{display:block; float:left; border:5px solid #ddd; margin:6px 10px 6px 0; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
 .jThumbnailScroller .jTscroller a:hover{border-color:#fff;}
 .jThumbnailScroller .jTscroller div:first-child{margin-left:10px;}
 .jThumbnailScroller .jTscroller div img{border:none;}
@@ -69,7 +72,7 @@ border: 1px solid #09c !important;
 
 {% block pageheader %}
 <div>
-	<h1>Crea tu avatar!</h1>
+	<h1>¡Crea tu avatar!</h1>
 </div>
 {% endblock %}
 
@@ -83,7 +86,7 @@ border: 1px solid #09c !important;
 			Eleg&iacute; un color de piel
 			<span class="caret"></span>
 		</a>
-		<ul id="skin-choices" class="dropdown-menu">
+		<div class="jThumbnailScroller" id="skin-choices">
 			
 		</ul>
 	</div>
@@ -258,7 +261,7 @@ border: 1px solid #09c !important;
      @content: DOM element to be placed inside a scrollable slider
      */
     function wrapAsScrollableContentItem( content ){
-        var container = $(' <div class="scroll-content-item ui-widget-header"></div>');
+        var container = $(' <div class="scroll-content-item"></div>');
         container.append(content);
         return container;
     }
@@ -280,7 +283,7 @@ border: 1px solid #09c !important;
         scrollContainer.append(scrollContent);
         scrollablePane.append(scrollContainer);
         scrollablePane.id = scrollablePaneId;
-        return [scrollIcon, scrollablePane];
+        return scrollablePane;
     }
     /*
      removes a scrollPane from the document
@@ -342,8 +345,8 @@ border: 1px solid #09c !important;
      */
     function populateColorChoices(colors, colorChosenHandler){
         for(var i = 0; i<colors.length;i++){
-            var optionContainer = $('<li></li>');
-            var colorOption = $('<a tabindex="-1" href="#">'+ colors[i] +'</a>');
+            var optionContainer = $('<div class="scroll-content-item"></div>');
+            var colorOption = $('<a tabindex="-1" href="#" class="color-'+ colors[i] +'">'+ colors[i] +'</a>');
             colorOption.click(function(){
                               var face = current_selections.face ? current_selections.face : 0;
                               var body = current_selections.body ? current_selections.body : 0;
@@ -584,21 +587,18 @@ border: 1px solid #09c !important;
 <script>
  
      window.onload=function(){
-     $("#hairstyles-scrollable-slider").thumbnailScroller({
-                                 scrollerType:"hoverPrecise",
-                                 scrollerOrientation:"horizontal",
-                                 scrollSpeed:2,
-                                 scrollEasing:"easeOutCirc",
-                                 scrollEasingAmount:600,
-                                 acceleration:4,
-                                 scrollSpeed:800,
-                                 noScrollCenterSpace:10,
-                                 autoScrolling:0,
-                                 autoScrollingSpeed:2000,
-                                 autoScrollingEasing:"easeInOutQuad",
-                                 autoScrollingDelay:500
-                                 });
          
+         $("#eyebrows-scrollable-slider").before('<span class="iconoeyebrows-scrollable-slider"></span>');
+         $("#eyes-scrollable-slider").before('<span class="iconoeyes-scrollable-slider"></span>');
+         $("#shoes-scrollable-slider").before('<span class="iconoshoes-scrollable-slider"></span>');
+         $("#helmets-scrollable-slider").before('<span class="iconohelmets-scrollable-slider"></span>');
+         $("#bodies-scrollable-slider").before('<span class="iconobodies-scrollable-slider"></span>');
+         $("#faces-scrollable-slider").before('<span class="iconofaces-scrollable-slider"></span>');
+         $("#shirts-scrollable-slider").before('<span class="iconoshirts-scrollable-slider"></span>');
+         $("#pants-scrollable-slider").before('<span class="iconopants-scrollable-slider"></span>');
+         $("#skin-choices").before('<span class="iconocolor"></span>');
+         $("#hairstyles-scrollable-slider").thumbnailScroller();
+         $("#hairstyles-scrollable-slider").before('<span class="iconohairstyles-scrollable-slider"></span>');
      }
      
 </script>
