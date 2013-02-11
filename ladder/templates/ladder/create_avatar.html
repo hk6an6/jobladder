@@ -54,6 +54,17 @@ width:320px;
 background:#09C !important;
 border: 1px solid #09c !important;
 }
+.jThumbnailScroller{position:relative; width:420px; height:50px; margin:5px;  background:#bbb; padding:0; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+.jThumbnailScroller .jTscrollerContainer{position:absolute;}
+.jThumbnailScroller .jTscroller{position:relative; height:100%; margin:0; left:0; top:0; display:inline-block; *display:inline;}
+.jThumbnailScroller .jTscrollerNextButton,.jThumbnailScroller .jTscrollerPrevButton{position:absolute; display:block; width:40px; height:40px; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; opacity:0.7;}
+.jThumbnailScroller .jTscrollerNextButton{background:#000 url(nextArrow.png) center center;}
+.jThumbnailScroller .jTscrollerPrevButton{background:#000 url(prevArrow.png) center center;}
+.jThumbnailScroller .jTscrollerNextButton:hover,.jThumbnailScroller .jTscrollerPrevButton:hover{background-color:#d56916; opacity:1;}
+.jThumbnailScroller .jTscroller div{display:block; float:left; border:5px solid #ddd; margin:6px 10px 6px 0; background:#fff; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
+.jThumbnailScroller .jTscroller a:hover{border-color:#fff;}
+.jThumbnailScroller .jTscroller div:first-child{margin-left:10px;}
+.jThumbnailScroller .jTscroller div img{border:none;}
 {% endblock %}
 
 {% block pageheader %}
@@ -257,16 +268,17 @@ border: 1px solid #09c !important;
      */
     function scrollPane( sourceArray, scrollablePaneId, itemClickHandler ){
         var scrollIcon = $('<span class="icono'+ scrollablePaneId +'"></span>');
-        var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
-        var scrollContent = $('<div class="scroll-content"></div>');
+        var scrollablePane = $('<div class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
+        var scrollContainer = $('<div class="jTscrollerContainer"></div>');
+        var scrollContent = $('<div class="jTscroller"></div>');
         for(var i = 0; i<sourceArray.length; i++){
             var item = sourceArray[i];
             var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
             scrollableItem = wrapAsScrollableContentItem(scrollableItem);
             scrollContent.append(scrollableItem);
         }
-        scrollablePane.append(scrollContent);
-        scrollablePane.append($('<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div>'));
+        scrollContainer.append(scrollContent);
+        scrollablePane.append(scrollContainer);
         scrollablePane.id = scrollablePaneId;
         return [scrollIcon, scrollablePane];
     }
@@ -570,77 +582,26 @@ border: 1px solid #09c !important;
  }
  -->
 <script>
-    window.onload = function () {
-        //scrollpane parts
-        var scrollPane = $( "#hairstyles-scrollable-slider" ),
-		scrollContent = $( "#hairstyles-scrollable-slider .scroll-content" );
-        //build slider
-        var scrollbar = $( "#hairstyles-scrollable-slider .scroll-bar" ).slider({
-                                                  slide: function( event, ui ) {
-                                                  if ( scrollContent.width() > scrollPane.width() ) {
-                                                  scrollContent.css( "margin-left", Math.round(
-                                                                                               ui.value / 100 * ( scrollPane.width() - scrollContent.width() )
-                                                                                               ) + "px" );
-                                                  } else {
-                                                  scrollContent.css( "margin-left", 0 );
-                                                  }
-                                                  }
-                                                  });
-        
-        //append icon to handle
-        var handleHelper = scrollbar.find( ".ui-slider-handle" )
-        .mousedown(function() {
-                   scrollbar.width( handleHelper.width() );
-                   })
-        .mouseup(function() {
-                 scrollbar.width( "100%" );
-                 })
-        .append( "<span class='ui-icon ui-icon-grip-dotted-vertical'></span>" )
-        .wrap( "<div class='ui-handle-helper-parent'></div>" ).parent();
-        
-        //change overflow to hidden now that slider handles the scrolling
-        scrollPane.css( "overflow", "hidden" );
-        
-        //size scrollbar and handle proportionally to scroll distance
-        function sizeScrollbar() {
-            var remainder = scrollContent.width() - scrollPane.width();
-            var proportion = remainder / scrollContent.width();
-            var handleSize = scrollPane.width() - ( proportion * scrollPane.width() );
-            scrollbar.find( ".ui-slider-handle" ).css({
-                                                      width: handleSize,
-                                                      "margin-left": -handleSize / 2
-                                                      });
-            handleHelper.width( "" ).width( scrollbar.width() - handleSize );
-        }
-        
-        //reset slider value based on scroll content position
-        function resetValue() {
-            var remainder = scrollPane.width() - scrollContent.width();
-            var leftVal = scrollContent.css( "margin-left" ) === "auto" ? 0 :
-			parseInt( scrollContent.css( "margin-left" ) );
-            var percentage = Math.round( leftVal / remainder * 100 );
-            scrollbar.slider( "value", percentage );
-        }
-        
-        //if the slider is 100% and window gets larger, reveal content
-        function reflowContent() {
-			var showing = scrollContent.width() + parseInt( scrollContent.css( "margin-left" ), 10 );
-			var gap = scrollPane.width() - showing;
-			if ( gap > 0 ) {
-				scrollContent.css( "margin-left", parseInt( scrollContent.css( "margin-left" ), 10 ) + gap );
-			}
-        }
-        
-        //change handle position on window resize
-        $( window ).resize(function() {
-                           resetValue();
-                           sizeScrollbar();
-                           reflowContent();
-                           });
-        //init scrollbar size
-        setTimeout( sizeScrollbar, 10 );//safari wants a timeout
-    };
-    </script>
+ 
+     window.onload=function(){
+     $("#hairstyles-scrollable-slider").thumbnailScroller({
+                                 scrollerType:"hoverPrecise",
+                                 scrollerOrientation:"horizontal",
+                                 scrollSpeed:2,
+                                 scrollEasing:"easeOutCirc",
+                                 scrollEasingAmount:600,
+                                 acceleration:4,
+                                 scrollSpeed:800,
+                                 noScrollCenterSpace:10,
+                                 autoScrolling:0,
+                                 autoScrollingSpeed:2000,
+                                 autoScrollingEasing:"easeInOutQuad",
+                                 autoScrollingDelay:500
+                                 });
+         
+     }
+     
+</script>
 {% endblock %}
 {% comment %}
 See built in thempalte tags and filters at:

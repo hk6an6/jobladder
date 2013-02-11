@@ -115,6 +115,7 @@
 		5D442F5316C42B4300021B9F /* icono-pantalones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pantalones.png"; sourceTree = "<group>"; };
 		5D442F5416C42B4300021B9F /* icono-pelo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pelo.png"; sourceTree = "<group>"; };
 		5D442F5516C42B4300021B9F /* icono-zapatos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-zapatos.png"; sourceTree = "<group>"; };
+		5D4FD6E916C9572F000F4902 /* jquery.thumbnailScroller.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.thumbnailScroller.js; sourceTree = "<group>"; };
 		5DB4157C16B92502001D91DA /* instructions.html */ = {isa = PBXFileReference; explicitFileType = text.html.documentation; fileEncoding = 4; path = instructions.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -350,6 +351,7 @@
 		43B471BD166903B9003EB0DC /* javascript */ = {
 			isa = PBXGroup;
 			children = (
+				5D4FD6E916C9572F000F4902 /* jquery.thumbnailScroller.js */,
 				43B471BE166903B9003EB0DC /* autocompleteoncombobox.js */,
 				43B471BF166903B9003EB0DC /* bootstrap.js */,
 				43B471C0166903B9003EB0DC /* bootstrap.min.js */,
