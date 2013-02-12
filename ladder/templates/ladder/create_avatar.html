@@ -72,6 +72,7 @@ margin: 15px;
 	<div id="pants-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
+	<div id="accesories-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="scrollable-sliders">
 	</div>
     <br/>
@@ -100,6 +101,7 @@ margin: 15px;
     var allPants = [];
     var allShoes = [];
     var allHelmets = [];
+	var allAccesories = [];
     var faces = [];
     var hairStyles = [];
     var eyeBrows = [];
@@ -109,6 +111,7 @@ margin: 15px;
     var pants = [];
     var shoes = [];
     var helmets = [];
+	var accesories = [];
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
     var current_selections = {};
@@ -173,6 +176,9 @@ margin: 15px;
 		{% endfor %}
 		{% for item in cascos %}
 		setupImage({{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.etiqueta|safe }}', allHelmets, setupHelmets);
+		{% endfor %}
+		{% for item in accesorios %}
+		setupImage( {{ forloop.counter|add:"-1" }}, {{ item.pk }}, '{{ item.imagen.url|safe }}', '{{ item.miniatura.url|safe }}', '{{ item.contextura|safe }} {{ item.etiqueta|safe }}', allAccesories );
 		{% endfor %}
 		//dismiss wait dialog when all images are done loading
 		loadingIntervalReference = window.setInterval( function(){
@@ -492,14 +498,19 @@ margin: 15px;
         var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
         var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
         var chosen_pants = current_selections.pants ? current_selections.pants : 0;
-        shirts = serempre.avatars.filterBySize(allShirts, chosen_size);
-        pants  = serempre.avatars.filterBySize(allPants,  chosen_size);
+		var chosen_accesories = current_selections.misc ? current_selections.misc : 0;
+        shirts = serempre.avatars.filterBySize( allShirts, chosen_size );
+        pants  = serempre.avatars.filterBySize( allPants,  chosen_size );
+		accesories = serempre.avatars.filterBySize( allAccesories, chosen_size );
         buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
         buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
+		buildSimpleSlider( 'accesories-slider',accesories,function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); },function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); } );
         $('#shirts-slider').slider('value',chosen_shirt);
         $('#pants-slider').slider('value',chosen_pants);
+		$( '#accesories-slider' ).slider( 'value', chosen_accesories );
         addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
         addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
+		addOrReplaceScrollableSlider( accesories, 'accesories-scrollable-slider', 'accesories-slider' );
         sliderChanged(arrayIndex, bodies, 'body');
     }
     /*
