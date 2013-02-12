@@ -52,7 +52,7 @@ def create_avatar(request, origin_pk, target_pk, sex):
 	zapatos = None
 	pelos = None
 	cascos = None
-	accesorios = AccesoriosAvatar.objects.all()
+	accesorios = None
 	cabellos = PeloAvatar.objects.all()
 	cabellos_experiencia = CabelloAvatar.objects.all()
 	sombreros = SombreroAvatar.objects.all()
@@ -63,6 +63,7 @@ def create_avatar(request, origin_pk, target_pk, sex):
 		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="hombre")
 		pelos = PeloAvatar.objects.filter(etiqueta__icontains="hombre")
 		cascos = SombreroAvatar.objects.filter(etiqueta__icontains="hombre")
+		accesorios = AccesoriosAvatar.objects.filter( etiqueta__icontains="hombre")
 	else:
 		cuerpos = CuerpoAvatar.objects.filter(etiqueta__icontains="mujer")
 		pantalones = PantalonAvatar.objects.filter(etiqueta__icontains="mujer")
@@ -70,10 +71,14 @@ def create_avatar(request, origin_pk, target_pk, sex):
 		zapatos = ZapatosAvatar.objects.filter(etiqueta__icontains="mujer")
 		pelos = PeloAvatar.objects.filter(etiqueta__icontains="mujer")
 		cascos = SombreroAvatar.objects.filter(etiqueta__icontains="mujer")
+		accesorios = AccesoriosAvatar.objects.filter( etiqueta__icontains="mujer")
 	cuerpos = cuerpos.order_by('etiqueta','contextura')
 	pantalones = pantalones.order_by('etiqueta','contextura')
 	camisas = camisas.order_by('etiqueta','contextura')
+	accesorios = accesorios.order_by( 'etiqueta','contextura' )
 	pelos = pelos.order_by('etiqueta')
+	cascos = cascos.order_by( 'etiqueta' )
+	zapatos = zapatos.order_by( 'etiqueta' )
 	return render_to_response('ladder/create_avatar.html', locals(), RequestContext(request))
 	
 def avatar_by( request, cargo_pk, sex ):
