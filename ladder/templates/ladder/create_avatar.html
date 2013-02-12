@@ -13,6 +13,11 @@
 {% block includejavascript %}
 {{ block.super }}
 <script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
+<script>
+    $(function() {
+      $( ".scroll-content" ).slider();
+      });
+    </script>
 {% endblock %}
 
 {% block pagestyle %}
@@ -32,20 +37,42 @@ div#scrollable-sliders{
 width: 300px;
 margin: 15px;
 }
-.scroll-pane { overflow: hidden; width: auto; margin: 15px; position: relative; }
-.scroll-content { position: relative; float: left; }
-.scroll-content-item { width: 100px; height: 100px; margin: 10px; font-size: 3em; line-height: 96px; text-align: center; display: inline; position: relative; float: left; }
+.rollo{
+float:left;
+width:320px;
+}
+.scroll-pane { overflow: hidden; margin: 15px; position: relative; width:420px;}
+.scroll-content { white-space: nowrap; position: relative; float: left; }
+.scroll-content-item { margin: 0 5px; font-size: 3em; text-align: center; display: inline-block; position: relative; }
 * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
 .scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
-.scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
-.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
-.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
-.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
+.scroll-bar-wrap .ui-slider { background: #666; border:0; height: 7px; margin: 6px auto;  }
+.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 10px; height: 100%; margin: 0 auto; }
+.scroll-bar-wrap .ui-slider-handle { top:0; height: 5px; position:absolute; z-index:2; width:10px; }
+.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; width:5px;}
+.ui-state-default, ui-slider-handle{
+background:#09C !important;
+border: 1px solid #09c !important;
+}
+.scroll-content-item a{
+display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius:15px; border:thin solid #999; margin:10px;
+}
+.jThumbnailScroller{position:relative; width:420px; height:50px; margin:5px; padding:0; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+.jThumbnailScroller .jTscrollerContainer{position:absolute;}
+.jThumbnailScroller .jTscroller{position:relative; height:100%; margin:0; left:0; top:0; display:inline-block; *display:inline;}
+.jThumbnailScroller .jTscrollerNextButton,.jThumbnailScroller .jTscrollerPrevButton{position:absolute; display:block; width:40px; height:40px; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; opacity:0.7;}
+.jThumbnailScroller .jTscrollerNextButton{background:#000 url(nextArrow.png) center center;}
+.jThumbnailScroller .jTscrollerPrevButton{background:#000 url(prevArrow.png) center center;}
+.jThumbnailScroller .jTscrollerNextButton:hover,.jThumbnailScroller .jTscrollerPrevButton:hover{background-color:#d56916; opacity:1;}
+.jThumbnailScroller .jTscroller div{display:block; float:left; border:5px solid #ddd; margin:6px 10px 6px 0; -moz-border-radius:3px; -webkit-border-radius:3px; border-radius:3px;}
+.jThumbnailScroller .jTscroller a:hover{border-color:#fff;}
+.jThumbnailScroller .jTscroller div:first-child{margin-left:10px;}
+.jThumbnailScroller .jTscroller div img{border:none;}
 {% endblock %}
 
 {% block pageheader %}
 <div>
-	<h1>Crea tu avatar!</h1>
+	<h1>¡Crea tu avatar!</h1>
 </div>
 {% endblock %}
 
@@ -59,7 +86,7 @@ margin: 15px;
 			Eleg&iacute; un color de piel
 			<span class="caret"></span>
 		</a>
-		<ul id="skin-choices" class="dropdown-menu">
+		<div class="jThumbnailScroller" id="skin-choices">
 			
 		</ul>
 	</div>
@@ -240,7 +267,7 @@ margin: 15px;
      @content: DOM element to be placed inside a scrollable slider
      */
     function wrapAsScrollableContentItem( content ){
-        var container = $(' <div class="scroll-content-item ui-widget-header"></div>');
+        var container = $(' <div class="scroll-content-item"></div>');
         container.append(content);
         return container;
     }
@@ -249,16 +276,18 @@ margin: 15px;
      @itemClickHandler: use function(event){ ... }. Use 'event.currentTarget' to get a handle to the object that triggered the event
      */
     function scrollPane( sourceArray, scrollablePaneId, itemClickHandler ){
-        var scrollablePane = $('<div class="scroll-pane ui-widget ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
-        var scrollContent = $('<div class="scroll-content"></div>');
+        var scrollIcon = $('<span class="icono'+ scrollablePaneId +'"></span>');
+        var scrollablePane = $('<div class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
+        var scrollContainer = $('<div class="jTscrollerContainer"></div>');
+        var scrollContent = $('<div class="jTscroller"></div>');
         for(var i = 0; i<sourceArray.length; i++){
             var item = sourceArray[i];
             var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
             scrollableItem = wrapAsScrollableContentItem(scrollableItem);
             scrollContent.append(scrollableItem);
         }
-        scrollablePane.append(scrollContent);
-        scrollablePane.append($('<div class="scroll-bar-wrap ui-widget-content ui-corner-bottom"><div class="scroll-bar"></div></div>'));
+        scrollContainer.append(scrollContent);
+        scrollablePane.append(scrollContainer);
         scrollablePane.id = scrollablePaneId;
         return scrollablePane;
     }
@@ -322,8 +351,8 @@ margin: 15px;
      */
     function populateColorChoices(colors, colorChosenHandler){
         for(var i = 0; i<colors.length;i++){
-            var optionContainer = $('<li></li>');
-            var colorOption = $('<a tabindex="-1" href="#">'+ colors[i] +'</a>');
+            var optionContainer = $('<div class="scroll-content-item"></div>');
+            var colorOption = $('<a tabindex="-1" href="#" class="color-'+ colors[i] +'">'+ colors[i] +'</a>');
             colorOption.click(function(){
                               var face = current_selections.face ? current_selections.face : 0;
                               var body = current_selections.body ? current_selections.body : 0;
@@ -521,6 +550,8 @@ margin: 15px;
     }		
     
 	</script>
+
+
 <!--
  //this turns an input field into a remote data sourced autocomplete
  $('#cargo_inicial_nombre').autocomplete({
@@ -564,6 +595,24 @@ margin: 15px;
  .appendTo( ul );
  }
  -->
+<script>
+ 
+     window.onload=function(){
+         
+         $("#eyebrows-scrollable-slider").before('<span class="iconoeyebrows-scrollable-slider"></span>');
+         $("#eyes-scrollable-slider").before('<span class="iconoeyes-scrollable-slider"></span>');
+         $("#shoes-scrollable-slider").before('<span class="iconoshoes-scrollable-slider"></span>');
+         $("#helmets-scrollable-slider").before('<span class="iconohelmets-scrollable-slider"></span>');
+         $("#bodies-scrollable-slider").before('<span class="iconobodies-scrollable-slider"></span>');
+         $("#faces-scrollable-slider").before('<span class="iconofaces-scrollable-slider"></span>');
+         $("#shirts-scrollable-slider").before('<span class="iconoshirts-scrollable-slider"></span>');
+         $("#pants-scrollable-slider").before('<span class="iconopants-scrollable-slider"></span>');
+         $("#skin-choices").before('<span class="iconocolor"></span>');
+         $("#hairstyles-scrollable-slider").thumbnailScroller();
+         $("#hairstyles-scrollable-slider").before('<span class="iconohairstyles-scrollable-slider"></span>');
+     }
+     
+</script>
 {% endblock %}
 {% comment %}
 See built in thempalte tags and filters at:

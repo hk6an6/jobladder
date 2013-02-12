@@ -142,69 +142,89 @@ ul.tab-controls{
 	margin: 3px 3px;
 	float: left;
 }
-#eyebrows-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cejas.png);
+span.iconoeyebrows-scrollable-slider{
+    background:url(../images/imagenes/icono-cejas.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#eyes-scrollable-slider:before{
-    content:url(../images/imagenes/icono-ojos.png);
+span.iconocolor{
+    background:url(../images/imagenes/icono-color.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#shoes-scrollable-slider:before{
-    content:url(../images/imagenes/icono-zapatos.png);
+span.iconoeyes-scrollable-slider{
+    background:url(../images/imagenes/icono-ojos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#hairstyles-scrollable-slider:before{
-    content:url(../images/imagenes/icono-pelo.png);
+span.iconoshoes-scrollable-slider{
+    background:url(../images/imagenes/icono-zapatos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#helmets-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cascos.png);
+span.iconohairstyles-scrollable-slider{
+    background:url(../images/imagenes/icono-pelo.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#bodies-scrollable-slider:before{
-    content:url(../images/imagenes/icono-cuerpo.png);
+span.iconohelmets-scrollable-slider{
+    background:url(../images/imagenes/icono-cascos.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#faces-scrollable-slider:before{
-    content:url(../images/imagenes/icono-facciones.png);
+span.iconobodies-scrollable-slider{
+    background:url(../images/imagenes/icono-cuerpo.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#shirts-scrollable-slider:before{
-    content:url(../images/imagenes/icono-camisa.png);
+span.iconofaces-scrollable-slider{
+    background:url(../images/imagenes/icono-facciones.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
-#pants-scrollable-slider:before{
-    content:url(../images/imagenes/icono-pantalones.png);
+span.iconoshirts-scrollable-slider{
+    background:url(../images/imagenes/icono-camisa.png) center center no-repeat;
     display:block;
-    height:60px;
-    width:60px;
+    height:50px;
+    width:50px;
     float:left;
+    clear:both;
 }
+span.iconopants-scrollable-slider {
+    background:url(../images/imagenes/icono-pantalones.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+#skin-color-tag{
+    display:none;
+    }
 .bodypart-slider{
     display:none;
     }
@@ -213,7 +233,6 @@ ul.tab-controls{
     border:0 !important;
 }
 .scroll-content-item{
-    background:none !important;
     border:none !important;
     width:40px !important;
     height:40px !important;
@@ -266,7 +285,7 @@ ol > li {
     list-style:none; /* Disable the normal item numbering */
 }
 ol > li:before {
-    content:counter(li); /* Use the counter as content */
+    backgroundcounter(li); /* Use the counter as content */
     counter-increment:li; /* Increment the counter by 1 */
     /* Position and style the number */
     position:absolute;
@@ -279,7 +298,7 @@ ol > li:before {
     margin-right:8px;
     padding:0px;
 	color:#025084;
-    background: url(bg-list.png);
+    background: url(../images/imagenes/bg-list.png);
 	font-size:40px;
 	line-height:1.2;
     font-family:'thesansplain';
@@ -312,4 +331,26 @@ li p span{
 .contenido{
 	width:60%;
 	min-width:600px;
+}
+#skin-choices .scroll-content-item{
+background:url(../images/imagenes/bg_item.png) no-repeat;
+}
+#skin-choices{
+height:40px;
+padding: 0 5px;
+}
+.color-Blanco{
+background:#fdeddd;
+}
+.color-Canela{
+background:#fec68c;
+}
+.color-Rosado{
+background:#fcdedb;
+}
+.color-Miel{
+background:#fde6c0;
+}
+.color-Morena{
+background:#8b5b40;
 }
