@@ -533,15 +533,66 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 		accesories = serempre.avatars.filterBySize( allAccesories, chosen_size );
         buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
         buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
-		//buildSimpleSlider( 'accesories-slider',accesories,function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); },function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); } );
         $('#shirts-slider').slider('value',chosen_shirt);
         $('#pants-slider').slider('value',chosen_pants);
-		//$( '#accesories-slider' ).slider( 'value', chosen_accesories );
         addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
         addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
-		//addOrReplaceScrollableSlider( accesories, 'accesories-scrollable-slider', 'accesories-slider' );
         sliderChanged(arrayIndex, bodies, 'body');
+		prepareAccesories( );
     }
+	/*
+	builds an array with all available accesories
+	*/
+	function prepareAccesories(  ){
+		try{
+			var faceShape = getChosenFaceShape( );
+			var bodySize = getChosenBodySize( );
+			var allPossibleOptions = [ 
+				filterFacialHair( 'Barba', faceShape )
+				, filterFacialHair( 'Barba y Bigote', faceShape )
+				, filterFacialHair( 'Bigote', faceShape )
+				, getGafas( )
+				, getCorbatas( )
+				, getSacos( bodySize )
+				, getBatas( bodySize ) ];
+			accesories = [];
+			for( var i = 0; i < allPossibleOptions.length; i++ ){
+				if( allPossibleOptions[ i ] && allPossibleOptions[ i ].length > 0 ){
+					prepareAccesoriesClickEvent( allPossibleOptions[ i ], i );
+					accesories = accesories.concat( allPossibleOptions[ i ] );
+				}
+				avatar.misc[ i ] = null;
+				current_selections[ 'misc' + i ] = -1;
+			}
+			avatar.paint( context );
+		}catch(e){
+			console.log( e );
+		}
+		$( '#main' ).append( accesories );
+		return accesories;
+	}
+	/*
+	assign a click event handler to the images in the array
+	*/
+	function prepareAccesoriesClickEvent( imageArray, miscIndex ){
+		for( var i = 0; i < imageArray.length; i++ ){
+			var imageItem = imageArray[ i ];
+			imageItem.picked = false;
+			imageItem.miscIndex = miscIndex;
+			imageItem.onclick = function(){
+				if( !this.picked ){
+					this.picked = true;
+					avatar.misc[ this.miscIndex ] = this;
+					current_selections[ 'misc' + this.miscIndex ] = this.arrayIndex;
+				}else {
+					this.picked = false;
+					avatar.misc[ this.miscIndex ] = null;
+					current_selections[ 'misc' + this.miscIndex ] = -1;
+				}
+				avatar.paint( context );
+			};
+		}
+	}
     /*
      handle face slider changes
      */
