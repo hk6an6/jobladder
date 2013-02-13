@@ -533,23 +533,85 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 		accesories = serempre.avatars.filterBySize( allAccesories, chosen_size );
         buildSimpleSlider('shirts-slider',shirts,function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); },function(event,ui){ sliderChanged(ui.value, shirts, 'shirt'); });
         buildSimpleSlider('pants-slider',pants,function(event,ui){ sliderChanged(ui.value, pants, 'pants'); },function(event,ui){ sliderChanged(ui.value, pants, 'pants'); });
-		buildSimpleSlider( 'accesories-slider',accesories,function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); },function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); } );
+		//buildSimpleSlider( 'accesories-slider',accesories,function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); },function(event,ui){ sliderChanged(ui.value, accesories, 'misc', 1); } );
         $('#shirts-slider').slider('value',chosen_shirt);
         $('#pants-slider').slider('value',chosen_pants);
-		$( '#accesories-slider' ).slider( 'value', chosen_accesories );
+		//$( '#accesories-slider' ).slider( 'value', chosen_accesories );
         addOrReplaceScrollableSlider(shirts, 'shirts-scrollable-slider', 'shirts-slider');
         addOrReplaceScrollableSlider(pants, 'pants-scrollable-slider', 'pants-slider');
-		addOrReplaceScrollableSlider( accesories, 'accesories-scrollable-slider', 'accesories-slider' );
+		//addOrReplaceScrollableSlider( accesories, 'accesories-scrollable-slider', 'accesories-slider' );
         sliderChanged(arrayIndex, bodies, 'body');
     }
     /*
      handle face slider changes
      */
-    function onFaceSelection(arrayIndex){
-        sliderChanged(arrayIndex, faces, 'face');
+    function onFaceSelection( arrayIndex ){
+        sliderChanged( arrayIndex, faces, 'face' );
     }		
-    
-	</script>
+    /*
+	filters beards, mustaches, beards and mustaches
+	*/
+	function filterFacialHair( partName, faceShape, hairColor ){
+		var regex = null;
+		if( !faceShape ){
+			regex = new RegExp( '(\\d+)(\\s)(' + partName + '\\s)(\\w{2,})((\\s\\w+)*)', 'i', 'g' );
+		}else if( faceShape != null && faceShape != '' && !hairColor ){
+			regex = new RegExp( '(\\d+)(\\s)(' + partName + '\\s)(' + faceShape + ')((\\s\\w+)*)', 'i', 'g' );
+		}else if( faceShape && hairColor ){
+			regex = new RegExp( '(\\d+)(\\s)(' + partName + '\\s)(' + faceShape + ')(\\s)(' + hairColor + ')((\\s\\w+)*)', 'i', 'g' );
+		}
+		return allAccesories.filter( function( element ) { 
+			return element.alt.match( regex );
+		} );
+	}
+	/*
+	fetches faceshape from chosen face
+	*/
+	function getChosenFaceShape( ){
+		var regex = new RegExp( '(\\w+)(\\s)(\\w+)', 'i', 'g' );
+		return faces[ current_selections.face ].alt.match( regex )[1];
+	}
+	/*
+	fetches all robes
+	*/
+	function getBatas( bodySize ){
+		var regex = new RegExp( '(\\d+)(\\s)(Bata)(\\s)(Hombre|Mujer)' , 'i', 'g' );
+		return allAccesories.filter( function( element ){
+			var matches = element.alt.match( regex );
+			if( matches && matches.length > 0 ){
+				return matches[ 1 ] == bodySize;
+			}
+		} );
+	}
+	/*
+	fetches all coats
+	*/
+	function getSacos( bodySize ){
+		var regex = new RegExp( '(\\d+)(\\s)(Saco)(\\s)(Hombre|Mujer)', 'i', 'g' );
+		return allAccesories.filter( function( element ){
+			var matches = element.alt.match( regex );
+			if( matches && matches.length > 0 ){
+				return matches[ 1 ] == bodySize;
+			}
+		} );
+	}
+	/*
+	fetches all glasses
+	*/
+	function getGafas( ){
+		return allAccesories.filter( function( element ){
+			return element.alt.match( /(Gafas)(\s)(\w+)(\s)(Hombre|Mujer)/ig );
+		} );
+	}
+	/*
+	fetches all ties
+	*/
+	function getCorbatas( ){
+		return allAccesories.filter( function( element ){
+			return element.alt.match( /(Corbata)(\s)(\w+)(\s)(Hombre|Mujer)/ig );
+		} );
+	}
+</script>
 
 
 <!--
