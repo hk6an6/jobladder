@@ -522,7 +522,7 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
     /*
      handle body slider changes
      */
-    function onBodySelection(arrayIndex){
+    function onBodySelection( arrayIndex ){
         var size_regex = /\d+(?=( [^\s]+ ((hombre)|(mujer))))/gi;
         var chosen_size = bodies[arrayIndex].alt.match(size_regex)+'';
         var chosen_shirt = current_selections.shirt ? current_selections.shirt : 0;
@@ -568,8 +568,36 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 		}catch(e){
 			console.log( e );
 		}
-		$( '#main' ).append( accesories );
+		onAccesoriesUpdated( );
 		return accesories;
+	}
+	/*
+	updates accesory listing
+	*/
+	function onAccesoriesUpdated( ){
+		var scrollablePaneId = 'accesories-scrollable-slider';
+		var sourceArray = accesories;
+		var scrollIcon = $( '<span class="icono'+ scrollablePaneId +'"></span>' );
+        var scrollablePane = $( '<div class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>' );
+        var scrollContainer = $( '<div class="jTscrollerContainer"></div>' );
+        var scrollContent = $( '<div class="jTscroller"></div>' );
+		var oldScrollableSlider = $( '#'+scrollablePaneId );
+		for( var i = 0; i < sourceArray.length; i++ ){
+            var scrollableItem = $( sourceArray[ i ] );
+            scrollableItem = wrapAsScrollableContentItem( scrollableItem );
+            scrollContent.append( scrollableItem );
+        }
+        scrollContainer.append( scrollContent );
+        scrollablePane.append( scrollContainer );
+        scrollablePane.id = scrollablePaneId;
+        if( oldScrollableSlider.length ){
+            oldScrollableSlider.replaceWith( scrollablePane );
+        }else{
+            $( '#scrollable-sliders' ).append( scrollablePane );
+        }
+        //refresh
+        updateTabControls();
+		return scrollablePane;
 	}
 	/*
 	assign a click event handler to the images in the array
