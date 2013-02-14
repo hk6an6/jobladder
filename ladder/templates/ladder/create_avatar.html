@@ -558,7 +558,7 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 			accesories = [];
 			for( var i = 0; i < allPossibleOptions.length; i++ ){
 				if( allPossibleOptions[ i ] && allPossibleOptions[ i ].length > 0 ){
-					prepareAccesoriesClickEvent( allPossibleOptions[ i ], i );
+					allPossibleOptions[ i ] = prepareAccesoriesClickEvent( allPossibleOptions[ i ], i );
 					accesories = accesories.concat( allPossibleOptions[ i ] );
 				}
 				avatar.misc[ i ] = null;
@@ -575,15 +575,25 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 	assign a click event handler to the images in the array
 	*/
 	function prepareAccesoriesClickEvent( imageArray, miscIndex ){
+		var thumbnails = [];
 		for( var i = 0; i < imageArray.length; i++ ){
-			var imageItem = imageArray[ i ];
-			imageItem.picked = false;
-			imageItem.miscIndex = miscIndex;
-			imageItem.onclick = function(){
+			thumbnails[ i ] = new Image();
+			thumbnails[ i ].imageItem = imageArray[ i ];
+			thumbnails[ i ].picked = false;
+			thumbnails[ i ].miscIndex = miscIndex;
+			thumbnails[ i ].src = imageArray[ i ].thumbnail;
+			thumbnails[ i ].wholeCategory = thumbnails;
+			thumbnails[ i ].onclick = function(){
+				for( var j = 0; j < this.wholeCategory.length; j++ ){
+					if( this.wholeCategory[ j ] == this ){
+						continue;
+					}
+					this.wholeCategory[ j ].picked = false;
+				}
 				if( !this.picked ){
 					this.picked = true;
-					avatar.misc[ this.miscIndex ] = this;
-					current_selections[ 'misc' + this.miscIndex ] = this.arrayIndex;
+					avatar.misc[ this.miscIndex ] = this.imageItem;
+					current_selections[ 'misc' + this.miscIndex ] = this.imageItem.arrayIndex;
 				}else {
 					this.picked = false;
 					avatar.misc[ this.miscIndex ] = null;
@@ -592,6 +602,7 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 				avatar.paint( context );
 			};
 		}
+		return thumbnails;
 	}
     /*
      handle face slider changes
