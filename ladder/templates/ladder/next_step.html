@@ -154,15 +154,14 @@
 				, [ 650, 50 ]
 			];
 			this.initializePositions = function( ){
-				for( var i = 0; i < this.positions.length; i++ ){
-					this.positions[ i ] = new timeline.position( this.positions[ i ][ 0 ], this.positions[ i ][ 1 ] );
+				for( var i = 0; i < timeline.positions.length; i++ ){
+					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
 				}
 			}
 			this.paint = function( context ){
-				context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
-				for( var i = 0; i < this.positions.length; i++ ){
-					console.log( 'drawing '+this.positions[ i ].centerX+','+this.positions[ i ].centerY );
-					this.positions[ i ].paint( context );
+				context.clearRect( 0, 0, timeline.canvas.width, timeline.canvas.height );
+				for( var i = 0; i < timeline.positions.length; i++ ){
+					timeline.positions[ i ].paint( context );
 				}
 			}
 			this.position = function( x, y ){
