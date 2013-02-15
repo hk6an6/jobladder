@@ -140,40 +140,85 @@
 
 {% block pagefooter %}
 	<script>
-		var timeline = new function( ){
+        var timeline = new function( ){
 			this.canvas = document.getElementById( 'history-canvas' );
 			this.context = this.canvas.getContext( '2d' );
 			this.position_area = 100;
 			this.occupiedFillStyle = 'red';
 			this.vacantFillStyle = 'blue';
+			this.positions = [
+				[ 50, 50 ]
+				, [ 200, 50 ]
+				, [ 350, 50 ]
+				, [ 500, 50 ]
+				, [ 650, 50 ]
+			];
+			this.initializePositions = function( ){
+				for( var i = 0; i < this.positions.length; i++ ){
+					this.positions[ i ] = new timeline.position( this.positions[ i ][ 0 ], this.positions[ i ][ 1 ] );
+				}
+			}
+			this.paint = function( context ){
+				context.clearRect( 0, 0, this.canvas.width, this.canvas.height );
+				for( var i = 0; i < this.positions.length; i++ ){
+					console.log( 'drawing '+this.positions[ i ].centerX+','+this.positions[ i ].centerY );
+					this.positions[ i ].paint( context );
+				}
+			}
 			this.position = function( x, y ){
 				this.centerX = x;
 				this.centerY = y;
 				this.radius = Math.floor( timeline.position_area/2 );
 				this.occupied = false;
+				this.position_area = timeline.position_area;
+				this.vacantFillStyle = timeline.vacantFillStyle;
+				this.occupiedFillStyle = timeline.occupiedFillStyle;
+			};
+			this.position.prototype.makeStarPath = function( context ){
+			    context.beginPath( );
+				context.moveTo( this.radius, 0 );
+				context.lineTo( this.radius + ( this.radius/4 ), this.radius/2 );
+				context.lineTo( this.radius*2, this.radius/2 );
+				context.lineTo( this.radius + ( this.radius/2 ), this.radius );
+				context.lineTo( this.radius*10/6, this.radius*7/4 );
+				context.lineTo( this.radius, this.radius*5/4 );
+				context.lineTo( this.radius*2/6, this.radius*7/4 );
+				context.lineTo( this.radius/2, this.radius );
+				context.lineTo( 0, this.radius/2 );
+				context.lineTo( this.radius*3/4, this.radius/2 );
+				context.lineTo( this.radius, 0 );
 			};
 			this.position.prototype.paint = function ( context ){
 				context.save( );
-				context.translate( this.centerX - this.position_area, this.centerY - this.position_area );
+				context.translate( this.centerX - this.position_area/2, this.centerY - this.position_area/2 );
 				if( !this.occupied ){
 					context.beginPath( );
 					context.arc( this.radius, this.radius, this.radius - 10, 0, 2 * Math.PI, false );
-					context.fillStyle = timeline.vacantFillStyle;
+					context.fillStyle = this.vacantFillStyle;
 					context.fill( );
 					context.beginPath( );
 					context.arc( this.radius, this.radius, this.radius - 5, 0, 2 * Math.PI, false );
 					context.lineWidth = 5;
-					context.strokeStyle = timeline.vacantFillStyle;
+					context.strokeStyle = this.vacantFillStyle;
 					context.stroke( );
 				}else{
-					context.beginPath( );
-					context.moveTo( this.radius, 0 );
-					context.lineTo( this.radius + ( this.radius/4 ), this.radius/2 );
-					context.strokeStyle = timeline.occupiedFillStyle;
-					context.lineTo( this.radius*2, this.radius/2 );
-					context.lineTo( this.radius + ( this.radius/4 ), this.radius );
-					context.lineTo( this.radius*7/4, this.radius*7/4 );
+					var original_radius = this.radius;
+					this.radius -= 20;
+					context.save( );
+					context.translate( 20, 20 );
+					this.makeStarPath( context );
+					context.fillStyle = this.occupiedFillStyle;
+					context.fill( );
+					context.restore( );
+					this.radius = original_radius - 5;
+					context.save( );
+					context.translate( 5, 5 );
+					this.makeStarPath( context );
+					context.lineWidth = 4;
+					context.strokeStyle = this.occupiedFillStyle;
 					context.stroke( );
+					context.restore( );
+					this.radius = original_radius;
 				}
 				context.restore( );
 			};
