@@ -153,33 +153,65 @@
 				, [ 500, 50 ]
 				, [ 650, 50 ]
 			];
+			this.paths = [];
+			/*
+			this turns the 'timeline.positions' integer matrix into a timeline.position array
+			*/
 			this.initializePositions = function( ){
+				var pathCounter = 0;
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
 				}
+				for( var i = timeline.positions.length - 1; i > 1; i-- ){
+					timeline.paths[ pathCounter++ ] = new timeline.path( timeline.positions[ i - 1 ], timeline.positions[ i ] );
+				}
 			};
+			/*
+			draw all history
+			*/
 			this.paint = function( context ){
 				context.clearRect( 0, 0, timeline.canvas.width, timeline.canvas.height );
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ].paint( context );
 				}
+				for( var i = 0; i < timeline.paths.length; i++ ){
+					timeline.paths[ i ].paint( context );
+				}
 			};
+			/*
+			defines a path between 2 positions history
+			*/
 			this.path = function( startPosition, endPosition ){
 				this.startPosition = startPosition;
 				this.endPosition = endPosition;
 			};
+			/*
+			calculates path starting x-coordinate
+			*/
 			this.path.prototype.getIX = function( ){
 				return this.startPosition.centerX + this.startPosition.radius + 5;
 			};
+			/*
+			calculates path ending x-coordinate
+			*/
 			this.path.prototype.getFX = function( ){
 				return this.endPosition.centerX - this.endPosition.radius - 5;
 			};
+			/*
+			calculates path starting y-coordinate
+			*/
 			this.path.prototype.getIY = function( ){
 				return this.startPosition.centerY;
 			};
+			/*
+			calculates path ending y-coordinate
+			*/
 			this.path.prototype.getFY = function( ){
 				return this.endPosition.centerY;
 			};
+			/*
+			draws a path on screen
+			*/
 			this.path.prototype.paint = function( context ){
 				context.save( );
 				context.strokeStyle = this.endPosition.occupied ? this.endPosition.occupiedFillStyle : this.endPosition.vacantFillStyle;
@@ -191,6 +223,9 @@
 				context.stroke( );
 				context.restore( );
 			};
+			/*
+			defines a position in history
+			*/
 			this.position = function( x, y ){
 				this.centerX = x;
 				this.centerY = y;
@@ -200,6 +235,9 @@
 				this.vacantFillStyle = timeline.vacantFillStyle;
 				this.occupiedFillStyle = timeline.occupiedFillStyle;
 			};
+			/*
+			makes a start path within the position area. The size is relative to the area occupied by the current timeline.position object
+			*/
 			this.position.prototype.makeStarPath = function( context ){
 			    context.beginPath( );
 				context.moveTo( this.radius, 0 );
@@ -214,6 +252,9 @@
 				context.lineTo( this.radius*3/4, this.radius/2 );
 				context.lineTo( this.radius, 0 );
 			};
+			/*
+			paints a positio in history
+			*/
 			this.position.prototype.paint = function ( context ){
 				context.save( );
 				context.translate( this.centerX - this.position_area/2, this.centerY - this.position_area/2 );
