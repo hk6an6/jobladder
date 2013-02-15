@@ -162,7 +162,7 @@
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
 				}
-				for( var i = timeline.positions.length - 1; i > 1; i-- ){
+				for( var i = timeline.positions.length - 1; i > 0; i-- ){
 					timeline.paths[ pathCounter++ ] = new timeline.path( timeline.positions[ i - 1 ], timeline.positions[ i ] );
 				}
 			};
@@ -320,10 +320,12 @@
 			canvas = document.getElementById( 'canvas' );
 			context = canvas.getContext( '2d' );
 			serempre.cargos.toggleWaitDialog( );
+			timeline.initializePositions( );
 			pushPosition( currentCargo.pk );
 			//start drawing
 			window.setInterval(function(){
-				avatar.paint(context);
+				avatar.paint( context );
+				timeline.paint( timeline.context );
 			} ,1000 );
 		});
 		/*
