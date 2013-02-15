@@ -129,11 +129,56 @@
 </div>
 <div class="col1">
 	<div id="next-steps"></div>
+	<div id="last-steps">
+		<canvas id='history-canvas' width='750' height='100'>
+			Your browser doesn't support HTML 5. Please upgrade to a more current browser.
+		</canvas>
+	</div>
 	<div id="breadcrums"></div>
 </div>
 {% endblock %}
 
 {% block pagefooter %}
+	<script>
+		var timeline = new function( ){
+			this.canvas = document.getElementById( 'history-canvas' );
+			this.context = this.canvas.getContext( '2d' );
+			this.position_area = 100;
+			this.occupiedFillStyle = 'red';
+			this.vacantFillStyle = 'blue';
+			this.position = function( x, y ){
+				this.centerX = x;
+				this.centerY = y;
+				this.radius = Math.floor( timeline.position_area/2 );
+				this.occupied = false;
+			};
+			this.position.prototype.paint = function ( context ){
+				context.save( );
+				context.translate( this.centerX - this.position_area, this.centerY - this.position_area );
+				if( !this.occupied ){
+					context.beginPath( );
+					context.arc( this.radius, this.radius, this.radius - 10, 0, 2 * Math.PI, false );
+					context.fillStyle = timeline.vacantFillStyle;
+					context.fill( );
+					context.beginPath( );
+					context.arc( this.radius, this.radius, this.radius - 5, 0, 2 * Math.PI, false );
+					context.lineWidth = 5;
+					context.strokeStyle = timeline.vacantFillStyle;
+					context.stroke( );
+				}else{
+					context.beginPath( );
+					context.moveTo( this.radius, 0 );
+					context.lineTo( this.radius + ( this.radius/4 ), this.radius/2 );
+					context.strokeStyle = timeline.occupiedFillStyle;
+					context.lineTo( this.radius*2, this.radius/2 );
+					context.lineTo( this.radius + ( this.radius/4 ), this.radius );
+					context.lineTo( this.radius*7/4, this.radius*7/4 );
+					context.stroke( );
+				}
+				context.restore( );
+			};
+		}
+	</script>
 	<script>
 		var currentCargo = null;
 		var destinationCargo = null;
