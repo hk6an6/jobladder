@@ -157,13 +157,40 @@
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
 				}
-			}
+			};
 			this.paint = function( context ){
 				context.clearRect( 0, 0, timeline.canvas.width, timeline.canvas.height );
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ].paint( context );
 				}
-			}
+			};
+			this.path = function( startPosition, endPosition ){
+				this.startPosition = startPosition;
+				this.endPosition = endPosition;
+			};
+			this.path.prototype.getIX = function( ){
+				return this.startPosition.centerX + this.startPosition.radius + 5;
+			};
+			this.path.prototype.getFX = function( ){
+				return this.endPosition.centerX - this.endPosition.radius - 5;
+			};
+			this.path.prototype.getIY = function( ){
+				return this.startPosition.centerY;
+			};
+			this.path.prototype.getFY = function( ){
+				return this.endPosition.centerY;
+			};
+			this.path.prototype.paint = function( context ){
+				context.save( );
+				context.strokeStyle = this.endPosition.occupied ? this.endPosition.occupiedFillStyle : this.endPosition.vacantFillStyle;
+				context.fillStyle = this.endPosition.occupied ? this.endPosition.occupiedFillStyle : this.endPosition.vacantFillStyle;
+				context.beginPath( );
+				context.moveTo( this.getIX( ), this.getIY( ) );
+				context.lineTo( this.getFX( ), this.getFY( ) );
+				context.lineWidth = 5;
+				context.stroke( );
+				context.restore( );
+			};
 			this.position = function( x, y ){
 				this.centerX = x;
 				this.centerY = y;
