@@ -140,6 +140,12 @@
 
 {% block pagefooter %}
 	<script>
+		//setup class inheritance
+		Function.prototype.inheritsFrom = function( superClass ){
+			this.prototype = new superClass;
+			this.prototype.constructor = this;
+			this.prototype.parent = superClass.prototype; // use this.parent.methodName.call(this[, arg]*) to call a method from the superclass
+		}
         var timeline = new function( ){
 			this.canvas = document.getElementById( 'history-canvas' );
 			this.context = this.canvas.getContext( '2d' );
@@ -154,6 +160,65 @@
 				, [ 650, 50 ]
 			];
 			this.paths = [];
+			
+			//x-browser event helper
+			function addEvent(node, name, func, supressDefault) {
+				if(node.addEventListener){
+					node.addEventListener(name, func, supressDefault);
+				}else if(node.attachEvent) {
+					node.attachEvent(name, func);
+				}
+			}
+
+			//defines a physical entity
+			this.PhysicalEntity = function(){
+				//entity's mass center coordinates
+				this.x = 0;
+				this.y = 0;
+				//entity dimensions
+				this.width = 0;
+				this.height = 0;
+			}
+			//update entity status
+			this.PhysicalEntity.prototype.update = function(){
+				if(DEBUG) console.log('updating: ' + this.constructor.name + '[width:' + this.width + ' height:' + this.height + '] at <' + this.x + ',' + this.y + '>');
+			};
+			//translates drawing context so that the space-box alloted for the entity's dimensions is centered on the entity's center of mass
+			this.PhysicalEntity.prototype.paint = function(context){
+				context.save();
+				context.translate( this.x - Math.floor(this.width/2), this.y - Math.floor(this.height/2) );
+				this.draw(context);
+				context.restore();
+			};
+			//draws the entity on screen
+			this.PhysicalEntity.prototype.draw = function(context){
+				if(DEBUG) console.log('drawing: ' + this.constructor.name + '[width:' + this.width + ' height:' + this.height + '] at <' + this.x + ',' + this.y + '>');
+			};
+			//returns true if the other entity collides with this one
+			this.PhysicalEntity.prototype.hits = function( anotherPhysicalEntity, stop){
+				if((anotherPhysicalEntity.x - anotherPhysicalEntity.width/2) > (this.x - this.width/2)
+					&& (anotherPhysicalEntity.x - anotherPhysicalEntity.width/2) <= (this.x + this.width/2)){
+					if((anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) > (this.y - this.width/2)
+						&& (anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) <= (this.y + this.width/2)){
+						return true;
+					} else if ((anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) < (this.y + this.width/2)
+						&& (anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) >= (this.y - this.width/2)){
+						return true;
+					}
+				} else if ((anotherPhysicalEntity.x + anotherPhysicalEntity.width/2) < (this.x + this.width/2)
+					&& (anotherPhysicalEntity.x + anotherPhysicalEntity.width/2) >= (this.x - this.width/2)) {
+					if((anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) > (this.y - this.width/2)
+						&& (anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) <= (this.y + this.width/2)){
+						return true;
+					} else if ((anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) < (this.y + this.width/2)
+						&& (anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) >= (this.y - this.width/2)){
+						return true;
+					}
+				}
+				if(!stop)
+					return anotherPhysicalEntity.hits(this, true);
+				return false;
+			};
 			/*
 			register mouse over, move and out events on the timeline canvas
 			*/
@@ -206,6 +271,18 @@
 				this.startPosition = startPosition;
 				this.endPosition = endPosition;
 			};
+			this.path.inheritsFrom( this.PhysicalEntity );
+			Object.defineProperty( this.path.prototype, 'x', { get: function(){ return Math.floor( ( this.getFX() - this.getIX() ) / 2 ) + this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.path.prototype, 'y', { get: function(){ return Math.floor( ( this.getFY() - this.getIX() ) / 2 ) + this.getIY() }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.path.prototype, 'width', { get: function(){ return this.getFX() - this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.path.prototype, 'height', { get: function(){ return this.getFY() - this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
+			/*
+			changes initial data for a path
+			*/
+			this.path.prototype.init = function ( startPosition, endPosition ){
+				this.startPosition = startPosition;
+				this.endPosition = endPosition;
+			}
 			/*
 			calculates path starting x-coordinate
 			*/
@@ -256,6 +333,11 @@
 				this.vacantFillStyle = timeline.vacantFillStyle;
 				this.occupiedFillStyle = timeline.occupiedFillStyle;
 			};
+			this.position.inheritsFrom( this.PhysicalEntity );
+			Object.defineProperty( this.position.prototype, 'x', { get: function(){ return this.centerX; }, set: function(value){ this.centerX = value; }, enumerable: true, configurable: false } );
+			Object.defineProperty( this.position.prototype, 'y', { get: function(){ return this.centerY; }, set: function(value){ this.centerY = value; }, enumerable: true, configurable: false } );
+			Object.defineProperty( this.position.prototype, 'width', { get: function(){ return 2 * this.radius; }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.position.prototype, 'height', { get: function(){ return 2 * this.radius }, set: function(value){}, enumerable: true, configurable: false } );
 			/*
 			makes a start path within the position area. The size is relative to the area occupied by the current timeline.position object
 			*/
