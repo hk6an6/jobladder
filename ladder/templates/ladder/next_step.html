@@ -140,6 +140,7 @@
 
 {% block pagefooter %}
 	<script>
+		var DEBUG = false;
 		//setup class inheritance
 		Function.prototype.inheritsFrom = function( superClass ){
 			this.prototype = new superClass;
@@ -178,6 +179,7 @@
 				//entity dimensions
 				this.width = 0;
 				this.height = 0;
+				this.moving = false;
 			}
 			//update entity status
 			this.PhysicalEntity.prototype.update = function(){
@@ -194,49 +196,72 @@
 			this.PhysicalEntity.prototype.draw = function(context){
 				if(DEBUG) console.log('drawing: ' + this.constructor.name + '[width:' + this.width + ' height:' + this.height + '] at <' + this.x + ',' + this.y + '>');
 			};
-			//returns true if the other entity collides with this one
-			this.PhysicalEntity.prototype.hits = function( anotherPhysicalEntity, stop){
-				if((anotherPhysicalEntity.x - anotherPhysicalEntity.width/2) > (this.x - this.width/2)
-					&& (anotherPhysicalEntity.x - anotherPhysicalEntity.width/2) <= (this.x + this.width/2)){
-					if((anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) > (this.y - this.width/2)
-						&& (anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) <= (this.y + this.width/2)){
-						return true;
-					} else if ((anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) < (this.y + this.width/2)
-						&& (anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) >= (this.y - this.width/2)){
-						return true;
-					}
-				} else if ((anotherPhysicalEntity.x + anotherPhysicalEntity.width/2) < (this.x + this.width/2)
-					&& (anotherPhysicalEntity.x + anotherPhysicalEntity.width/2) >= (this.x - this.width/2)) {
-					if((anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) > (this.y - this.width/2)
-						&& (anotherPhysicalEntity.y - anotherPhysicalEntity.width/2) <= (this.y + this.width/2)){
-						return true;
-					} else if ((anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) < (this.y + this.width/2)
-						&& (anotherPhysicalEntity.y + anotherPhysicalEntity.width/2) >= (this.y - this.width/2)){
-						return true;
-					}
+			this.PhysicalEntity.prototype.updateBounds = function( ){
+				if( this.moving ){
+					this._left  =(this.x - this.width/2);
+					this._right =(this.x + this.width/2);
+					this._top   =(this.y - this.height/2);
+					this._bottom=(this.y + this.height/2);
 				}
-				if(!stop)
-					return anotherPhysicalEntity.hits(this, true);
+			}
+			//returns true if the other entity collides with this one
+			this.PhysicalEntity.prototype.hits = function( anotherPhysicalEntity ){
+				this.updateBounds( );
+				anotherPhysicalEntity.updateBounds( );
+				if ( 
+						( this._left >= anotherPhysicalEntity._left && this._left <= anotherPhysicalEntity._right ) 
+						|| ( this._right >= anotherPhysicalEntity._left && this._right <= anotherPhysicalEntity._right ) 
+					){
+						return (
+							( this._top >= anotherPhysicalEntity._top && this._top <= anotherPhysicalEntity._bottom )
+							|| ( this._bottom >= anotherPhysicalEntity._top && this._bottom <= anotherPhysicalEntity._bottom )
+						);
+				}
 				return false;
 			};
+			this.particles = [];
+			this.mouseMarker = new this.PhysicalEntity( );
+			this.boundingRect = null;
+			this.mouseMarker.height = 10;
+			this.mouseMarker.width = 10;
+			this.mouseMarker.x = -20;
+			this.mouseMarker.y = -20;
+			this.mouseMarker.moving = true;
+			this.spotlight = -1;
+			this.mouseMarker.paint = function( context ){
+				if( DEBUG ){
+					context.save( );
+					context.translate( this.x - Math.floor( this.width / 2 ), this.y - Math.floor( this.height / 2 ) );
+					context.fillStyle = 'black';
+					context.fillRect( 0, 0, this.width, this.height );
+					context.restore( );
+				}
+			}
+			this.mouseMarker.handleEvent = function( event ){
+				timeline.boundingRect = timeline.canvas.getBoundingClientRect();
+				timeline.mouseMarker.x = event.clientX - timeline.boundingRect.left;
+				timeline.mouseMarker.y = event.clientY - timeline.boundingRect.top;
+			}
+			this.checkForPointerCollisions = function( ){
+				for( var i = 0; i < timeline.particles.length; i++ ){
+					timeline.particles[ i ].highlighted = ( timeline.mouseMarker.hits( timeline.particles[ i ] ) );
+					if( timeline.particles[ i ].highlighted ){
+						timeline.spotlight = i;
+					}
+				}
+			}
 			/*
 			register mouse over, move and out events on the timeline canvas
 			*/
 			this.registerMouseEvents = function( ){
 				timeline.canvas.addEventListener( 'mouseover', function( event ){
-					var rect = timeline.canvas.getBoundingClientRect();
-					var position = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-					console.log( 'mouseover: ' + position.x + ',' + position.y );
+					timeline.mouseMarker.handleEvent( event );
 				}, false );
 				timeline.canvas.addEventListener( 'mousemove', function( event ){
-					var rect = timeline.canvas.getBoundingClientRect();
-					var position = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-					console.log( 'mousemove: ' + position.x + ',' + position.y );
+					timeline.mouseMarker.handleEvent( event );
 				}, false );
 				timeline.canvas.addEventListener( 'mouseout', function( event ){
-					var rect = timeline.canvas.getBoundingClientRect();
-					var position = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-					console.log( 'mouseout: ' + position.x + ',' + position.y );
+					timeline.mouseMarker.handleEvent( event );
 				}, false );
 			};
 			/*
@@ -246,9 +271,16 @@
 				var pathCounter = 0;
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
+					timeline.particles.push( timeline.positions[ i ] );
 				}
 				for( var i = timeline.positions.length - 1; i > 0; i-- ){
 					timeline.paths[ pathCounter++ ] = new timeline.path( timeline.positions[ i - 1 ], timeline.positions[ i ] );
+					timeline.particles.push( timeline.paths[ timeline.paths.length - 1 ] );
+				}
+				for( var i = 0; i < timeline.particles.length; i++ ){
+					timeline.particles[ i ].moving = !timeline.particles[ i ].moving;
+					timeline.particles[ i ].updateBounds( );
+					timeline.particles[ i ].moving = !timeline.particles[ i ].moving;
 				}
 				this.registerMouseEvents( );
 			};
@@ -263,6 +295,7 @@
 				for( var i = 0; i < timeline.paths.length; i++ ){
 					timeline.paths[ i ].paint( context );
 				}
+				timeline.mouseMarker.paint( context );
 			};
 			/*
 			defines a path between 2 positions history
@@ -273,9 +306,9 @@
 			};
 			this.path.inheritsFrom( this.PhysicalEntity );
 			Object.defineProperty( this.path.prototype, 'x', { get: function(){ return Math.floor( ( this.getFX() - this.getIX() ) / 2 ) + this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
-			Object.defineProperty( this.path.prototype, 'y', { get: function(){ return Math.floor( ( this.getFY() - this.getIX() ) / 2 ) + this.getIY() }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.path.prototype, 'y', { get: function(){ return Math.floor( ( this.getFY() - this.getIY() ) / 2 ) + this.getIY() }, set: function(value){}, enumerable: true, configurable: false } );
 			Object.defineProperty( this.path.prototype, 'width', { get: function(){ return this.getFX() - this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
-			Object.defineProperty( this.path.prototype, 'height', { get: function(){ return this.getFY() - this.getIX() }, set: function(value){}, enumerable: true, configurable: false } );
+			Object.defineProperty( this.path.prototype, 'height', { get: function(){ return 5 }, set: function(value){}, enumerable: true, configurable: false } );
 			/*
 			changes initial data for a path
 			*/
@@ -428,6 +461,7 @@
 			//start drawing
 			window.setInterval(function(){
 				avatar.paint( context );
+				timeline.checkForPointerCollisions( );
 				timeline.paint( timeline.context );
 			} ,1000 );
 		});
