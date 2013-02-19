@@ -323,8 +323,10 @@
 				var nextPosition = serempre.cargos.futurePaths[ position.fields.siguientes[ i ] ];
 				if( !nextPosition.visited ){
 					var nextPositionDiv = buildFullPositionDisplay( nextPosition );
+					var requirementsDiv = $( '<div class="requirements"></div>' );
+					nextPositionDiv.append( requirementsDiv );
 					next_steps.append( nextPositionDiv );
-					displayRequirementsFor( nextPosition, nextPositionDiv );
+					displayRequirementsFor( nextPosition, requirementsDiv );
 				}
 			}
 		}
