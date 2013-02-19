@@ -119,23 +119,23 @@
 {% endblock %}
 
 {% block pagebody %}
-<div id="alerts">
+<div id="alerts" class="simulation">
 	
 </div>
-<div>
+<div class="simulation">
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
 </div>
-<div class="col1">
+<div class="col1 simulation">
 	<div id="next-steps"></div>
 	<div id="last-steps">
 		<canvas id='history-canvas' width='750' height='100'>
 			Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 		</canvas>
 	</div>
-	<div id="breadcrums"></div>
 </div>
+<div id="breadcrums"></div>
 {% endblock %}
 
 {% block pagefooter %}
@@ -423,6 +423,14 @@
 			return result;
 		}
 		/*
+		ends the simulation and displays simulation results
+		*/
+		function displaySimulationResults(){
+			$( 'div.simulation' ).css( 'display', 'none' );
+			$( 'div#breadcrums div' ).css( 'display', 'block' );
+			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
+		}
+		/*
 		let the user know the simulation can be ended
 		*/
 		function goalReached(){
@@ -432,7 +440,7 @@
 					+'<a class="close" data-dismiss="alert" href="#">&times;</a>'
 					+'<h4 class="alert-heading">' + ( deadEnd ? 'Es el final del camino!' : 'Alcanzaste tu meta!' ) + '</h4>'
 					+'<p>'
-						+'<a class="btn btn-primary" href="#">Terminar</a>'
+						+'<a class="btn btn-primary" onclick="javascript: displaySimulationResults( ); return false;" href="#">Terminar</a>'
 						+( deadEnd ? '' : '<a class="btn" href="#" data-dismiss="alert">Continuar la simulaci&oacute;n</a>' )
 					+'</p>'
 				+'</div>';
