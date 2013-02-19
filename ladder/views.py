@@ -15,10 +15,13 @@ logger = logging.getLogger('console')
 
 #output home page
 def home(request):
-	return render_to_response('ladder/index.html',locals(),RequestContext(request))
+	return render_to_response('ladder/home.html',locals(),RequestContext(request))
 	
 def instructions( request ):
 	return render_to_response('ladder/instructions.html',locals(),RequestContext(request))
+
+def start( request ):
+	return render_to_response('ladder/index.html',locals(),RequestContext(request))
 
 #output a json collection holding all known cargos in the database
 def cargo(request,cargo_name_fragment=None):
