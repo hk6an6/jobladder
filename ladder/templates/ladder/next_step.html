@@ -431,6 +431,7 @@
 			$( 'div.simulation' ).css( 'display', 'none' );
 			$( 'div#breadcrums div' ).css( 'display', 'block' );
 			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
+			$( 'div#breadcrums div ul.requirement-summary-listing' ).css( 'display', 'block' );
 		}
 		/*
 		let the user know the simulation can be ended
@@ -452,12 +453,14 @@
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
+			var requirementSummary = buildRequirementSummaryListFor( positionPK );
 			markFormerPositions( );
 			downloadModelAvatarFor( positionPK, avatarAvailable );
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
 			displayRequirementsFor( currentCargo, null );
 			var pushedSummary = buildPositionSummaryDisplay( positionPK );
+			pushedSummary.append( requirementSummary );
 			$( '#breadcrums' ).append( pushedSummary );
 			buildPositionSummaryThumbnail( positionPK );
 			pushedSummary.css( 'display','none' );
@@ -700,6 +703,25 @@
 				avatar.shoes = img;
 				console.log( avatar.shoes );
 			}
+		}
+		/*
+		finds requirement tags for a position. All tags should be held within the page
+		*/
+		function extractRequirementsFromPageFor( positionPK ){
+			return $( 'div#next-steps div#position-' + positionPK + ' div.requirements span.requirement_tag' );
+		}
+		/*
+		builds a list to display requirements when the simulation is done. The list is to be placed inside a timeline item
+		*/
+		function buildRequirementSummaryListFor( positionPK ){
+			var list = $( '<ul class="requirement-summary-listing" style="display: none;"></ul>' );
+			var items = extractRequirementsFromPageFor( positionPK );
+			for( var i = 0; i < items.length; i++ ){
+				var list_item = $( '<li class="requirement-summary-list-item"></li>' );
+				list_item.append( items[ i ] );
+				list.append( list_item );
+			}
+			return list;
 		}
 	</script>
 	<script src="{% static "ladder/javascript/timeline.js" %}" language="javascript" type="text/javascript"></script>
