@@ -426,13 +426,14 @@
 		let the user know the simulation can be ended
 		*/
 		function goalReached(){
+			var deadEnd = $( 'div#next-steps div.next-position' ).length == 0;
 			var alertMsg = 
 				 '<div class="alert alert-block alert-info fade in" id="alert_done">'
 					+'<a class="close" data-dismiss="alert" href="#">&times;</a>'
-					+'<h4 class="alert-heading">Alcanzaste tu meta!</h4>'
+					+'<h4 class="alert-heading">' + ( deadEnd ? 'Es el final del camino!' : 'Alcanzaste tu meta!' ) + '</h4>'
 					+'<p>'
 						+'<a class="btn btn-primary" href="#">Terminar</a>'
-						+'<a class="btn" href="#" data-dismiss="alert">Continuar la simulaci&oacute;n</a>'
+						+( deadEnd ? '' : '<a class="btn" href="#" data-dismiss="alert">Continuar la simulaci&oacute;n</a>' )
 					+'</p>'
 				+'</div>';
 				$( '#alerts' ).append( $( alertMsg ) );
@@ -451,7 +452,7 @@
 			buildPositionSummaryThumbnail( positionPK );
 			pushedSummary.css( 'display','none' );
 			bindSummaries( pushedSummary, path.length );
-			if( currentCargo.pk == destinationCargo.pk ){
+			if( currentCargo.pk == destinationCargo.pk || $( 'div#next-steps div.next-position' ).length == 0 ){
 				goalReached();
 			}
 		}
