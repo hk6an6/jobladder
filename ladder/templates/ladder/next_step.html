@@ -243,10 +243,27 @@
 				timeline.mouseMarker.y = event.clientY - timeline.boundingRect.top;
 			}
 			this.checkForPointerCollisions = function( ){
+				var formerSpotlight = timeline.spotlight;
+				timeline.spotlight = ( -1 );
 				for( var i = 0; i < timeline.particles.length; i++ ){
 					timeline.particles[ i ].highlighted = ( timeline.mouseMarker.hits( timeline.particles[ i ] ) );
 					if( timeline.particles[ i ].highlighted ){
 						timeline.spotlight = i;
+					}
+				}
+				timeline.updateSpotlight( formerSpotlight );
+			}
+			this.updateSpotlight = function( formerSpotlight ){
+				if( timeline.spotlight != formerSpotlight ){
+					if( formerSpotlight >=0 && formerSpotlight < 5 ){
+						if( timeline.particles[ formerSpotlight ].summary ){
+							timeline.particles[ formerSpotlight ].summary.css( 'display', 'none' );
+						}
+					}
+					if( timeline.spotlight >= 0 && timeline.spotlight < 5 ){
+						if( timeline.particles[ timeline.spotlight ].summary ){
+							timeline.particles[ timeline.spotlight ].summary.css( 'display', 'block' );
+						}
 					}
 				}
 			}
@@ -437,6 +454,8 @@
 		var fulfilledRequirements = [];
 		//when document completes loading, execute the following code
 		$(document).ready( function ( ) {
+			//clear former path data
+			sessionStorage.path = '[]';
 			//if there is no data about the origin and destination cargos, then redirect the user to the home page
 			serempre.cargos.futurePaths = sessionStorage.futurePaths;
 			if( !serempre.cargos.futurePaths ){
@@ -739,7 +758,7 @@
 		*/
 		function bindSummaries( pushedSummary, pathLength ){
 			if( pathLength <= 5 ){
-				timeline.particles[ ( path.length - 1 ) % 5 ].summary = pushedSummary;
+				timeline.particles[ ( pathLength - 1 ) % 5 ].summary = pushedSummary;
 			}else {
 				for( var i = 1; i < 5; i++ ){
 					timeline.particles[ i - 1 ].summary = timeline.particles[ i ].summary;
