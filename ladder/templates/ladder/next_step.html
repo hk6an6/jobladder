@@ -268,13 +268,12 @@
 			this turns the 'timeline.positions' integer matrix into a timeline.position array
 			*/
 			this.initializePositions = function( ){
-				var pathCounter = 0;
 				for( var i = 0; i < timeline.positions.length; i++ ){
 					timeline.positions[ i ] = new timeline.position( timeline.positions[ i ][ 0 ], timeline.positions[ i ][ 1 ] );
 					timeline.particles.push( timeline.positions[ i ] );
 				}
-				for( var i = timeline.positions.length - 1; i > 0; i-- ){
-					timeline.paths[ pathCounter++ ] = new timeline.path( timeline.positions[ i - 1 ], timeline.positions[ i ] );
+				for( var i = 0; i < timeline.positions.length - 1; i++ ){
+					timeline.paths[ i ] = new timeline.path( timeline.positions[ i ], timeline.positions[ i + 1 ] );
 					timeline.particles.push( timeline.paths[ timeline.paths.length - 1 ] );
 				}
 				for( var i = 0; i < timeline.particles.length; i++ ){
@@ -616,17 +615,21 @@
 		mark former positions as 'visited'
 		*/
 		function markFormerPositions(){
-			//mark current cargo as visited
-			currentCargo.visited = true;
+			var matching = null;
 			//rebuild ladder breadcrums
 			if( !sessionStorage.path || sessionStorage.path == '' ){
 				sessionStorage.path = '[]';
 			}
 			path = JSON.parse( sessionStorage.path );
-			//mark former positions as visited
-			for( var i = 0; i < path.length; i++ ){
-				serempre.cargos.futurePaths[ path[ i ] ].visited = true;
+			//mark current cargo as visited
+			currentCargo.visited = true;
+			//push current cargo onto the path
+			matching = path.filter( function( element ) { return element == currentCargo.pk; } );
+			if( matching == null || ( matching != null && matching.length <= 0 ) ){
+				path.push( currentCargo.pk );
 			}
+			//dump path for persistent storage
+			sessionStorage.path = JSON.stringify( path );
 		}
 		/*
 		load data needed to start the simulation

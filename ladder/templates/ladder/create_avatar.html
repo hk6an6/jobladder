@@ -168,6 +168,7 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 					$( this ).dialog( "close" );
 					serempre.cargos.toggleWaitDialog('', 'icon-signal');
 					sessionStorage.avatar = JSON.stringify( avatar.dumpToRawData( ) );
+					sessionStorage.path = '[]';
 					window.location.href = '{% url 'route-step' origin_pk target_pk sex %}';
 				}, No: function() {
 					$( this ).dialog( "close" );
