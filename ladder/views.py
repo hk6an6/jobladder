@@ -208,3 +208,8 @@ def avatar_sombrero_by_pk(request, sombrero_pk):
 def avatar_departamento_by_pk(request, departamento_pk):
 	item = get_object_or_404(Departamento, pk=int(departamento_pk))
 	return redirect(item.fondo.url)
+
+def cargo_fondo( request, cargo_pk ):
+	item = get_object_or_404( Cargo, pk=int( cargo_pk ) )
+	return redirect( item.departamento.fondo.url )
+

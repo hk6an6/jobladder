@@ -450,6 +450,17 @@
 				$( '#alerts' ).append( $( alertMsg ) );
 		}
 		/*
+		set's avatar background for a given position
+		*/
+		function fixBackground( positionPK ){
+			var backgroundImageURL = "{% url 'get-fondo-cargo' cargo_pk=1 %}".replace( /(\/cargo\/fondo\/)(\d+\/)/, '$1' + positionPK + '/' );
+			if(avatar.background == null || avatar.background == 'empty' ){
+				avatar.background = new Image();
+			}
+			avatar.background.src = backgroundImageURL;
+			console.log( avatar.background.src );
+		}
+		/*
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
@@ -468,6 +479,7 @@
 			if( currentCargo.pk == destinationCargo.pk || $( 'div#next-steps div.next-position' ).length == 0 ){
 				goalReached();
 			}
+			fixBackground( positionPK );
 		}
 		/*
 		builds a trail of visited positions
