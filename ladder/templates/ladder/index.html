@@ -48,26 +48,35 @@ static file assets {% endcomment %}
 
 {% block pagebody %}
     <div>
-        <div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
-            <label for='btn-hombre'>Sexo: </label>
-            <button id='btn-hombre' class='btn active'>H</button>
-            <button id='btn-mujer' class='btn'>M</button>
-        </div>
-        <span class='help-block'></span>
-    </div>
-	<div>
-		<div class='input-append'>
-			<label for='cargo_inicial_nombre'>Cargo actual: </label>
-			<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
-		</div>
-		<span class='help-block'>Elige el cargo que tienes en este momento</span>
+		<label for="nombre_jugador">
+			C&oacute;mo te llamas?
+		</label>
+		<input type="text" id="nombre_jugador" name="nombre_jugador" />
+		<span class="help-block">* Escribe aqu&iacute; tu nombre</span>
 	</div>
+	<div class="toggled_by_nombre" style="visibility: hidden">
+		<div>
+			<div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
+				<label for='btn-hombre'>Sexo: </label>
+				<button id='btn-hombre' class='btn active'>H</button>
+				<button id='btn-mujer' class='btn'>M</button>
+			</div>
+			<span class='help-block'></span>
+		</div>
+		<div>
+			<div class='input-append'>
+				<label for='cargo_inicial_nombre'>Cargo actual: </label>
+				<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+			</div>
+			<span class='help-block'>* Elige el cargo que tienes en este momento</span>
+		</div>
+	<div>
 	<div class='toggled_by_cargo_inicial'>
 		<div class='input-append'>
 			<label for='cargo_destino_nombre'>Cargo Destino: </label>
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
 		</div>
-		<span class='help-block'>Elige el cargo al que quieres llegar</span>
+		<span class='help-block'>* Elige el cargo al que quieres llegar</span>
 		<div id='start-simulation' style='visibility: hidden'>
             <label for='btn-start'>Simular ruta hasta:</label>
 			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "avatar-editor" origin_pk="1" target_pk="2" sex="3" %}");'>Next</button>
@@ -149,6 +158,23 @@ static file assets {% endcomment %}
                 $('#start-simulation').css('visibility','visible')
 				$('#btn-start').text(label);
 			});
+			
+			$( 'body div#main div:nth-child(1):first input ' ).blur( function( evt ) {
+				var player_name = evt.currentTarget.value;
+				if( player_name != '' ){
+					sessionStorage.player_name = player_name;
+					$( 'div.toggled_by_nombre' ).css( 'visibility', 'visible' );
+				}
+			} );
+			$( 'body div#main div:nth-child(1):first input ' ).keyup( function( evt ) {
+				var value = evt.currentTarget.value;
+				if( value != '' ){
+					$( 'div.toggled_by_nombre' ).css( 'visibility', 'visible' );
+				}
+				else {
+					$( 'div.toggled_by_nombre' ).css( 'visibility', 'hidden' );
+				}
+			} );
 		});
 	</script>
 	<script>
