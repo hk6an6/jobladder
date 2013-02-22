@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
 	url(r'^$', 'ladder.views.home', name="home"),
 	url(r'^instrucciones/$', 'ladder.views.instructions', name="instructions"),
+    url(r'^terminos-y-condiciones/$', 'ladder.views.terms', name="terms"),
 	url(r'^comenzando/$', 'ladder.views.start', name="start"),
 	url(r'^cargo/$','ladder.views.cargo', name="get-cargos"),
 	url(r'^cargo/siguientes/(?P<cargo_pk>\d+)/$','ladder.views.cargo_by_pk', name="get-cargo-by-pk"),
