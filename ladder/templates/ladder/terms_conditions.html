@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+{% block pagetitle %}Terminos y condiciones{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -55,10 +55,10 @@ text-align:center;
 border:thin solid #025084;
 background:#fff;
 max-width:60%;
-margin:20px auto;
+margin:auto;
 }
 ol{
-padding:20px;
+padding:10px;
 }
 ol {
 counter-reset:li; /* Initiate a counter */
@@ -67,8 +67,8 @@ padding-left:0; /* Remove the default left padding */
 }
 ol > li {
 position:relative; /* Create a positioning context */
-margin:0 0 10px 60px; /* Give each list item a left margin to make room for the numbers */
-padding:15px; /* Add some spacing around the content */
+margin:0 0 5px 60px; /* Give each list item a left margin to make room for the numbers */
+padding:10px 15px 0px; /* Add some spacing around the content */
 list-style:none; /* Disable the normal item numbering */
 }
 ol > li:before {
@@ -78,15 +78,15 @@ counter-increment:li; /* Increment the counter by 1 */
 position:absolute;
 top:10px;
 left:-40px;
-width:19px;
-height:19px;
+width:15px;
+height:45px;
 /* Some space between the number and the content in browsers that support
 generated content but not positioning it (Camino 2 is one example) */
 margin-right:5px;
-padding:12px;
+padding:7px 19px;
 color:#025084;
-background: url({% static "ladder/images/imagenes/bg-list.png" %}") no-repeat center center;
-background-size:100%;
+background: url({% static "ladder/images/imagenes/bg-list.png" %}") no-repeat fixed;
+background-size:45px 45px;
 font-size:15px;
 line-height:1.2;
 font-family:'thesansplain';
@@ -117,7 +117,7 @@ display:block;
             uno de los logros obtenidos en dicha herramienta hace parte de un plano imaginario.</li>
         </ol>
 </div>
-<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+<span class="boton"><a href="{% url 'rutas' %}">Continuar</a></span>
 {% endblock %}
 
 {% block pagefooter %}

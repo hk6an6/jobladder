@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Crea tu avatar{% endblock %}
+{% block pagetitle %}Simulación{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -225,7 +225,7 @@ margin:5px 0;
 
 {% block pageheader %}
 <div>
-    <h1>Planea tu ascenso</h1>
+    <h1>Simulación</h1>
 </div>
 {% endblock %}
 
@@ -459,6 +459,7 @@ margin:5px 0;
 					displayRequirementsFor( nextPosition, requirementsDiv );
 				}
 			}
+            fleXenv.updateScrollBars();
           		}
 		/*
 		mark former positions as 'visited'
@@ -905,19 +906,16 @@ margin:5px 0;
                 console.log( categoriaPK + 'background: blue', evt );
                 selection.removeClass('fulfilled');
             }
+            fleXenv.updateScrollBars();
             
         }
 	</script>
 <script>
     $(function() {
-      fleXenv.fleXcrollMain('next-steps');
-      var scrollDiv = document.getElementById('next-steps');  
+      fleXenv.fleXcrollMain("next-steps");
       $('h4.position-label').live("click", function (e) {
                                    $('.requirements').slideUp();
                                    $(this).siblings('.requirements').slideDown();
-                                  fleXenv.fleXcrollMain('next-steps');
-                                  var scrollDiv = document.getElementById('next-steps');
-
                                   fleXenv.updateScrollBars();
                                     });
 

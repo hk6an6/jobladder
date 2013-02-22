@@ -16,9 +16,6 @@
 {% endblock %}
 
 {% block pagestyle %}
-body{
-height:70%;
-}
 #main{
 background:url({% static "ladder/images/imagenes/bg_silouette-WORLD.png" %}) no-repeat right 0px;
 height:100%;
@@ -46,21 +43,23 @@ float:left;
 padding:20px 4.5%;
 background:#FFF;
 min-height:400px;
+position:relative;
 }
 .rutas2 .col-1{
 margin-right:2%;
 }
-body{
-background:#CCC;
-}
 .boton{
 clear:both;
+position:absolute;
+right:0;
+bottom:0;
 }
 .rutas2 h3{
-color:#025084;
+color:#025084 !important;
 font-size:1.4em;
 }
 .rutas2 span{
+color:#990033;
 font-size:1.1em;
 white-space:nowrap;
 }
@@ -103,9 +102,10 @@ white-space:nowrap;
         </p><br /><p><span>Carrera combinada:</span> En la que interactuarás de forma
         cercana e intensiva en la evolución del saber técnico con la
         destreza administrativa y gerencial.</p>
+        <span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
     </div>
 </div>
-<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+
 {% endblock %}
 
 {% block pagefooter %}

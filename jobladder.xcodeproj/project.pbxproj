@@ -127,7 +127,6 @@
 		5D98268316D7754E00507521 /* icono-requisito-full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-requisito-full.png"; sourceTree = "<group>"; };
 		5D98268416D7754E00507521 /* icono-requisito.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-requisito.png"; sourceTree = "<group>"; };
 		5D98268516D7754E00507521 /* icono-accesorios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-accesorios.png"; sourceTree = "<group>"; };
-		5D98268616D7754E00507521 /* avatares-404.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "avatares-404.jpg"; sourceTree = "<group>"; };
 		5D98268716D7754E00507521 /* bg_silouette-404.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-404.png"; sourceTree = "<group>"; };
 		5D98268816D7754E00507521 /* bg_silouette-WORLD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-WORLD.png"; sourceTree = "<group>"; };
 		5D98268916D7754E00507521 /* bg_silouette-FIN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-FIN.png"; sourceTree = "<group>"; };
@@ -142,7 +141,6 @@
 				5D98268316D7754E00507521 /* icono-requisito-full.png */,
 				5D98268416D7754E00507521 /* icono-requisito.png */,
 				5D98268516D7754E00507521 /* icono-accesorios.png */,
-				5D98268616D7754E00507521 /* avatares-404.jpg */,
 				5D98268716D7754E00507521 /* bg_silouette-404.png */,
 				5D98268816D7754E00507521 /* bg_silouette-WORLD.png */,
 				5D98268916D7754E00507521 /* bg_silouette-FIN.png */,

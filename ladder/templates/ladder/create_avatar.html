@@ -34,6 +34,9 @@ clear:both;
 div.body-part-picker-tab {
 
 }
+#scrollable-sliders #body-slider{
+display:block;
+}
 /*
 container for all body part tabs
 */
@@ -42,25 +45,44 @@ div#scrollable-sliders{
 }
 .bodypart-slider {
 width: 300px;
-margin: 15px;
+margin: 20px 60px;
 }
+#bodies-scrollable-slider{
+display:none;
+}
+div#eyebrows-scrollable-slider{
+width:210px;
+display:inline-block;
+}
+div#eyes-scrollable-slider{
+width:160px;
+display:inline-block;
+}
+span.iconoeyes-scrollable-slider {
+display: inline-block;
+margin: 5px 0px;
+float:none;
+}
+span.iconoeyebrows-scrollable-slider {
+display: block;
+margin: 5px -5px 0px 0px;
+}
+
 .rollo{
 float:left;
 width:320px;
 }
+-.scroll-bar-wrap .ui-slider { background: none; border:0; height: 2em; margin: 0 auto;  }
+41
+-.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 100%; height: 100%; margin: 0 auto; }
+42
+-.scroll-bar-wrap .ui-slider-handle { top:.2em; height: 1.5em; }
+43
+-.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 .scroll-pane { overflow: hidden; margin: 15px; position: relative; width:420px;}
 .scroll-content { white-space: nowrap; position: relative; float: left; }
 .scroll-content-item { margin: 0 5px; font-size: 3em; text-align: center; display: inline-block; position: relative; }
 * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
-.scroll-bar-wrap { clear: left; padding: 0 4px 0 2px; margin: 0 -1px -1px -1px; }
-.scroll-bar-wrap .ui-slider { background: #666; border:0; height: 7px; margin: 6px auto;  }
-.scroll-bar-wrap .ui-handle-helper-parent { position: relative; width: 10px; height: 100%; margin: 0 auto; }
-.scroll-bar-wrap .ui-slider-handle { top:0; height: 5px; position:absolute; z-index:2; width:10px; }
-.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; width:5px;}
-.ui-state-default, ui-slider-handle{
-background:#09C !important;
-border: 1px solid #09c !important;
-}
 .scroll-content-item a{
 display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius:15px; border:thin solid #999; margin:10px;
 }
@@ -75,6 +97,25 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 .jThumbnailScroller .jTscroller a:hover{border-color:#fff;}
 .jThumbnailScroller .jTscroller div:first-child{margin-left:10px;}
 .jThumbnailScroller .jTscroller div img{border:none;}
+#scrollable-sliders #body-slider {
+display: block;
+height: 10px;
+background: #ccc;
+}
+.ui-state-default, .ui-widget-content .ui-state-default,.ui-state-default {
+border: 1px solid #999999;
+background:#990033;
+font-weight: bold;
+color: rgb(238, 238, 238);
+left: 0%;
+height: 20px;
+width: 20px;
+margin: -6px -10px;
+}
+.ui-slider-range{
+background:none !important;
+}
+
 {% endblock %}
 
 {% block pageheader %}
@@ -101,15 +142,25 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
 	<div id="hairStyles-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="eyebrows-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="eyes-slider" style="clear: left;" class="bodypart-slider"></div>
-	<div id="body-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="shirts-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="pants-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="shoes-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="helmets-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="accesories-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="scrollable-sliders">
+    <div id="faces-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="hairstyles-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="eyebrows-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+    <div id="eyes-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="body-slider" class="bodypart-slider"></div>
+<div id="shoes-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="shirts-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="pants-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="accesories-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+    <div id="helmets-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
 	</div>
     <br/>
+        
     <div class="boton">
 		<button id="btn-continue" onclick="javascript: return confirmSimulationStart(); ">Continuar</button>
 	</div>
@@ -772,7 +823,8 @@ display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-
         $("#eyes-scrollable-slider").before('<span class="iconoeyes-scrollable-slider"></span>');
         $("#shoes-scrollable-slider").before('<span class="iconoshoes-scrollable-slider"></span>');
         $("#helmets-scrollable-slider").before('<span class="iconohelmets-scrollable-slider"></span>');
-        $("#bodies-scrollable-slider").before('<span class="iconobodies-scrollable-slider"></span>');
+       
+        $("#scrollable-sliders #body-slider").before('<span class="iconobodies-scrollable-slider"></span>');
         $("#faces-scrollable-slider").before('<span class="iconofaces-scrollable-slider"></span>');
         $("#shirts-scrollable-slider").before('<span class="iconoshirts-scrollable-slider"></span>');
         $("#pants-scrollable-slider").before('<span class="iconopants-scrollable-slider"></span>');

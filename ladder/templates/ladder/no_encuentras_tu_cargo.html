@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Rutas de carrera{% endblock %}
+{% block pagetitle %}¿No encuentras tu cargo?{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -43,7 +43,9 @@ margin:0 auto;
 }
 .rutas p{
 color:#025084;
+padding:90px;
 font-size:1.2em;
+position:relative;
 }
 {% endblock %}
 
@@ -58,10 +60,12 @@ font-size:1.2em;
 <img src="{% static "ladder/images/imagenes/avatares-404.png" %}" alt="No encuentras tu cargo" />
 
     <p>En este momento nos encontramos trabajando para ofrecerte diferentes opciones de crecimiento dentro de la organización.
-    <br>
+    <br><br>
     Pronto encontrarás más cargos y rutas para realizar tu simulación.</p>
+    <br><br>
+<span class="boton"><a href="{% url 'start' %}">Volver</a></span>
 </div>
-<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+
 {% endblock %}
 
 {% block pagefooter %}

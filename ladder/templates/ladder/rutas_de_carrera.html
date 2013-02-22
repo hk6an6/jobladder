@@ -36,10 +36,20 @@ font-size:1.5em;
 }
 div img{
 float:left;
+margin-right:20px;
 }
 .rutas{
 width:80%;
 margin:0 auto;
+}
+.rutas p{
+margin:20px;
+}
+.rutas h4{
+padding-top:30px;
+}
+.boton{
+clear:both;
 }
 {% endblock %}
 
@@ -62,7 +72,7 @@ margin:0 auto;
     a través de cargos que se encuentran dentro del proceso
     y finalmente llega a un cargo meta.</p>
 </div>
-<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+<span class="boton"><a href="{% url 'tipos' %}">Continuar</a></span>
 {% endblock %}
 
 {% block pagefooter %}

@@ -12,7 +12,7 @@ in order for template inheritance to work! {% endcomment %}
 static file assets {% endcomment %}
 {% load static from staticfiles %}
 
-{% block pagetitle %}Rutas de Carrera{% endblock %}
+{% block pagetitle %}Comenzando{% endblock %}
 
 {% block includestylesheet %}
 {% comment %} 
@@ -42,11 +42,16 @@ static file assets {% endcomment %}
 background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
 height:100%;
 }
-input, .btn{
+.boton2, input, .btn{
 background:#CCC !important;
 box-shadow:2px 2px 5px !important;
 border-radius:0 !important;
 border:none !important;
+}
+a.boton2{
+text-decoration:none;
+color:#666;
+padding:1.5px 1em;
 }
 .ui-autocomplete{
 max-width:445px !important;
@@ -99,7 +104,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 
 {% block pageheader %}
 	<div>
-        <h1>Rutas de carrera</h1>
+        <h1>Empieza tu simulación</h1>
     </div>
 {% endblock %}
 
@@ -125,6 +130,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 				<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
 			</div>
 			<span class='help-block'>* Elige el cargo que tienes en este momento</span>
+            <a href="{% url 'nocargo' %}" class="boton2">¿No encuentras tu cargo?</a>
 		</div>
 	<div>
 	<div class='toggled_by_cargo_inicial'>
