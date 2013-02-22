@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+{% block pagetitle %}Rutas de carrera{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -17,41 +17,39 @@
 
 {% block pagestyle %}
 #main{
-background:url({% static "ladder/images/imagenes/bg_silouette-02LAB.png" %}) no-repeat right 0px;
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+}
+.col1{
+padding-top:50px;
+}
+h3{
+color:#025084;
 }
 {% endblock %}
 
 {% block pageheader %}
 <div>
-	<h1>Instrucciones</h1>
+	<h1>Rutas de carrera</h1>
 </div>
 {% endblock %}
 
 {% block pagebody %}
-<div class="contenido">
-    <ol>
-        <li><h3>Crea tu Avatar</h3>
-            <p>Para empezar debes ubicar tus características físicas y escoger los accesorios y el
-            vestuario que más te guste y se ajuste al cargo que estás ocupando actualemente</p>
-        </li>
-        <li><h3>Empieza tu simulación</h3>
-            <p>Dentro de las casillas escribe tu nombre, cargo actual, años de experiencia y
-            ubicación geográfica.
-            <br /><br />
-            Seguidamente responde a la pregunta :<br />
-            <span>¿Cuál es el objetivo al que deseas llegar en Pacific Rubiales?</span>
-            <br /><br />
-            Dentro de la simulación recuerda que para pasar de un cargo a otro deberás
-            seleccionar y aprobar las competencias requeridas para cada cargo, que están
-            representadas por íconos dentro de la herramienta, cuando logres conseguir
-            cada uno de los íconos avanzarás al cargo siguiente
-            </p><br />
-            <h4>¡Ahora solo debes empezar! Crea tu propia ruta de carrera,
-                incrementa tu talento y evoluciona de una manera integral</h4>
-        </li>
-    </ol>
+<div class="col2">
+<img src="{% static "ladder/images/imagenes/esquema.png" %}" alt="Esquema Rutas de carrera" />
+ </div>
+<div class="col1">
+ 
+    <h4>¿Qué son las Rutas de Carrera?</h4>
+    <p>Las rutas de carrera son mapas con las posiciones organizacionales
+    que se ocupan para alcanzar un determinado
+    cargo objetivo. Los cargos son ubicados dentro de las rutas
+    de acuerdo a sus competencias, experiencia y programas
+    especícos. Una ruta comienza en un cargo inicial, se desarrolla
+    a través de cargos que se encuentran dentro del proceso
+    y finalmente llega a un cargo meta.</p>
 </div>
-<span class="boton"><a href="{% url 'terms' %}">Continuar</a></span>
+</div>
+<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
 {% endblock %}
 
 {% block pagefooter %}

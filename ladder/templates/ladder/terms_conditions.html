@@ -17,41 +17,69 @@
 
 {% block pagestyle %}
 #main{
-background:url({% static "ladder/images/imagenes/bg_silouette-02LAB.png" %}) no-repeat right 0px;
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+height:100%;
+}
+.col1{
+padding-top:50px;
+}
+h3 span{
+color:#025084;
+}
+h3{
+color:#9B0E26;
+line-height:1.2;
+
+}
+html{
+height:100%;
+}
+.col1{
+text-align:center;
+}
+.col1 p{
+text-align:left;
+}
+body{
+height:70%;
+}
+.terms h3{
+padding:1em;
+background:#025084;
+color:#fff;
+font-size:1em;
+}
+.terms{
+border:thin solid #025084;
+background:#fff;
+max-width:70%;
+margin:20px auto;
 }
 {% endblock %}
 
 {% block pageheader %}
 <div>
-	<h1>Instrucciones</h1>
+	<h1>Terminos y condiciones</h1>
 </div>
 {% endblock %}
 
 {% block pagebody %}
-<div class="contenido">
+<div class="terms">
+    <h3>El departamento de Recursos Humanos mediante la herramienta de Rutas de Carrera establece:</h3>
     <ol>
-        <li><h3>Crea tu Avatar</h3>
-            <p>Para empezar debes ubicar tus características físicas y escoger los accesorios y el
-            vestuario que más te guste y se ajuste al cargo que estás ocupando actualemente</p>
-        </li>
-        <li><h3>Empieza tu simulación</h3>
-            <p>Dentro de las casillas escribe tu nombre, cargo actual, años de experiencia y
-            ubicación geográfica.
-            <br /><br />
-            Seguidamente responde a la pregunta :<br />
-            <span>¿Cuál es el objetivo al que deseas llegar en Pacific Rubiales?</span>
-            <br /><br />
-            Dentro de la simulación recuerda que para pasar de un cargo a otro deberás
-            seleccionar y aprobar las competencias requeridas para cada cargo, que están
-            representadas por íconos dentro de la herramienta, cuando logres conseguir
-            cada uno de los íconos avanzarás al cargo siguiente
-            </p><br />
-            <h4>¡Ahora solo debes empezar! Crea tu propia ruta de carrera,
-                incrementa tu talento y evoluciona de una manera integral</h4>
-        </li>
-    </ol>
+        <li>A los trabajadores que hacen parte de la empresa Pacic Rubiales Energy como las únicas personas
+            autorizadas para jugar y hacer las simulaciones dentro de la herramienta.</li>
+        <li>Los movimientos y procesos de la herramienta hacen parte de una simulación. Por esta razón que la
+            herramienta ofrece a los jugadores la obtención simulada de los requisitos necesarios para completar
+            a manera de juego cada meta individual.</li>
+        <li>Las competencias, requisitos y programas que los jugadores deben alcanzar se establecieron después
+            de entrevistar a todo el personal de la compañía, cada una de ellas se encuentra aprobada por el …</li>
+        <li>Aunque la herramienta contiene información de alta relevancia para cada uno de los trabajadores, el
+            proceso y movimientos dentro de esta deben ser vistos como parte de un juego de simulación. Cada
+            uno de los logros obtenidos en dicha herramienta hace parte de un plano imaginario.</li>
+        </ol>
 </div>
-<span class="boton"><a href="{% url 'terms' %}">Continuar</a></span>
+<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
 {% endblock %}
 
 {% block pagefooter %}
