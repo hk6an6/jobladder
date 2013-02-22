@@ -20,6 +20,9 @@ def home(request):
 def instructions( request ):
 	return render_to_response('ladder/instructions.html',locals(),RequestContext(request))
 
+def terms( request ):
+	return render_to_response('ladder/terms_conditions.html',locals(),RequestContext(request))
+
 def start( request ):
 	return render_to_response('ladder/index.html',locals(),RequestContext(request))
 
