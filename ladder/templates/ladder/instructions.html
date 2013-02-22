@@ -30,18 +30,20 @@ background:url({% static "ladder/images/imagenes/bg_silouette-02LAB.png" %}) no-
 {% block pagebody %}
 <div class="contenido">
     <ol>
+        <li><h3>Ubica tu cargo</h3>
+            <p>Dentro de las casillas escribe tu nombre, género y tu cargo actual. Seguidamente responde
+            a la pregunta ¿Cuál es el cargo meta al que deseas llegar en Pacic Rubiales?</p>
+            </li>
         <li><h3>Crea tu Avatar</h3>
             <p>Para empezar debes ubicar tus características físicas y escoger los accesorios y el
-            vestuario que más te guste y se ajuste al cargo que estás ocupando actualemente</p>
+            vestuario que más te guste y que se ajuste al cargo que estas ocupando actualmente.</p>
         </li>
+        <li><h3>Selecciona tu próximo cargo</h3>
+            <p>Escoge el cargo por donde quieres empezar a construir tu ruta. Recuerda que la
+            opción que elijas te ayudará a avanzar un paso más para llegar a tu cargo meta.
+            </p></li>
         <li><h3>Empieza tu simulación</h3>
-            <p>Dentro de las casillas escribe tu nombre, cargo actual, años de experiencia y
-            ubicación geográfica.
-            <br /><br />
-            Seguidamente responde a la pregunta :<br />
-            <span>¿Cuál es el objetivo al que deseas llegar en Pacific Rubiales?</span>
-            <br /><br />
-            Dentro de la simulación recuerda que para pasar de un cargo a otro deberás
+            <p>Dentro de la simulación recuerda que para pasar de un cargo a otro deberás
             seleccionar y aprobar las competencias requeridas para cada cargo, que están
             representadas por íconos dentro de la herramienta, cuando logres conseguir
             cada uno de los íconos avanzarás al cargo siguiente
@@ -51,7 +53,7 @@ background:url({% static "ladder/images/imagenes/bg_silouette-02LAB.png" %}) no-
         </li>
     </ol>
 </div>
-<span class="boton"><a href="{% url 'terms' %}">Continuar</a></span>
+<span class="boton"><a href="{% url 'start' %}">Continuar</a></span>
 {% endblock %}
 
 {% block pagefooter %}

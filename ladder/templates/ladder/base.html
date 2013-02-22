@@ -18,6 +18,8 @@
 		{% endcomment %}
 		{% endblock %}
 		{% block includejavascript %}
+                <script type='text/javascript' src="{% static "ladder/javascript/flexcroll.js" %}"></script>
+
 		{% comment %}
 			<!-- space invaders js -->
 			<script src="{% static "ladder/javascript/space_invaders.js" %}" language="javascript" type="text/javascript"></script>
@@ -28,7 +30,7 @@
 		<script src="{% static "ladder/javascript/paths.js" %}" language="javascript" type="text/javascript"></script>
 		<script src="{% static "ladder/bootstrap/js/bootstrap.min.js" %}" language="javascript" type="text/javascript"></script>
         <script src="{% static "ladder/javascript/jquery.thumbnailScroller.js" %}" language="javascript" type="text/javascript"></script>
-		{% comment %}
+       		{% comment %}
 			<!-- bootstrap js -->
 			<script src="{% static "ladder/javascript/bootstrap.min.js" %}" language="javascript" type="text/javascript"></script>
 		{% endcomment %}

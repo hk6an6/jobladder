@@ -119,12 +119,35 @@
 		5D98267A16D7435F00507521 /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
 		5D98267B16D7435F00507521 /* instructions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = instructions.html; sourceTree = "<group>"; };
 		5D98267C16D7435F00507521 /* rutas_de_carrera.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rutas_de_carrera.html; sourceTree = "<group>"; };
+		5D98267D16D746AE00507521 /* bg-list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-list.png"; sourceTree = "<group>"; };
+		5D98267E16D74B7500507521 /* terms_conditions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = terms_conditions.html; sourceTree = "<group>"; };
+		5D98268016D7737800507521 /* rutas_de_carrera_2.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rutas_de_carrera_2.html; sourceTree = "<group>"; };
+		5D98268116D7749800507521 /* no_encuentras_tu_cargo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = no_encuentras_tu_cargo.html; sourceTree = "<group>"; };
+		5D98268216D7754E00507521 /* esquema.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = esquema.png; sourceTree = "<group>"; };
+		5D98268316D7754E00507521 /* icono-requisito-full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-requisito-full.png"; sourceTree = "<group>"; };
+		5D98268416D7754E00507521 /* icono-requisito.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-requisito.png"; sourceTree = "<group>"; };
+		5D98268516D7754E00507521 /* icono-accesorios.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-accesorios.png"; sourceTree = "<group>"; };
+		5D98268616D7754E00507521 /* avatares-404.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "avatares-404.jpg"; sourceTree = "<group>"; };
+		5D98268716D7754E00507521 /* bg_silouette-404.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-404.png"; sourceTree = "<group>"; };
+		5D98268816D7754E00507521 /* bg_silouette-WORLD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-WORLD.png"; sourceTree = "<group>"; };
+		5D98268916D7754E00507521 /* bg_silouette-FIN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_silouette-FIN.png"; sourceTree = "<group>"; };
+		5D98268A16D7754E00507521 /* avatares-FIN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatares-FIN.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		431E6F1B16A6FD02004177CC /* imagenes */ = {
 			isa = PBXGroup;
 			children = (
+				5D98268216D7754E00507521 /* esquema.png */,
+				5D98268316D7754E00507521 /* icono-requisito-full.png */,
+				5D98268416D7754E00507521 /* icono-requisito.png */,
+				5D98268516D7754E00507521 /* icono-accesorios.png */,
+				5D98268616D7754E00507521 /* avatares-404.jpg */,
+				5D98268716D7754E00507521 /* bg_silouette-404.png */,
+				5D98268816D7754E00507521 /* bg_silouette-WORLD.png */,
+				5D98268916D7754E00507521 /* bg_silouette-FIN.png */,
+				5D98268A16D7754E00507521 /* avatares-FIN.png */,
+				5D98267D16D746AE00507521 /* bg-list.png */,
 				5D442F4A16C42B4200021B9F /* bg_item.png */,
 				5D442F4B16C42B4200021B9F /* icono-camisa.png */,
 				5D442F4C16C42B4300021B9F /* icono-cascos.png */,
@@ -386,8 +409,11 @@
 				43B471CC166903B9003EB0DC /* index.html */,
 				43B471CD166903B9003EB0DC /* simulation.html */,
 				5D98267A16D7435F00507521 /* home.html */,
+				5D98267E16D74B7500507521 /* terms_conditions.html */,
 				5D98267B16D7435F00507521 /* instructions.html */,
 				5D98267C16D7435F00507521 /* rutas_de_carrera.html */,
+				5D98268116D7749800507521 /* no_encuentras_tu_cargo.html */,
+				5D98268016D7737800507521 /* rutas_de_carrera_2.html */,
 			);
 			path = ladder;
 			sourceTree = "<group>";

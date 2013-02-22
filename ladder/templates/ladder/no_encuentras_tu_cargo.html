@@ -20,7 +20,7 @@ body{
 height:70%;
 }
 #main{
-background:url({% static "ladder/images/imagenes/bg_silouette-WORLD.png" %}) no-repeat right 0px;
+background:url({% static "ladder/images/imagenes/bg_silouette-404.png" %}) no-repeat right 0px;
 height:100%;
 }
 
@@ -41,6 +41,10 @@ float:left;
 width:80%;
 margin:0 auto;
 }
+.rutas p{
+color:#025084;
+font-size:1.2em;
+}
 {% endblock %}
 
 {% block pageheader %}
@@ -51,16 +55,11 @@ margin:0 auto;
 
 {% block pagebody %}
 <div class="rutas">
-<img src="{% static "ladder/images/imagenes/esquema.png" %}" alt="Esquema Rutas de carrera" />
+<img src="{% static "ladder/images/imagenes/avatares-404.png" %}" alt="No encuentras tu cargo" />
 
-    <h4>¿Qué son las<br><span> Rutas de Carrera?</span></h4>
-    <p>Las rutas de carrera son mapas con las posiciones organizacionales
-    que se ocupan para alcanzar un determinado
-    cargo objetivo. Los cargos son ubicados dentro de las rutas
-    de acuerdo a sus competencias, experiencia y programas
-    especícos. Una ruta comienza en un cargo inicial, se desarrolla
-    a través de cargos que se encuentran dentro del proceso
-    y finalmente llega a un cargo meta.</p>
+    <p>En este momento nos encontramos trabajando para ofrecerte diferentes opciones de crecimiento dentro de la organización.
+    <br>
+    Pronto encontrarás más cargos y rutas para realizar tu simulación.</p>
 </div>
 <span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
 {% endblock %}

@@ -30,8 +30,12 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html{
+height:100%;
+}
 body {
 	line-height: 1;
+    height:75%;
 }
 ul {
 	list-style: none inside;
@@ -222,6 +226,14 @@ span.iconopants-scrollable-slider {
     float:left;
     clear:both;
 }
+span.iconoaccesories-scrollable-slider {
+    background:url(../images/imagenes/icono-accesorios.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
 #skin-color-tag{
     display:none;
     }
@@ -285,24 +297,25 @@ ol > li {
     list-style:none; /* Disable the normal item numbering */
 }
 ol > li:before {
-    backgroundcounter(li); /* Use the counter as content */
+    content:counter(li); /* Use the counter as content */
     counter-increment:li; /* Increment the counter by 1 */
     /* Position and style the number */
     position:absolute;
     top:0px;
     left:-60px;
-    width:55px;
-	height:55px;
+    width:45px;
+	height:45px;
     /* Some space between the number and the content in browsers that support
        generated content but not positioning it (Camino 2 is one example) */
     margin-right:8px;
-    padding:0px;
+    padding:10px;
 	color:#025084;
-    background: url(../images/imagenes/bg-list.png);
-	font-size:40px;
+    background: url(../images/imagenes/bg-list.png) no-repeat center center;
+	font-size:30px;
 	line-height:1.2;
     font-family:'thesansplain';
     text-align:center;
+    display:block;
 }
 li ol,
 li ul {margin-top:6px;}
@@ -353,4 +366,35 @@ background:#fde6c0;
 }
 .color-Morena{
 background:#8b5b40;
+}
+.scrollgeneric {
+line-height: 1px;
+font-size: 1px;
+position: absolute;
+top: 0; left: 0;
+}
+
+.vscrollerbase {
+width: 10px;
+background-color: white;
+}
+.vscrollerbar {
+width: 10px;
+background-color: black;
+}
+.hscrollerbase {
+height: 10px;
+background-color: white;
+}
+.hscrollerbar {
+height: 10px;
+background-color: black;
+}
+
+.scrollerjogbox {
+width: 10px;
+height: 10px;
+top: auto; left: auto;
+bottom: 0px; right: 0px;
+background-color: gray;
 }

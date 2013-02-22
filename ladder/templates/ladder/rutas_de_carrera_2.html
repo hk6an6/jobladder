@@ -27,19 +27,42 @@ height:100%;
 .col1{
 padding-top:50px;
 }
-h3{
-color:#025084;
-}
-h4 span{
-color:#990033;
-font-size:1.5em;
-}
-div img{
-float:left;
-}
-.rutas{
+.rutas2{
 width:80%;
 margin:0 auto;
+}
+.rutas2 h2{
+font-size:1.2em;
+background:#025084;
+color:#FFF;
+letter-spacing:normal;
+padding:1em;
+text-align:center;
+margin-bottom:10px;
+}
+.rutas2 .col-1, .rutas2 .col-2{
+width:40%;
+float:left;
+padding:20px 4.5%;
+background:#FFF;
+min-height:400px;
+}
+.rutas2 .col-1{
+margin-right:2%;
+}
+body{
+background:#CCC;
+}
+.boton{
+clear:both;
+}
+.rutas2 h3{
+color:#025084;
+font-size:1.4em;
+}
+.rutas2 span{
+font-size:1.1em;
+white-space:nowrap;
 }
 {% endblock %}
 
@@ -50,17 +73,37 @@ margin:0 auto;
 {% endblock %}
 
 {% block pagebody %}
-<div class="rutas">
-<img src="{% static "ladder/images/imagenes/esquema.png" %}" alt="Esquema Rutas de carrera" />
 
-    <h4>¿Qué son las<br><span> Rutas de Carrera?</span></h4>
-    <p>Las rutas de carrera son mapas con las posiciones organizacionales
-    que se ocupan para alcanzar un determinado
-    cargo objetivo. Los cargos son ubicados dentro de las rutas
-    de acuerdo a sus competencias, experiencia y programas
-    especícos. Una ruta comienza en un cargo inicial, se desarrolla
-    a través de cargos que se encuentran dentro del proceso
-    y finalmente llega a un cargo meta.</p>
+<div class="rutas2">
+    <h2>En Pacific Rubiales hemos establecido cuatro (4) tipos de rutas y tres (3) tipos de carrera</h2>
+    <div class="col-1">
+        <h3>Rutas</h3>
+        <p><span>Ruta vertical:</span> Se refiere al movimiento progresivo en la ruta
+        que puedes realizar de acuerdo con la estructura de los cargos,
+        en una unidad organizacional o área de especialidad.
+        </p><br /><p><span>Ruta mixta:</span> Es la trayectoria en la ruta con una progresión
+        en más de una unidad organizacional o área de especialidad,
+        que combina movimientos verticales y horizontales.
+        </p><br /><p><span>Ruta horizontal o interdisciplinaria:</span> Son los movimientos
+        o cambios que se realizan de una forma horizontal para
+        proveer mayor amplitud de competencias y conocimientos.
+        </p><br /><p><span>Ruta transversal:</span> Se refiere al movimiento progresivo que
+        incorpora posiciones en otras unidades de negocio o empresas
+        de la compañía.</p>
+    </div>
+    <div class="col-2">
+        <h3>Carreras</h3>
+        <p>En Pacific Rubiales te ofrecemos tres (3) tipos de carrera:</p>
+        <br /><p><span>Carrera técnica:</span> En donde podrás profundizar competencias
+        técnicas que te permitirán el dominio de conocimientos
+        específcos.</p><br />
+        <p><span>Carrera gerencial:</span> Con la que lograrás desarrollar competencias
+        de tipo gerencial y administrativo, que te permitirán
+        integrarte a procesos de diferentes niveles de complejidad.
+        </p><br /><p><span>Carrera combinada:</span> En la que interactuarás de forma
+        cercana e intensiva en la evolución del saber técnico con la
+        destreza administrativa y gerencial.</p>
+    </div>
 </div>
 <span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
 {% endblock %}

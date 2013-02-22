@@ -48,12 +48,50 @@ padding:1em;
 background:#025084;
 color:#fff;
 font-size:1em;
+margin:0;
+text-align:center;
 }
 .terms{
 border:thin solid #025084;
 background:#fff;
-max-width:70%;
+max-width:60%;
 margin:20px auto;
+}
+ol{
+padding:20px;
+}
+ol {
+counter-reset:li; /* Initiate a counter */
+margin-left:0; /* Remove the default left margin */
+padding-left:0; /* Remove the default left padding */
+}
+ol > li {
+position:relative; /* Create a positioning context */
+margin:0 0 10px 60px; /* Give each list item a left margin to make room for the numbers */
+padding:15px; /* Add some spacing around the content */
+list-style:none; /* Disable the normal item numbering */
+}
+ol > li:before {
+content:counter(li, lower-alpha); /* Use the counter as content */
+counter-increment:li; /* Increment the counter by 1 */
+/* Position and style the number */
+position:absolute;
+top:10px;
+left:-40px;
+width:19px;
+height:19px;
+/* Some space between the number and the content in browsers that support
+generated content but not positioning it (Camino 2 is one example) */
+margin-right:5px;
+padding:12px;
+color:#025084;
+background: url({% static "ladder/images/imagenes/bg-list.png" %}") no-repeat center center;
+background-size:100%;
+font-size:15px;
+line-height:1.2;
+font-family:'thesansplain';
+text-align:center;
+display:block;
 }
 {% endblock %}
 
