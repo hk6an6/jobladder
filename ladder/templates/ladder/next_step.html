@@ -13,6 +13,8 @@
 {% block includejavascript %}
 		{{ block.super }}
 		<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
+<script type='text/javascript' src="{% static "ladder/javascript/flexcroll.js"  %}" language="javascript"></script>
+
 {% endblock %}
 
 {% block pagestyle %}
@@ -54,7 +56,7 @@ height:100%;
 	/*
 	DIV element that contains all available future position options
 	*/
-	div#next-steps {
+	div.flexscroll {
 /* Typical fixed height and fixed width example */
 width: 100%;
 height: 500px;
@@ -246,7 +248,9 @@ margin:5px 0;
     <p>Para acceder a un cargo de nivel superior transforma los
     íconos de la derecha en azul haciendo clic en cada uno de
     los requisitos que te presentamos a continuación</p>
+    <div class="flexscroll" style="height:400px;">
 	<div id="next-steps"></div>
+        </div>
 	<div id="last-steps">
 		<canvas id='history-canvas' width='750' height='100'>
 			Your browser doesn't support HTML 5. Please upgrade to a more current browser.
@@ -459,6 +463,7 @@ margin:5px 0;
 					displayRequirementsFor( nextPosition, requirementsDiv );
 				}
 			}
+            fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
           		}
 		/*
@@ -554,6 +559,7 @@ margin:5px 0;
 				}
 			}
 			return result;
+            fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
 		}
 		/*
@@ -612,7 +618,7 @@ margin:5px 0;
 				goalReached();
 			}
 			fixBackground( positionPK );
-            
+            fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
 
 		}
@@ -856,6 +862,7 @@ margin:5px 0;
 		*/
 		function extractRequirementsFromPageFor( positionPK ){
 			return $( 'div#next-steps div#position-' + positionPK + ' div.requirements span.requirement_tag' );
+            fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
 		}
 		/*
@@ -906,17 +913,20 @@ margin:5px 0;
                 console.log( categoriaPK + 'background: blue', evt );
                 selection.removeClass('fulfilled');
             }
+            fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
             
         }
 	</script>
 <script>
     $(function() {
-      fleXenv.fleXcrollMain("next-steps");
+      fleXenv.initByClass("flexscroll");
+      var scrollDiv = document.getElementById('next-steps');
       $('h4.position-label').live("click", function (e) {
                                    $('.requirements').slideUp();
                                    $(this).siblings('.requirements').slideDown();
-                                  fleXenv.updateScrollBars();
+                                  setTimeout(function(){
+                                             fleXenv.updateScrollBars();},600);
                                     });
 
       });
