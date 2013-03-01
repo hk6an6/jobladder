@@ -1,0 +1,165 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Rutas de carrera{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-WORLD.png" %}) no-repeat right 0px;
+height:100%;
+}
+
+.col1{
+padding-top:50px;
+}
+.rutas2{
+width:80%;
+margin:0 auto;
+}
+.rutas2 h2{
+font-size:1.2em;
+background:#025084;
+color:#FFF;
+letter-spacing:normal;
+padding:1em;
+text-align:center;
+margin-bottom:10px;
+}
+.rutas2 .col-1, .rutas2 .col-2{
+width:40%;
+float:left;
+padding:20px 4.5%;
+background:#FFF;
+min-height:400px;
+position:relative;
+}
+.rutas2 .col-1{
+margin-right:2%;
+}
+.boton{
+clear:both;
+position:absolute;
+right:0;
+bottom:0;
+}
+.rutas2 h3{
+color:#025084 !important;
+font-size:1.4em;
+}
+.rutas2 span{
+color:#990033;
+font-size:1.1em;
+white-space:nowrap;
+}
+{% endblock %}
+
+{% block pageheader %}
+<div>
+	<h1>Rutas de carrera</h1>
+</div>
+{% endblock %}
+
+{% block pagebody %}
+
+<div class="rutas2">
+    <h2>En Pacific Rubiales hemos establecido cuatro (4) tipos de rutas y tres (3) tipos de carrera</h2>
+    <div class="col-1">
+        <h3>Rutas</h3>
+        <p><span>Ruta vertical:</span> Se refiere al movimiento progresivo en la ruta
+        que puedes realizar de acuerdo con la estructura de los cargos,
+        en una unidad organizacional o área de especialidad.
+        </p><br /><p><span>Ruta mixta:</span> Es la trayectoria en la ruta con una progresión
+        en más de una unidad organizacional o área de especialidad,
+        que combina movimientos verticales y horizontales.
+        </p><br /><p><span>Ruta horizontal o interdisciplinaria:</span> Son los movimientos
+        o cambios que se realizan de una forma horizontal para
+        proveer mayor amplitud de competencias y conocimientos.
+        </p><br /><p><span>Ruta transversal:</span> Se refiere al movimiento progresivo que
+        incorpora posiciones en otras unidades de negocio o empresas
+        de la compañía.</p>
+    </div>
+    <div class="col-2">
+        <h3>Carreras</h3>
+        <p>En Pacific Rubiales te ofrecemos tres (3) tipos de carrera:</p>
+        <br /><p><span>Carrera técnica:</span> En donde podrás profundizar competencias
+        técnicas que te permitirán el dominio de conocimientos
+        específcos.</p><br />
+        <p><span>Carrera gerencial:</span> Con la que lograrás desarrollar competencias
+        de tipo gerencial y administrativo, que te permitirán
+        integrarte a procesos de diferentes niveles de complejidad.
+        </p><br /><p><span>Carrera combinada:</span> En la que interactuarás de forma
+        cercana e intensiva en la evolución del saber técnico con la
+        destreza administrativa y gerencial.</p>
+        <span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block pagefooter %}
+
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

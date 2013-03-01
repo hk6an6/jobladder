@@ -7,15 +7,15 @@ Function.prototype.inheritsFrom = function( superClass ){
 var timeline = new function( ){
 	this.canvas = document.getElementById( 'history-canvas' );
 	this.context = this.canvas.getContext( '2d' );
-	this.position_area = 100;
-	this.occupiedFillStyle = 'red';
-	this.vacantFillStyle = 'blue';
+	this.position_area = 20;
+	this.occupiedFillStyle = 'blue';
+	this.vacantFillStyle = '#990033';
 	this.positions = [
-		[ 50, 50 ]
-		, [ 200, 50 ]
-		, [ 350, 50 ]
-		, [ 500, 50 ]
-		, [ 650, 50 ]
+		[ 10, 10 ]
+		, [ 200, 10 ]
+		, [ 350, 10 ]
+		, [ 500, 10 ]
+		, [ 650, 10 ]
 	];
 	this.paths = [];
 	
@@ -223,7 +223,7 @@ var timeline = new function( ){
 		context.beginPath( );
 		context.moveTo( this.getIX( ), this.getIY( ) );
 		context.lineTo( this.getFX( ), this.getFY( ) );
-		context.lineWidth = 5;
+		context.lineWidth = 2;
 		context.stroke( );
 		context.restore( );
 	};

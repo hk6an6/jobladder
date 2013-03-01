@@ -12,7 +12,7 @@ in order for template inheritance to work! {% endcomment %}
 static file assets {% endcomment %}
 {% load static from staticfiles %}
 
-{% block pagetitle %}Rutas de Carrera{% endblock %}
+{% block pagetitle %}Comenzando{% endblock %}
 
 {% block includestylesheet %}
 {% comment %} 
@@ -23,6 +23,7 @@ static file assets {% endcomment %}
 	html-head
 {% endcomment %}
 		{{ block.super }}
+
 {% endblock %}
 
 {% block includejavascript %}
@@ -37,27 +38,87 @@ static file assets {% endcomment %}
 {% endblock %}
 
 {% block pagestyle %}
-	
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+height:100%;
+}
+.boton2, input, .btn{
+background:#CCC !important;
+box-shadow:2px 2px 5px !important;
+border-radius:0 !important;
+border:none !important;
+}
+a.boton2{
+text-decoration:none;
+color:#666;
+padding:1.5px 1em;
+}
+.ui-autocomplete{
+max-width:445px !important;
+max-height:200px !important;
+width:445px !important;
+height:200px !important;
+background:#CCC !important;
+color:#666 !important;
+border-radius:none !important;
+}
+.ui-menu-item a:hover, .ui-menu-item a:active, .ui-menu-item a:focus{
+background:#666 !important;
+color:#FFF !important;
+border:none;
+border-radius:none;
+}
+.ui-menu-item a{
+border-radius:none;
+color:#666;
+}
+input[type="text"]{
+width:440px !important;
+}
+.btn{
+margin-right:10px;
+}
+.ui-autocomplete-input{
+height:26px !important;
+color:#666;
+width:426px !important;
+}
+label{
+color:#025084;
+font-size:1.2em;
+}
+[class^="icon-"], [class*=" icon-"] {
+background: url({% static "ladder/images/glyphicons-halflings-white.png" %}) 157px 40px !important;
+}
+.ui-button-icon{
+background:#666 !important;
+height:28px !important;
+}
+.btn-group, .input-append{
+font-size:1em !important;
+}
+.active{
+box-shadow:inset 2px 2px 5px #666 !important;
+}
 {% endblock %}
 
 {% block pageheader %}
 	<div>
-        <h1>Rutas de carrera</h1>
+        <h1>Empieza tu simulación</h1>
     </div>
 {% endblock %}
 
 {% block pagebody %}
     <div>
 		<label for="nombre_jugador">
-			C&oacute;mo te llamas?
+			Nombre y Apellido
 		</label>
 		<input type="text" id="nombre_jugador" name="nombre_jugador" />
-		<span class="help-block">* Escribe aqu&iacute; tu nombre</span>
 	</div>
 	<div class="toggled_by_nombre" style="visibility: hidden">
 		<div>
 			<div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
-				<label for='btn-hombre'>Sexo: </label>
+				<label for='btn-hombre'>Escoge tu género: </label>
 				<button id='btn-hombre' class='btn active'>H</button>
 				<button id='btn-mujer' class='btn'>M</button>
 			</div>
@@ -69,17 +130,20 @@ static file assets {% endcomment %}
 				<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
 			</div>
 			<span class='help-block'>* Elige el cargo que tienes en este momento</span>
+            <a href="{% url 'nocargo' %}" class="boton2">¿No encuentras tu cargo?</a>
 		</div>
 	<div>
 	<div class='toggled_by_cargo_inicial'>
 		<div class='input-append'>
-			<label for='cargo_destino_nombre'>Cargo Destino: </label>
+			<label for='cargo_destino_nombre'>¿Cuál es el cargo meta al que deseas
+                llegar en Pacific Rubiales?</label>
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
 		</div>
 		<span class='help-block'>* Elige el cargo al que quieres llegar</span>
 		<div id='start-simulation' style='visibility: hidden'>
-            <label for='btn-start'>Simular ruta hasta:</label>
-			<button id='btn-start' name='btn-start' class='btn btn-primary' onClick='navigate_to_simulation_start("{% url "avatar-editor" origin_pk="1" target_pk="2" sex="3" %}");'>Next</button>
+            <span class="boton">
+			<button id='btn-start' name='btn-start' onClick='navigate_to_simulation_start("{% url "avatar-editor" origin_pk="1" target_pk="2" sex="3" %}");'>Next</button>
+                </span>
 		</div>
 	</div>
 {% endblock %}

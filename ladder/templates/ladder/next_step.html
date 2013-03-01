@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Crea tu avatar{% endblock %}
+{% block pagetitle %}Simulación{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -13,14 +13,58 @@
 {% block includejavascript %}
 		{{ block.super }}
 		<script src="{% static "ladder/javascript/scrollableslider.js" %}" language="javascript" type="text/javascript"></script>
+<script type='text/javascript' src="{% static "ladder/javascript/flexcroll.js"  %}" language="javascript"></script>
+
 {% endblock %}
 
 {% block pagestyle %}
+.scrollgeneric {
+line-height: 1px;
+font-size: 1px;
+position: absolute;
+top: 0; left: 0;
+}
+
+.vscrollerbase {
+width: 10px;
+background-color: white;
+}
+.vscrollerbar {
+width: 10px;
+background-color: #025084;
+}
+.hscrollerbase {
+height: 10px;
+background-color: white;
+}
+.hscrollerbar {
+height: 10px;
+background-color: black;
+}
+
+.scrollerjogbox {
+width: 10px;
+height: 10px;
+top: auto; left: auto;
+bottom: 0px; right: 0px;
+background-color: gray;
+}
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+height:100%;
+}
 	/*
 	DIV element that contains all available future position options
 	*/
-	div#next-steps {
-	
+	div.flexscroll {
+/* Typical fixed height and fixed width example */
+width: 100%;
+height: 500px;
+overflow: auto;
+/* IE overflow fix, position must be relative or absolute*/
+position: relative;
+margin: 0.3em auto;
+padding: 15px;
 	}
 	/*
 	DIV elements containing an available option for the player's next position
@@ -38,8 +82,12 @@
 	DIV elements that hold a SPAN and clear text representing a requirement
 	*/
 	div.requirement-item {
-		height: 120px;
+width:100%;
 	}
+div.requirements{
+
+padding-bottom:10px;
+}
 	/*
 	DIV elements that hold a SPAN and clear text representing a requirement that's been fulfilled
 	*/
@@ -56,7 +104,7 @@
 	SPAN displaying a requirement name
 	*/
 	SPAN.requirement_tag {
-	
+display:none;
 	}
 	/*
 	this link lets a worker occupy a different position
@@ -74,7 +122,7 @@
 	future critical positions found further ahead
 	*/
 	div.critical-cargo {
-	
+display:none;
 	}
 	/*
 	the player should choose this option to end the simulation
@@ -99,10 +147,14 @@
 	/*
 	icon for {{ item.nombre }} when requirement is fulfilled
 	*/
-	div.requirement-item-fulfilled span.category_{{ item.pk }}{
+div.pre span.category_{{ item.pk }}{
+display:none;
+}
+div.pre span.category_{{ item.pk }}.fulfilled{
 {% if item.icono %}
 		background-image:url('{{ item.icono.url|safe }}') !important;
 {% endif %}
+display:block !important;
 	}
 	span.category_{{ item.pk }}{
 {% if item.icono_default %}
@@ -110,11 +162,72 @@
 {% endif %}
 	}
 {% endfor %}
+.fin{
+width:70%;
+margin:0 auto;
+display:none;
+}
+.fin h3{
+margin:200px 0 0 -80px;
+width:400px;
+text-align:center;
+float:left;
+clear:right;
+font-size:40px;
+line-height:1;
+color:#025084;
+}
+.fin h3 span{
+font-size:1.5em;
+}
+.boton{
+clear:both;
+}
+.simulation p{
+color:#025084;
+font-size:1.2em;
+margin-bottom:10px;
+}
+h4.position-label{
+cursor:pointer;
+font-size:1.3em;
+}
+.requirements{
+display:none;
+}
+.pre{
+width:60px;
+float:left;
+}
+.requirement-item span.requirement-category-icon {
+width: 30px;
+height: 30px;
+background-repeat: no-repeat;
+display: block;
+overflow: hidden;
+text-indent: -99999px;
+float: left;
+margin: 5px;
+background:url({% static "ladder/images/imagenes/icono-requisito.png" %}) no-repeat;
+}
+a.active span.requirement-category-icon{
+background:url({% static "ladder/images/imagenes/icono-requisito-full.png" %}) no-repeat;
+}
+a.btn, a.btn.active, a.btn:hover, a.btn:active{
+background:none;
+border:none;
+box-shadow:none;
+padding:0;
+text-align:left;
+line-height:2.5;
+white-space:normal;
+margin:5px 0;
+}
 {% endblock %}
 
 {% block pageheader %}
 <div>
-    <h1>Planea tu ascenso</h1>
+    <h1>Simulación</h1>
 </div>
 {% endblock %}
 
@@ -122,13 +235,22 @@
 <div id="alerts" class="simulation">
 	
 </div>
+
 <div class="simulation">
+    <div class="pre">
+        
+    </div>
 	<canvas id='canvas' width='430' height='600'>
 		Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 	</canvas>
 </div>
 <div class="col1 simulation">
+    <p>Para acceder a un cargo de nivel superior transforma los
+    íconos de la derecha en azul haciendo clic en cada uno de
+    los requisitos que te presentamos a continuación</p>
+    <div class="flexscroll" style="height:400px;">
 	<div id="next-steps"></div>
+        </div>
 	<div id="last-steps">
 		<canvas id='history-canvas' width='750' height='100'>
 			Your browser doesn't support HTML 5. Please upgrade to a more current browser.
@@ -136,6 +258,13 @@
 	</div>
 </div>
 <div id="breadcrums"></div>
+<!--Div contenedor de La plantilla final de la ruta o llegaste a la meta-->
+<div id="fin" class="fin">
+    <img src="avatares-FIN.png" alt="Esquema Rutas de carrera" style="float:left;" />
+    
+    <h3><span>¡Felicitaciones</span><br /> acabas de completar <br /><span style="font-size:1.4em;">tu simulación!</span></h3>
+</div>
+<!--Final del div-->
 {% endblock %}
 
 {% block pagefooter %}
@@ -222,6 +351,8 @@
 			if( container ){
 				container.append( buildDisplayForRequirement( requirement ) );
 			}
+            requisitos();
+            $('.pre .requirement-category-icon').removeClass('fulfilled');
 		}
 		/*  
 		displays requirements for a given position
@@ -251,6 +382,8 @@
 		function setRequirementFulfilled( requirementPK ){
 			$( 'div#requirementButtons' + requirementPK ).parent().addClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = true;
+            requirement = requirements[ requirementPK ];
+            pre( requirement, 'ok' );
 			updatePositionElligibility();
 		}
 		/*
@@ -259,6 +392,8 @@
 		function setUnfulfilledRequirement( requirementPK ){
 			$( 'div#requirementButtons' + requirementPK ).parent().removeClass( 'requirement-item-fulfilled' );
 			requirements[ requirementPK ].fulfilled = false;
+            requirement = requirements[ requirementPK ];
+            pre( requirement, 'nook' );
 			updatePositionElligibility();
 		}
 		/*
@@ -266,13 +401,12 @@
 		*/
 		function buildDisplayForRequirement( requirement ) {
 			var requirementBlock =		$( '<div class="requirement-item' + ( requirement.fulfilled ? ' requirement-item-fulfilled' : '' ) + '">'
-												+ '<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
-												+ '<span class="requirement_tag">'
-													+requirement.fields.nombre
-												+ '</span>'
-												+ '<div id="requirementButtons' + requirement.pk + '" class="btn-group requirement-buttons" data-toggle="buttons-radio">'
-													+ '<button type="button" class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">Ok</button>'
-													+ '<button type="button" class="btn' + ( requirement.fulfilled ? '' : ' active' ) + '" onclick="javascript: setUnfulfilledRequirement( ' + requirement.pk + ' )">Pendiente</button>'
+                                          + '<span class="requirement_tag">'
+                                          +requirement.fields.nombre
+                                          + '</span>'
+                                          + '<div id="requirementButtons' + requirement.pk + '" class="btn-group requirement-buttons" data-toggle="buttons-radio">'
+                                          + '<a class="btn' + ( requirement.fulfilled ? ' active' : '' ) + '" onclick="javascript: setRequirementFulfilled( ' + requirement.pk + ' );">'+ '<span class="requirement-category-icon category_' + requirement.fields.categoria + '"></span>'
+                                          +requirement.fields.nombre+'</a>'
 												+ '</div>'
 										+ '</div>' );
 			return requirementBlock;
@@ -329,7 +463,9 @@
 					displayRequirementsFor( nextPosition, requirementsDiv );
 				}
 			}
-		}
+            fleXenv.initByClass("flexscroll");
+            fleXenv.updateScrollBars();
+          		}
 		/*
 		mark former positions as 'visited'
 		*/
@@ -405,9 +541,9 @@
 		*/
 		function buildFullPositionDisplay( position ){
 			var result = $( 
-				 '<div id="position-' + position.pk + '" class="next-position">' 
-					+ position.fields.nombre 
-					+'<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+				 '<div id="position-' + position.pk + '" class="next-position"><h4 class="position-label">'
+					+ position.fields.nombre
+					+'</h4><a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
 						+'Ocupar este cargo'
 					+'</a>'
 				+'</div>' );
@@ -423,6 +559,8 @@
 				}
 			}
 			return result;
+            fleXenv.initByClass("flexscroll");
+            fleXenv.updateScrollBars();
 		}
 		/*
 		ends the simulation and displays simulation results
@@ -480,6 +618,9 @@
 				goalReached();
 			}
 			fixBackground( positionPK );
+            fleXenv.initByClass("flexscroll");
+            fleXenv.updateScrollBars();
+
 		}
 		/*
 		builds a trail of visited positions
@@ -721,6 +862,8 @@
 		*/
 		function extractRequirementsFromPageFor( positionPK ){
 			return $( 'div#next-steps div#position-' + positionPK + ' div.requirements span.requirement_tag' );
+            fleXenv.initByClass("flexscroll");
+            fleXenv.updateScrollBars();
 		}
 		/*
 		builds a list to display requirements when the simulation is done. The list is to be placed inside a timeline item
@@ -735,7 +878,59 @@
 			}
 			return list;
 		}
+        /*
+         Makes a copy of requirement categories
+         */
+        function requisitos(){
+            $('span.requirement-category-icon').each(function(){
+                                                     $(this).clone().appendTo('.pre');
+                                                     });
+            var seen = {};
+            $('.pre span.requirement-category-icon').each(function() {
+                                                          var txt = $(this).attr('class');
+                                                          if (seen[txt])
+                                                          $(this).remove();
+                                                          else
+                                                          seen[txt] = true;
+                                                          });
+            
+        }
+        /* 
+         Marks Categories as fulfilled
+         */
+        function pre( requirement, evt ){
+            console.log( requirement.pk, evt );
+            var categoriaPK = requirement.fields.categoria + '';
+            var selection = $('.pre .category_' + categoriaPK );
+            var requirementCount = $('.category_' + categoriaPK ).parent('.requirement-item').filter(':visible').length;
+            var fulfilledCount = $('.category_' + categoriaPK ).parent('.requirement-item-fulfilled').filter(':visible').length;
+            if( requirementCount == fulfilledCount )
+            {
+                console.log( categoriaPK + 'background: black', evt );
+                selection.addClass('fulfilled');
+            }
+            else{
+                console.log( categoriaPK + 'background: blue', evt );
+                selection.removeClass('fulfilled');
+            }
+            fleXenv.initByClass("flexscroll");
+            fleXenv.updateScrollBars();
+            
+        }
 	</script>
+<script>
+    $(function() {
+      fleXenv.initByClass("flexscroll");
+      var scrollDiv = document.getElementById('next-steps');
+      $('h4.position-label').live("click", function (e) {
+                                   $('.requirements').slideUp();
+                                   $(this).siblings('.requirements').slideDown();
+                                  setTimeout(function(){
+                                             fleXenv.updateScrollBars();},600);
+                                    });
+
+      });
+    </script>
 	<script src="{% static "ladder/javascript/timeline.js" %}" language="javascript" type="text/javascript"></script>
 	<!--
 			//this turns an input field into a remote data sourced autocomplete

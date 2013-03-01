@@ -1,0 +1,177 @@
+{% extends "ladder/base.html" %}
+{% load url from future %}
+{% load static from staticfiles %}
+
+{% load static from staticfiles %}
+
+{% block pagetitle %}Terminos y condiciones{% endblock %}
+
+{% block includestylesheet %}
+		{{ block.super }}
+
+{% endblock %}
+
+{% block includejavascript %}
+		{{ block.super }}
+{% endblock %}
+
+{% block pagestyle %}
+#main{
+background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+height:100%;
+}
+.col1{
+padding-top:50px;
+}
+h3 span{
+color:#025084;
+}
+h3{
+color:#9B0E26;
+line-height:1.2;
+
+}
+html{
+height:100%;
+}
+.col1{
+text-align:center;
+}
+.col1 p{
+text-align:left;
+}
+body{
+height:70%;
+}
+.terms h3{
+padding:1em;
+background:#025084;
+color:#fff;
+font-size:1em;
+margin:0;
+text-align:center;
+}
+.terms{
+border:thin solid #025084;
+background:#fff;
+max-width:60%;
+margin:auto;
+}
+ol{
+padding:10px;
+}
+ol {
+counter-reset:li; /* Initiate a counter */
+margin-left:0; /* Remove the default left margin */
+padding-left:0; /* Remove the default left padding */
+}
+ol > li {
+position:relative; /* Create a positioning context */
+margin:0 0 5px 60px; /* Give each list item a left margin to make room for the numbers */
+padding:10px 15px 0px; /* Add some spacing around the content */
+list-style:none; /* Disable the normal item numbering */
+}
+ol > li:before {
+content:counter(li, lower-alpha); /* Use the counter as content */
+counter-increment:li; /* Increment the counter by 1 */
+/* Position and style the number */
+position:absolute;
+top:10px;
+left:-40px;
+width:15px;
+height:45px;
+/* Some space between the number and the content in browsers that support
+generated content but not positioning it (Camino 2 is one example) */
+margin-right:5px;
+padding:7px 19px;
+color:#025084;
+background: url({% static "ladder/images/imagenes/bg-list.png" %}") no-repeat fixed;
+background-size:45px 45px;
+font-size:15px;
+line-height:1.2;
+font-family:'thesansplain';
+text-align:center;
+display:block;
+}
+{% endblock %}
+
+{% block pageheader %}
+<div>
+	<h1>Terminos y condiciones</h1>
+</div>
+{% endblock %}
+
+{% block pagebody %}
+<div class="terms">
+    <h3>El departamento de Recursos Humanos mediante la herramienta de Rutas de Carrera establece:</h3>
+    <ol>
+        <li>A los trabajadores que hacen parte de la empresa Pacic Rubiales Energy como las únicas personas
+            autorizadas para jugar y hacer las simulaciones dentro de la herramienta.</li>
+        <li>Los movimientos y procesos de la herramienta hacen parte de una simulación. Por esta razón que la
+            herramienta ofrece a los jugadores la obtención simulada de los requisitos necesarios para completar
+            a manera de juego cada meta individual.</li>
+        <li>Las competencias, requisitos y programas que los jugadores deben alcanzar se establecieron después
+            de entrevistar a todo el personal de la compañía, cada una de ellas se encuentra aprobada por el …</li>
+        <li>Aunque la herramienta contiene información de alta relevancia para cada uno de los trabajadores, el
+            proceso y movimientos dentro de esta deben ser vistos como parte de un juego de simulación. Cada
+            uno de los logros obtenidos en dicha herramienta hace parte de un plano imaginario.</li>
+        </ol>
+</div>
+<span class="boton"><a href="{% url 'rutas' %}">Continuar</a></span>
+{% endblock %}
+
+{% block pagefooter %}
+
+	<!-- 
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "<br>" + item.value + "</a>" )
+                .appendTo( ul );
+			}
+	-->
+{% endblock %}
+{% comment %}
+	See built in thempalte tags and filters at:
+	https://docs.djangoproject.com/en/dev/ref/templates/builtins/?from=olddocs
+	
+	See basic template syntax at:
+	https://docs.djangoproject.com/en/dev/ref/templates/api/
+	
+	https://docs.djangoproject.com/en/1.4/topics/templates/
+{% endcomment %}

@@ -4,7 +4,7 @@
 
 {% load static from staticfiles %}
 
-{% block pagetitle %}Arma tu plan de carrera{% endblock %}
+{% block pagetitle %}Bienvenido a Rutas de Carrera{% endblock %}
 
 {% block includestylesheet %}
 		{{ block.super }}
@@ -18,13 +18,32 @@
 {% block pagestyle %}
 #main{
 background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
+height:100%;
 }
 .col1{
 padding-top:50px;
 }
-h3{
+h3 span{
 color:#025084;
 }
+h3{
+color:#990033;
+line-height:1.2;
+
+}
+html{
+height:100%;
+}
+.col1{
+text-align:center;
+}
+.col1 p{
+text-align:left;
+}
+body{
+height:70%;
+}
+
 {% endblock %}
 
 {% block pageheader %}
@@ -39,15 +58,16 @@ color:#025084;
  </div>
 <div class="col1">
  
-    <h4><span>¡Bienvenido a<span><br/>Rutas de carrera</h4>
+    <h3><span>¡Bienvenido a</span><br/>Rutas de carrera</h3>
     <p>Una herramienta de simulación en la que visualizarás las mejores oportunidades
 que existen dentro de la compañía mostrándote como trabajador, cómo puedes 
 potenciar tu plan individual de carrera,  fortalecer e incrementar tu talento y 
 evolucionar de una manera integral</p>
-<h3>¡Animate a partipar!</h3>
+<h3>¡Anímate a partipar!</h3>
 </div>
+<span class="boton"><a href="{% url 'terms' %}">Continuar</a></span>
 </div>
-<span class="boton"><a href="{% url 'instructions' %}">Continuar</a></span>
+
 {% endblock %}
 
 {% block pagefooter %}
