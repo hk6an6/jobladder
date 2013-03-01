@@ -68,7 +68,7 @@ padding-left:0; /* Remove the default left padding */
 ol > li {
 position:relative; /* Create a positioning context */
 margin:0 0 5px 60px; /* Give each list item a left margin to make room for the numbers */
-padding:10px 15px 0px; /* Add some spacing around the content */
+padding:10px 25px 0px; /* Add some spacing around the content */
 list-style:none; /* Disable the normal item numbering */
 }
 ol > li:before {
@@ -79,16 +79,15 @@ position:absolute;
 top:10px;
 left:-40px;
 width:15px;
-height:45px;
+height:37px;
 /* Some space between the number and the content in browsers that support
 generated content but not positioning it (Camino 2 is one example) */
 margin-right:5px;
 padding:7px 19px;
 color:#025084;
-background: url({% static "ladder/images/imagenes/bg-list.png" %}") no-repeat fixed;
-background-size:45px 45px;
-font-size:15px;
-line-height:1.2;
+background: url({% static "ladder/images/imagenes/bg-list2.png" %}") no-repeat top left;
+font-size:25px;
+line-height:1.7;
 font-family:'thesansplain';
 text-align:center;
 display:block;

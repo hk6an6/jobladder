@@ -21,9 +21,80 @@
 {% endblock %}
 
 {% block pagestyle %}
+.jcarousel-skin-ie7 .jcarousel-container {
+}
+
+.jcarousel-skin-ie7 .jcarousel-direction-rtl {
+direction: rtl;
+}
+
+.jcarousel-skin-ie7 .jcarousel-container-horizontal {
+width: 380px;
+padding: 0px 25px;
+}
+.jcarousel-skin-ie7 .jcarousel-clip {
+overflow: hidden;
+}
+
+.jcarousel-skin-ie7 .jcarousel-clip-horizontal {
+width:  380px;
+height: 40px;
+}
+
+.jcarousel-skin-ie7 .jcarousel-item {
+width: 40px;
+height: 40px;
+}
+
+.jcarousel-skin-ie7 .jcarousel-item-horizontal {
+margin-left: 0;
+margin-right: 7px;
+}
+
+.jcarousel-skin-ie7 .jcarousel-direction-rtl .jcarousel-item-horizontal {
+margin-left: 7px;
+margin-right: 0;
+}
+
+.jcarousel-skin-ie7 .jcarousel-item-placeholder {
+}
+
+/**
+*  Horizontal Buttons
+*/
+.jcarousel-skin-ie7 .jcarousel-next-horizontal {
+position: absolute;
+top: 5px;
+right: 5px;
+width: 15px;
+height: 32px;
+cursor: pointer;
+background:url({% static "ladder/images/imagenes/next.png" %}) no-repeat center center;
+}
+
+.jcarousel-skin-ie7 .jcarousel-prev-horizontal {
+position: absolute;
+top: 5px;
+left: 5px;
+width: 15px;
+height: 32px;
+cursor: pointer;
+background:url({% static "ladder/images/imagenes/prev.png" %}) no-repeat center center;
+}
+
+.jcarousel-skin-ie7 .jcarousel-direction-rtl .jcarousel-prev-horizontal {
+left: auto;
+right: 5px;
+}
+
+
+
 #main{
 background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
 height:100%;
+}
+.body-slider{
+height:50px;
 }
 /*
 each body part tab uses this class
@@ -45,7 +116,10 @@ div#scrollable-sliders{
 }
 .bodypart-slider {
 width: 300px;
-margin: 20px 60px;
+margin: 18px 10px 20px;
+line-height:50px;
+vertical-align:middle;
+float:left;
 }
 #bodies-scrollable-slider{
 display:none;
@@ -81,12 +155,12 @@ width:320px;
 -.scroll-bar-wrap .ui-slider-handle .ui-icon { margin: -8px auto 0; position: relative; top: 50%; }
 .scroll-pane { overflow: hidden; margin: 15px; position: relative; width:420px;}
 .scroll-content { white-space: nowrap; position: relative; float: left; }
-.scroll-content-item { margin: 0 5px; font-size: 3em; text-align: center; display: inline-block; position: relative; }
+.jcarousel-skin-ie7 li, .scroll-content-item { margin: 0 5px; font-size: 3em; text-align: center; display: inline-block; position: relative; }
 * html .scroll-content-item { display: inline; } /* IE6 float double margin bug */
 .scroll-content-item a{
 display:block; height:20px; width:20px; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius:15px; border:thin solid #999; margin:10px;
 }
-.jThumbnailScroller{position:relative; width:420px; height:50px; margin:5px; padding:0; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+.jThumbnailScroller{position:relative; width:420px; height:40px; margin:5px; padding:5px; overflow:hidden; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
 .jThumbnailScroller .jTscrollerContainer{position:absolute;}
 .jThumbnailScroller .jTscroller{position:relative; height:100%; margin:0; left:0; top:0; display:inline-block; *display:inline;}
 .jThumbnailScroller .jTscrollerNextButton,.jThumbnailScroller .jTscrollerPrevButton{position:absolute; display:block; width:40px; height:40px; -moz-border-radius:20px; -webkit-border-radius:20px; border-radius:20px; opacity:0.7;}
@@ -149,14 +223,17 @@ background:none !important;
 	<div id="accesories-slider" style="clear: left;" class="bodypart-slider"></div>
 	<div id="scrollable-sliders">
     <div id="faces-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
-        <div id="hairstyles-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+        <div id="hairstyles-scrollable-slider" class="scroll-pane jcarousel-skin-ie7 jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
         <div id="eyebrows-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
-    <div id="eyes-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+    <div id="eyes-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" style="margin:5px 2px"></div>
+        <div class="body-slider">
         <div id="body-slider" class="bodypart-slider"></div>
+            </div>
 <div id="shoes-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
         <div id="shirts-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
         <div id="pants-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
-        <div id="accesories-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
+<div id="accesories-scrollable-slider" class="scroll-pane jcarousel-skin-ie7 jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab">
+</div>
     <div id="helmets-scrollable-slider" class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab"></div>
 	</div>
     <br/>
@@ -326,7 +403,7 @@ background:none !important;
      @content: DOM element to be placed inside a scrollable slider
      */
     function wrapAsScrollableContentItem( content ){
-        var container = $(' <div class="scroll-content-item"></div>');
+        var container = $(' <li></li>');
         container.append(content);
         return container;
     }
@@ -337,16 +414,14 @@ background:none !important;
     function scrollPane( sourceArray, scrollablePaneId, itemClickHandler ){
         var scrollIcon = $('<span class="icono'+ scrollablePaneId +'"></span>');
         var scrollablePane = $('<div class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>');
-        var scrollContainer = $('<div class="jTscrollerContainer"></div>');
-        var scrollContent = $('<div class="jTscroller"></div>');
+        var scrollContent = $('<ul class="jcarousel-skin-ie7"></ul>');
         for(var i = 0; i<sourceArray.length; i++){
             var item = sourceArray[i];
             var scrollableItem = createImageItemContent(i, item.pk, item.thumbnail, item.alt, sourceArray, itemClickHandler);
             scrollableItem = wrapAsScrollableContentItem(scrollableItem);
             scrollContent.append(scrollableItem);
         }
-        scrollContainer.append(scrollContent);
-        scrollablePane.append(scrollContainer);
+        scrollablePane.append(scrollContent);
         scrollablePane.id = scrollablePaneId;
         return scrollablePane;
     }
@@ -638,16 +713,14 @@ background:none !important;
 		var sourceArray = accesories;
 		var scrollIcon = $( '<span class="icono'+ scrollablePaneId +'"></span>' );
         var scrollablePane = $( '<div class="scroll-pane jThumbnailScroller ui-widget-header ui-corner-all body-part-picker-tab" id="'+ scrollablePaneId +'"></div>' );
-        var scrollContainer = $( '<div class="jTscrollerContainer"></div>' );
-        var scrollContent = $( '<div class="jTscroller"></div>' );
+        var scrollContent = $( '<ul class="jcarousel-skin-ie7"></ul>' );
 		var oldScrollableSlider = $( '#'+scrollablePaneId );
 		for( var i = 0; i < sourceArray.length; i++ ){
             var scrollableItem = $( sourceArray[ i ] );
             scrollableItem = wrapAsScrollableContentItem( scrollableItem );
             scrollContent.append( scrollableItem );
         }
-        scrollContainer.append( scrollContent );
-        scrollablePane.append( scrollContainer );
+        scrollablePane.append( scrollContent );
         scrollablePane.id = scrollablePaneId;
         if( oldScrollableSlider.length ){
             oldScrollableSlider.replaceWith( scrollablePane );
@@ -657,7 +730,10 @@ background:none !important;
         //refresh
         
         updateTabControls();
-        $('#accesories-scrollable-slider').thumbnailScroller();
+        jQuery('#accesories-scrollable-slider > ul').jcarousel({
+                                                               itemFallbackDimension: 40
+                                                               });
+
 		return scrollablePane;
 	}
 	/*
@@ -831,9 +907,15 @@ background:none !important;
         $("#skin-choices").before('<span class="iconocolor"></span>');
         $("#hairstyles-scrollable-slider").before('<span class="iconohairstyles-scrollable-slider"></span>');
         $("#accesories-scrollable-slider").before('<span class="iconoaccesories-scrollable-slider"></span>');
-        $("#accesories-scrollable-slider").thumbnailScroller();
-        $("#hairstyles-scrollable-slider").thumbnailScroller();
+        jQuery('#accesories-scrollable-slider > ul').jcarousel({
+                                                               itemFallbackDimension: 40
+                                                               });
+        jQuery('#hairstyles-scrollable-slider > ul').jcarousel({
+                                                               itemFallbackDimension: 40
+                                                               });
+        
     }
+ 
 </script>
 {% endblock %}
 {% comment %}

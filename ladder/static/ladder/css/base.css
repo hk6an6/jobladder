@@ -244,10 +244,11 @@ span.iconoaccesories-scrollable-slider {
     background:none !important;
     border:0 !important;
 }
-.scroll-content-item{
+.scroll-content-item, .jcarousel-skin-ie7 img{
     border:none !important;
     width:40px !important;
     height:40px !important;
+    cursor:pointer;
 }
 .scroll-pane .ui-widget-content{
     border:none !important;
@@ -349,7 +350,7 @@ background:url(../images/imagenes/bg_item.png) no-repeat;
 }
 #skin-choices{
 height:40px;
-padding: 0 5px;
+padding:5px;
 }
 .color-Blanco{
 background:#fdeddd;

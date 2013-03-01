@@ -53,7 +53,11 @@ background-color: gray;
 background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
 height:100%;
 }
-	/*
+#main.main2{
+background:url({% static "ladder/images/imagenes/bg_silouette-FIN.png" %}) no-repeat right 0px;
+background-size:100%;
+height:100%;
+}	/*
 	DIV element that contains all available future position options
 	*/
 	div.flexscroll {
@@ -115,10 +119,38 @@ display:none;
 	/*
 	displays a position in the breadcrums
 	*/
-	div.cargo-summary {
-	
-	}
-	/*
+#breadcrums {
+position: relative;
+height: 1px;
+display: block;
+clear: both;
+}
+#breadcrums .boton{
+display:none;
+}
+
+div.cargo-summary {
+position: absolute;
+bottom: 60px;
+width: 100px;
+right: 0px;
+display:block;
+}
+div.cargo-summary.final {
+position: static;
+display:block;
+width:auto;
+padding:10px 0px;
+margin:10px 0px;
+border-bottom:thin solid #025084;
+}
+div.cargo-summary.final .cargo-title{
+display:block;
+font-size:large;
+font-weight:600;
+text-align:left;
+}
+/*
 	future critical positions found further ahead
 	*/
 	div.critical-cargo {
@@ -180,8 +212,25 @@ color:#025084;
 .fin h3 span{
 font-size:1.5em;
 }
-.boton{
+.simulation .boton{
 clear:both;
+display:inline-block;
+margin:10px 10px 10px 0px;
+font-size:0.7em;
+float:none;
+}
+p.cargo-title{
+display:block;
+font-size:small;
+color:#990033;
+text-align:center;
+}
+#breadcrums canvas{
+float:none;
+margin: 0 auto;
+}
+#breadcrums{
+position:relative;
 }
 .simulation p{
 color:#025084;
@@ -198,6 +247,10 @@ display:none;
 .pre{
 width:60px;
 float:left;
+}
+.alert{
+background:none !important;
+border:none !important;
 }
 .requirement-item span.requirement-category-icon {
 width: 30px;
@@ -245,6 +298,9 @@ margin:5px 0;
 	</canvas>
 </div>
 <div class="col1 simulation">
+    <span class="boton" style="font-size:1em;"><a onclick="javascript: plantillaFinal( ); return false;" href="#">Terminar</a></span>
+    <span class="boton" style="font-size:1em;"><a href="{% url 'start' %}">Volver a comenzar</a></span>
+    
     <p>Para acceder a un cargo de nivel superior transforma los
     íconos de la derecha en azul haciendo clic en cada uno de
     los requisitos que te presentamos a continuación</p>
@@ -252,17 +308,20 @@ margin:5px 0;
 	<div id="next-steps"></div>
         </div>
 	<div id="last-steps">
-		<canvas id='history-canvas' width='750' height='100'>
+		<canvas id='history-canvas' width='670' height='20'>
 			Your browser doesn't support HTML 5. Please upgrade to a more current browser.
 		</canvas>
 	</div>
 </div>
-<div id="breadcrums"></div>
+<div id="breadcrums">
+<span class="boton" style="font-size:1em;"><a href="{% url 'start' %}">Volver a comenzar</a></span>
+</div>
 <!--Div contenedor de La plantilla final de la ruta o llegaste a la meta-->
 <div id="fin" class="fin">
-    <img src="avatares-FIN.png" alt="Esquema Rutas de carrera" style="float:left;" />
+    <img src="{% static "ladder/images/imagenes/avatares-FIN.png" %}" alt="Esquema Rutas de carrera" style="float:left;" />
     
     <h3><span>¡Felicitaciones</span><br /> acabas de completar <br /><span style="font-size:1.4em;">tu simulación!</span></h3>
+    <span class="boton" style="position:absolute; bottom:40px;"><a onclick="javascript: displaySimulationResults( ); return false;" href="#">Continuar</a></span>
 </div>
 <!--Final del div-->
 {% endblock %}
@@ -351,10 +410,9 @@ margin:5px 0;
 			if( container ){
 				container.append( buildDisplayForRequirement( requirement ) );
 			}
-            requisitos();
-            $('.pre .requirement-category-icon').removeClass('fulfilled');
+            $('.pre').empty();
 		}
-		/*  
+		/*
 		displays requirements for a given position
 		*/
 		function displayRequirementsFor( position, jqPositionDOMContainer ){
@@ -519,7 +577,7 @@ margin:5px 0;
 			return  $( '<div class="cargo-summary">'
 							+'<canvas id="position' + positionPK + '" width="' + Math.floor( avatar.width / 7 ) + '" height="' + Math.floor( avatar.height / 7 ) + '">'
 							+'</canvas>' 
-							+ serempre.cargos.futurePaths[ positionPK ].fields.nombre 
+							+ '<p class="cargo-title">' + serempre.cargos.futurePaths[ positionPK ].fields.nombre + '</p>'
 					+ '</div>' );
 		}
 		/*
@@ -566,10 +624,13 @@ margin:5px 0;
 		ends the simulation and displays simulation results
 		*/
 		function displaySimulationResults(){
-			$( 'div.simulation' ).css( 'display', 'none' );
+            var lista = $(this).children('.lista');
+			$( 'div.fin' ).css( 'display', 'none' );
 			$( 'div#breadcrums div' ).css( 'display', 'block' );
+            $( 'div#breadcrums div' ).addClass('final');
+            $( 'span.requirement_tag').show();
 			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
-			$( 'div#breadcrums div ul.requirement-summary-listing' ).css( 'display', 'block' );
+           $( 'div#breadcrums div ul.requirement-summary-listing, div#breadcrums .boton' ).css( 'display', 'block' );
 		}
 		/*
 		let the user know the simulation can be ended
@@ -580,10 +641,6 @@ margin:5px 0;
 				 '<div class="alert alert-block alert-info fade in" id="alert_done">'
 					+'<a class="close" data-dismiss="alert" href="#">&times;</a>'
 					+'<h4 class="alert-heading">' + ( deadEnd ? 'Es el final del camino!' : 'Alcanzaste tu meta!' ) + '</h4>'
-					+'<p>'
-						+'<a class="btn btn-primary" onclick="javascript: displaySimulationResults( ); return false;" href="#">Terminar</a>'
-						+( deadEnd ? '' : '<a class="btn" href="#" data-dismiss="alert">Continuar la simulaci&oacute;n</a>' )
-					+'</p>'
 				+'</div>';
 				$( '#alerts' ).append( $( alertMsg ) );
 		}
@@ -902,8 +959,8 @@ margin:5px 0;
             console.log( requirement.pk, evt );
             var categoriaPK = requirement.fields.categoria + '';
             var selection = $('.pre .category_' + categoriaPK );
-            var requirementCount = $('.category_' + categoriaPK ).parent('.requirement-item').filter(':visible').length;
-            var fulfilledCount = $('.category_' + categoriaPK ).parent('.requirement-item-fulfilled').filter(':visible').length;
+            var requirementCount = $('.category_' + categoriaPK ).parents('.requirement-item').filter(':visible').length;
+            var fulfilledCount = $('span.category_' + categoriaPK ).parents('.requirement-item-fulfilled').filter(':visible').length;
             if( requirementCount == fulfilledCount )
             {
                 console.log( categoriaPK + 'background: black', evt );
@@ -917,12 +974,21 @@ margin:5px 0;
             fleXenv.updateScrollBars();
             
         }
+        
+        function plantillaFinal(){
+            $('.simulation').hide();
+            $('#main').addClass('main2');
+            $('.fin').show();
+            $( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( '¡Llegaste a tu meta!' );
+        }
 	</script>
 <script>
     $(function() {
       fleXenv.initByClass("flexscroll");
       var scrollDiv = document.getElementById('next-steps');
       $('h4.position-label').live("click", function (e) {
+                                  $('.pre').empty();
+                                  requisitos();
                                    $('.requirements').slideUp();
                                    $(this).siblings('.requirements').slideDown();
                                   setTimeout(function(){

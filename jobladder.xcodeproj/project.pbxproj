@@ -115,7 +115,7 @@
 		5D442F5316C42B4300021B9F /* icono-pantalones.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pantalones.png"; sourceTree = "<group>"; };
 		5D442F5416C42B4300021B9F /* icono-pelo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pelo.png"; sourceTree = "<group>"; };
 		5D442F5516C42B4300021B9F /* icono-zapatos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-zapatos.png"; sourceTree = "<group>"; };
-		5D4FD6E916C9572F000F4902 /* jquery.thumbnailScroller.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jquery.thumbnailScroller.js; sourceTree = "<group>"; };
+		5D7095E716E151C700C88504 /* jquery.jcarousel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jquery.jcarousel.js; sourceTree = "<group>"; };
 		5D98267A16D7435F00507521 /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
 		5D98267B16D7435F00507521 /* instructions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = instructions.html; sourceTree = "<group>"; };
 		5D98267C16D7435F00507521 /* rutas_de_carrera.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rutas_de_carrera.html; sourceTree = "<group>"; };
@@ -375,7 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				435B443A16D3C94900C8AAD1 /* timeline.js */,
-				5D4FD6E916C9572F000F4902 /* jquery.thumbnailScroller.js */,
+				5D7095E716E151C700C88504 /* jquery.jcarousel.js */,
 				43B471BE166903B9003EB0DC /* autocompleteoncombobox.js */,
 				43B471BF166903B9003EB0DC /* bootstrap.js */,
 				43B471C0166903B9003EB0DC /* bootstrap.min.js */,
