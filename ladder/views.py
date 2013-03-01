@@ -211,5 +211,5 @@ def avatar_departamento_by_pk(request, departamento_pk):
 
 def cargo_fondo( request, cargo_pk ):
 	item = get_object_or_404( Cargo, pk=int( cargo_pk ) )
-	return redirect( item.departamento.fondo.url )
+	return redirect( item.zona.fondo.url )
 
