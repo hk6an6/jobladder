@@ -119,8 +119,8 @@ box-shadow:inset 2px 2px 5px #666 !important;
 		<div>
 			<div id='div-sexo' class='btn-group' data-toggle='buttons-radio'>
 				<label for='btn-hombre'>Escoge tu género: </label>
-				<button id='btn-hombre' class='btn active'>H</button>
-				<button id='btn-mujer' class='btn'>M</button>
+				<button id='btn-hombre' class='btn active' option="H">Masculino</button>
+				<button id='btn-mujer' class='btn' option="M">Femenino</button>
 			</div>
 			<span class='help-block'></span>
 		</div>
@@ -152,7 +152,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 	<script>
         
         function navigate_to_simulation_start(blank_url){
-            var sex = $('div#div-sexo button.active').text();
+            var sex = $('div#div-sexo button.active').attr( 'option' );
             var origin_cargo = $('#cargo_inicial_nombre option:selected').val();
             var target_cargo = $('#cargo_destino_nombre option:selected').val();
             var target_url = blank_url.replace(/1\/2\/3\/$/gi,origin_cargo+'/'+target_cargo+'/'+sex+'/');
