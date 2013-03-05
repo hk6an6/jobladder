@@ -279,6 +279,11 @@ background:none !important;
     var current_selections = {};
     var avatar = new serempre.avatars.Avatar();
     var loadingIntervalReference = null;
+	var lab_background = new Image();
+	lab_background.onload = function(){
+		avatar.background = lab_background;
+	};
+	lab_background.src = '{% static "/ladder/images/imagenes/bg_silouette-02LAB.png" %}';
     avatar.width = canvas.width;
     avatar.height = canvas.height;
     //when document completes loading, execute the following code
