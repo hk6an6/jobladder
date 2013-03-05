@@ -631,7 +631,7 @@ background:none !important;
         if(checkAllImagesLoaded(allHairStyles)){
             buildSimpleSlider('hairStyles-slider', allHairStyles, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); }, function(event,ui){ sliderChanged(ui.value, allHairStyles, 'hair'); });
             addOrReplaceScrollableSlider(allHairStyles, 'hairstyles-scrollable-slider', 'hairStyles-slider');
-            $('#hairStyles-slider').slider('value',0);
+			$('#hairStyles-slider').slider( 'value', randomNumber( allHairStyles.length ) );
         }
     }
     /*
@@ -1018,6 +1018,10 @@ background:none !important;
 			avatar.shoes = img;
 			console.log( avatar.shoes );
 		}
+	}
+	//creates a random number using a max value boundary
+	function randomNumber( max ){
+		return Math.floor(Math.random() * max + 1);
 	}
 </script>
 
