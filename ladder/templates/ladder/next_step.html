@@ -653,7 +653,7 @@ margin:5px 0;
 				avatar.background = new Image();
 			}
 			avatar.background.src = backgroundImageURL;
-			console.log( avatar.background.src );
+			//console.log( avatar.background.src );
 		}
 		/*
 		append a position to the player's carreer
@@ -661,6 +661,7 @@ margin:5px 0;
 		function pushPosition( positionPK ){
 			var requirementSummary = buildRequirementSummaryListFor( positionPK );
 			markFormerPositions( );
+			//console.log( 'triggering download for avatar on cargo ' + positionPK );
 			downloadModelAvatarFor( positionPK, avatarAvailable );
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
@@ -754,9 +755,12 @@ margin:5px 0;
 		builds a URL to fetch an avatar using the cargo it belongs to
 		*/
 		function buildURLForAvatarByCargo( cargo_pk ) {
+			//console.log( 'building avatar URL ' + cargo_pk );
 			var url = '{% url 'avatar_by_cargo' origin_pk sex %}';
-			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H|M/)', RegExp.g );
+			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H/|/M/)', RegExp.g );
+			//console.log( url.match( regex ) );
 			url = url.replace( regex, '$1' + cargo_pk + '$3' );
+			//console.log( url );
 			return url;
 		}
 		/*
@@ -805,6 +809,7 @@ margin:5px 0;
 		downloads avatar specs for a given position key. Performs a callback when specs become available
 		*/
 		function downloadModelAvatarFor( cargo_pk, modelAvatarCallBack ){
+			//console.log( 'downloading model avatar for ' + cargo_pk );
 			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			$.ajax({
 				url: buildURLForAvatarByCargo( cargo_pk )
@@ -862,7 +867,8 @@ margin:5px 0;
 		uses downloaded avatar data to change avatar clothing
 		*/
 		function avatarAvailable( downloaded ){
-			console.log( downloaded );
+			//console.log( 'downloaded avatar data' );
+			//console.log( downloaded );
 			if( downloaded.fields.camisa ){
 				downloadShirtData( downloaded.fields.camisa, function( shirt ){
 					$.ajax({
@@ -873,7 +879,7 @@ margin:5px 0;
 							img.alt = data[0].fields.etiqueta;
 							img.src = imgURL;
 							avatar.shirt = img;
-							console.log( avatar.shirt );
+							//console.log( avatar.shirt );
 						}
 					});
 				} );
@@ -888,7 +894,7 @@ margin:5px 0;
 							img.alt = data[0].fields.etiqueta;
 							img.src = imgURL;
 							avatar.pants = img;
-							console.log( avatar.pants );
+							//console.log( avatar.pants );
 						}
 					});
 				} );
@@ -904,14 +910,14 @@ margin:5px 0;
 				var img = new Image();
 				img.src = imgURL;
 				avatar.helmet = img;
-				console.log( avatar.helmet );
+				//console.log( avatar.helmet );
 			}
 			if( downloaded.fields.zapatos ){
 				var imgURL = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=1 %}'.replace( /(\/avatar\/zapatos\/)(\d+)(\/)/g, '$1' + downloaded.fields.zapatos + '$3' );
 				var img = new Image();
 				img.src = imgURL;
 				avatar.shoes = img;
-				console.log( avatar.shoes );
+				//console.log( avatar.shoes );
 			}
 		}
 		/*
@@ -956,18 +962,18 @@ margin:5px 0;
          Marks Categories as fulfilled
          */
         function pre( requirement, evt ){
-            console.log( requirement.pk, evt );
+            //console.log( requirement.pk, evt );
             var categoriaPK = requirement.fields.categoria + '';
             var selection = $('.pre .category_' + categoriaPK );
             var requirementCount = $('.category_' + categoriaPK ).parents('.requirement-item').filter(':visible').length;
             var fulfilledCount = $('span.category_' + categoriaPK ).parents('.requirement-item-fulfilled').filter(':visible').length;
             if( requirementCount == fulfilledCount )
             {
-                console.log( categoriaPK + 'background: black', evt );
+                //console.log( categoriaPK + 'background: black', evt );
                 selection.addClass('fulfilled');
             }
             else{
-                console.log( categoriaPK + 'background: blue', evt );
+                //console.log( categoriaPK + 'background: blue', evt );
                 selection.removeClass('fulfilled');
             }
             fleXenv.initByClass("flexscroll");
