@@ -731,7 +731,8 @@ background:none !important;
         
         updateTabControls();
         jQuery('#accesories-scrollable-slider > ul').jcarousel({
-                                                               itemFallbackDimension: 40
+                                                               itemFallbackDimension: 40,
+                                                               wrap: 'circular'
                                                                });
 
 		return scrollablePane;
@@ -908,10 +909,12 @@ background:none !important;
         $("#hairstyles-scrollable-slider").before('<span class="iconohairstyles-scrollable-slider"></span>');
         $("#accesories-scrollable-slider").before('<span class="iconoaccesories-scrollable-slider"></span>');
         jQuery('#accesories-scrollable-slider > ul').jcarousel({
-                                                               itemFallbackDimension: 40
+                                                               itemFallbackDimension: 40,
+                                                               wrap: 'circular'
                                                                });
         jQuery('#hairstyles-scrollable-slider > ul').jcarousel({
-                                                               itemFallbackDimension: 40
+                                                               itemFallbackDimension: 40,
+                                                               wrap: 'circular'
                                                                });
         
     }
