@@ -55,14 +55,15 @@ table {
 @font-face {
     font-family: 'thesansplain';
     src: url('thesans_plain-webfont.eot');
-    src: url('thesans_plain-webfont.ttf') format('truetype');
-    src: local(thesansplain), url('thesans_plain-webfont.ttf');
+    src: url('thesans_plain-webfont.eot?#iefix') format('embedded-opentype'),
+         url('thesans_plain-webfont.woff') format('woff'),
+         url('thesans_plain-webfont.ttf') format('truetype'),
+         url('thesans_plain-webfont.svg#thesansplain') format('svg');
     font-weight: normal;
     font-style: normal;
 
-}
-body {
-	font-family: 'thesansplain';
+}body {
+	font-family: 'thesansplain', arial, sans-serif;
 	background-image:url('../images/imagenes/background.gif');
 	background-repeat: repeat;
 }
@@ -313,7 +314,7 @@ ol > li:before {
     background: url(../images/imagenes/bg-list.png) no-repeat center center;
 	font-size:30px;
 	line-height:1.2;
-    font-family:'thesansplain';
+    font-family:'thesansplain', arial, sans-serif;
     text-align:center;
     display:block;
 }
