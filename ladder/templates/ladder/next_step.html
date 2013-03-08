@@ -378,7 +378,7 @@ margin:5px 0;
 					reset_dataload_status();
 					buildPositionSummaryThumbnail( currentCargo.pk );
 				}
-			} ,1000 );
+			} ,250 );
 		});
 		/*
 		builds an array holding only those requirements that have been fulfilled so far
@@ -811,6 +811,14 @@ margin:5px 0;
 			return url.replace( regex, '$1' + escape( label ) + '$3' + size + '$5' );
 		}
 		/*
+		finds a url to retrieve misc images
+		*/
+		function buildURLForAvatarAccesorios( accesorios_pk ){
+			var url = '{% url "get-avatar-accesorios-by-pk" accesorios_pk=1 %}';
+			var regex = new RegExp( '(/avatar/accesorios/)(1)(/)', RegExp.g );
+			return url.replace( regex, '$1' + accesorios_pk + '$3' );
+		}
+		/*
 		gets a body size digit from the avatar's body
 		*/
 		function getBodySize() {
@@ -898,8 +906,7 @@ margin:5px 0;
 		uses downloaded avatar data to change avatar clothing
 		*/
 		function avatarAvailable( downloaded ){
-			//console.log( 'downloaded avatar data' );
-			//console.log( downloaded );
+			avatar.misc = [];
 			if( downloaded.fields.camisa ){
 				downloadShirtData( downloaded.fields.camisa, function( shirt ){
 					$.ajax({
@@ -933,10 +940,21 @@ margin:5px 0;
 				} );
 			}
 			if( downloaded.fields.accesorios ){
-			
+				if( downloaded.fields.accesorios.length ){
+					
+					for( var i = 0; i < downloaded.fields.accesorios.length; i++ ){
+						var imgURL = buildURLForAvatarAccesorios( downloaded.fields.accesorios[ i ] );
+						avatar.misc[ i ] = new Image();
+						avatar.misc[ i ].src = imgURL;
+					}
+				} else {
+					
+				}
+			} else {
+				pieces_load_stat.misc = true;
 			}
 			if( downloaded.fields.cabello ){
-			
+				console.log( downloaded.fields.accesorios );
 			}
 			if( downloaded.fields.sombrero ){
 				var imgURL = '{% url 'get-avatar-sombrero-by-pk' sombrero_pk=1 %}'.replace( /(\/avatar\/sombrero\/)(\d+)(\/)/g, '$1' + downloaded.fields.sombrero + '$3' );
