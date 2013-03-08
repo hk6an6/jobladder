@@ -363,6 +363,7 @@ margin:5px 0;
 			//initialize avatar
 			avatar = new serempre.avatars.Avatar( );
 			avatar.restoreFromRawData( JSON.parse( sessionStorage.avatar ) );
+			avatar.originalMISC = avatar.misc;
 			//initialize canvas and drawing area
 			canvas = document.getElementById( 'canvas' );
 			context = canvas.getContext( '2d' );
@@ -906,7 +907,6 @@ margin:5px 0;
 		uses downloaded avatar data to change avatar clothing
 		*/
 		function avatarAvailable( downloaded ){
-			avatar.misc = [];
 			if( downloaded.fields.camisa ){
 				downloadShirtData( downloaded.fields.camisa, function( shirt ){
 					$.ajax({
@@ -941,17 +941,17 @@ margin:5px 0;
 			}
 			if( downloaded.fields.accesorios ){
 				if( downloaded.fields.accesorios.length ){
-					
+					avatar.misc = [];
 					for( var i = 0; i < downloaded.fields.accesorios.length; i++ ){
 						var imgURL = buildURLForAvatarAccesorios( downloaded.fields.accesorios[ i ] );
 						avatar.misc[ i ] = new Image();
 						avatar.misc[ i ].src = imgURL;
 					}
 				} else {
-					
+					avatar.misc = avatar.originalMISC;
 				}
 			} else {
-				pieces_load_stat.misc = true;
+
 			}
 			if( downloaded.fields.cabello ){
 				console.log( downloaded.fields.accesorios );
