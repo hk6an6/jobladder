@@ -331,6 +331,12 @@ margin:5px 0;
 		var DEBUG = false;
 	</script>
 	<script>
+		var pieces_load_stat = {
+			shirt : false,
+			pants : false,
+			helmet: false,
+			shoes : false,
+		};
 		var currentCargo = null;
 		var destinationCargo = null;
 		var avatar = null;
@@ -368,6 +374,10 @@ margin:5px 0;
 				avatar.paint( context );
 				timeline.checkForPointerCollisions( );
 				timeline.paint( timeline.context );
+				if( isReadyToBuildSummary() ){
+					reset_dataload_status();
+					buildPositionSummaryThumbnail( currentCargo.pk );
+				}
 			} ,1000 );
 		});
 		/*
@@ -652,15 +662,37 @@ margin:5px 0;
 			if(avatar.background == null || avatar.background == 'empty' ){
 				avatar.background = new Image();
 			}
+			avatar.background.onload = function(){ pieces_load_stat.background = true; }
 			avatar.background.src = backgroundImageURL;
 			//console.log( avatar.background.src );
 		}
+		/*
+		true if a summary can be built
+		*/
+		function isReadyToBuildSummary(){
+			var result = true;
+			for( attribute in pieces_load_stat ){
+				result = result && pieces_load_stat[ attribute ];
+			}
+			return result;
+		}
+		/*
+		stops summary from being built by signaling there are items pending to be downloaded
+		*/
+		function reset_dataload_status(){
+			pieces_load_stat.shirt = false;
+			pieces_load_stat.pants = false;
+			pieces_load_stat.helmet = false;
+			pieces_load_stat.shoes = false;
+			pieces_load_stat.background = false;
+		};
 		/*
 		append a position to the player's carreer
 		*/
 		function pushPosition( positionPK ){
 			var requirementSummary = buildRequirementSummaryListFor( positionPK );
 			markFormerPositions( );
+			reset_dataload_status( );
 			//console.log( 'triggering download for avatar on cargo ' + positionPK );
 			downloadModelAvatarFor( positionPK, avatarAvailable );
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
@@ -669,7 +701,6 @@ margin:5px 0;
 			var pushedSummary = buildPositionSummaryDisplay( positionPK );
 			pushedSummary.append( requirementSummary );
 			$( '#breadcrums' ).append( pushedSummary );
-			buildPositionSummaryThumbnail( positionPK );
 			pushedSummary.css( 'display','none' );
 			bindSummaries( pushedSummary, path.length );
 			if( currentCargo.pk == destinationCargo.pk || $( 'div#next-steps div.next-position' ).length == 0 ){
@@ -877,6 +908,7 @@ margin:5px 0;
 							var imgURL = '{% url 'get-avatar-camisa-by-pk' camisa_pk=1 %}'.replace( /(\/avatar\/camisa\/)(\d+)(\/)/g, '$1' + data[0].pk + '$3' );
 							var img = new Image();
 							img.alt = data[0].fields.etiqueta;
+							img.onload = function(){ pieces_load_stat.shirt = true; }
 							img.src = imgURL;
 							avatar.shirt = img;
 							//console.log( avatar.shirt );
@@ -892,6 +924,7 @@ margin:5px 0;
 							var imgURL = '{% url 'get-avatar-pantalon-by-pk' pantalon_pk=1 %}'.replace( /(\/avatar\/pantalon\/)(\d+)(\/)/g, '$1' + data[0].pk + '$3' );
 							var img = new Image();
 							img.alt = data[0].fields.etiqueta;
+							img.onload = function(){ pieces_load_stat.pants = true; }
 							img.src = imgURL;
 							avatar.pants = img;
 							//console.log( avatar.pants );
@@ -908,6 +941,7 @@ margin:5px 0;
 			if( downloaded.fields.sombrero ){
 				var imgURL = '{% url 'get-avatar-sombrero-by-pk' sombrero_pk=1 %}'.replace( /(\/avatar\/sombrero\/)(\d+)(\/)/g, '$1' + downloaded.fields.sombrero + '$3' );
 				var img = new Image();
+				img.onload = function(){ pieces_load_stat.helmet = true; }
 				img.src = imgURL;
 				avatar.helmet = img;
 				//console.log( avatar.helmet );
@@ -915,6 +949,7 @@ margin:5px 0;
 			if( downloaded.fields.zapatos ){
 				var imgURL = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=1 %}'.replace( /(\/avatar\/zapatos\/)(\d+)(\/)/g, '$1' + downloaded.fields.zapatos + '$3' );
 				var img = new Image();
+				img.onload = function(){ pieces_load_stat.shoes = true; }
 				img.src = imgURL;
 				avatar.shoes = img;
 				//console.log( avatar.shoes );
