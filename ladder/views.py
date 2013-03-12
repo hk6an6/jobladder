@@ -205,9 +205,18 @@ def	avatar_cara_by_pk(request, cara_pk):
 	item = get_object_or_404(CaraAvatar, pk=int(cara_pk))
 	return redirect(item.imagen.url)
 	
-def avatar_accesorios_by_pk(request, accesorios_pk):
-	item = get_object_or_404(AccesoriosAvatar, pk=int(accesorios_pk))
-	return redirect(item.imagen.url)
+def avatar_accesorios_by_pk(request, accesorios_pk, body_size=None ):
+	#logger.debug( "requested pk=%s with size=%s" % ( accesorios_pk, body_size, ) )
+	item = get_object_or_404( AccesoriosAvatar, pk=int( accesorios_pk ) )
+	tag = item.etiqueta
+	#logger.debug( "tag is='%s'" % tag )
+	if body_size:
+		sized_items = AccesoriosAvatar.objects.filter( etiqueta = tag, contextura = body_size )
+		#logger.debug( "found custom item for body size" )
+		if len( sized_items ):
+			item = sized_items[0]
+	#logger.debug( "serving item with pk=%s" % item.pk )
+	return redirect( item.imagen.url )
 	
 def avatar_sombrero_by_pk(request, sombrero_pk):
 	item = get_object_or_404(SombreroAvatar, pk=int(sombrero_pk))

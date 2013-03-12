@@ -815,9 +815,10 @@ margin:5px 0;
 		finds a url to retrieve misc images
 		*/
 		function buildURLForAvatarAccesorios( accesorios_pk ){
-			var url = '{% url "get-avatar-accesorios-by-pk" accesorios_pk=1 %}';
-			var regex = new RegExp( '(/avatar/accesorios/)(1)(/)', RegExp.g );
-			return url.replace( regex, '$1' + accesorios_pk + '$3' );
+			var body_size = getBodySize( );
+			var url = '{% url "get-avatar-accesorios-by-pk" accesorios_pk=1 body_size=1 %}';
+			var regex = new RegExp( '(/avatar/accesorios/)(1)(/)(1)(/)', RegExp.g );
+			return url.replace( regex, '$1' + accesorios_pk + '$3' + body_size + '$5' );
 		}
 		/*
 		gets a body size digit from the avatar's body

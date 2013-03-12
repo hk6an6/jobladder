@@ -35,7 +35,7 @@ urlpatterns = patterns('',
 	url(r'^avatar/faccion/(?P<faccion_pk>\d+)/$','ladder.views.avatar_faccion_by_pk',name="get-avatar-faccion-by-pk"),
 	url(r'^avatar/zapatos/(?P<zapatos_pk>\d+)/$','ladder.views.avatar_zapatos_by_pk',name="get-avatar-zapatos-by-pk"),
 	url(r'^avatar/cara/(?P<cara_pk>\d+)/$','ladder.views.avatar_cara_by_pk',name="get-avatar-cara-by-pk"),
-	url(r'^avatar/accesorios/(?P<accesorios_pk>\d+)/$','ladder.views.avatar_accesorios_by_pk',name="get-avatar-accesorios-by-pk"),
+	url(r'^avatar/accesorios/(?P<accesorios_pk>\d+)/(?P<body_size>\d+)/$','ladder.views.avatar_accesorios_by_pk',name="get-avatar-accesorios-by-pk"),
 	url(r'^avatar/sombrero/(?P<sombrero_pk>\d+)/$','ladder.views.avatar_sombrero_by_pk',name="get-avatar-sombrero-by-pk"),
 	url(r'^avatar/departamento/(?P<departamento_pk>\d+)/$','ladder.views.avatar_departamento_by_pk',name="get-avatar-departamento-by-pk"),
 )
