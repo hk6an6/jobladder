@@ -124,9 +124,13 @@ position: relative;
 height: 1px;
 display: block;
 clear: both;
+min-width:1040px;
 }
 #breadcrums .boton{
 display:none;
+position: fixed;
+right:20px;
+bottom:20px;
 }
 
 div.cargo-summary {
@@ -137,18 +141,48 @@ right: 0px;
 display:block;
 }
 div.cargo-summary.final {
-position: static;
-display:block;
-width:auto;
-padding:10px 0px;
-margin:10px 0px;
-border-bottom:thin solid #025084;
+position: relative;
+display: block;
+padding: 10px 0px;
+margin: 40px 0px 10px;
+width: 200px;
+text-align: center;
+float: left;
+}
+.cargo-summary-heading{
+display:none;
+}
+div.cargo-summary.final+div.cargo-summary.final{
+padding-left:80px;
+}
+div.cargo-summary.final:nth-child(5n+1){
+padding-left:0px !important;
+clear:both;
+}
+div.cargo-summary.final:nth-child(5n+1):before{
+content:'' !important;
+}
+div.cargo-summary.final+div.cargo-summary.final:before{
+content:url({% static "ladder/images/imagenes/timeline.png" %});
+position: absolute;
+left:0;
+top:90px;
+}
+ul.requirement-summary-listing {
+display: none;
+text-align: left;
+font-size: small;
+list-style-image:url({% static "ladder/images/imagenes/lista.png" %});
 }
 div.cargo-summary.final .cargo-title{
 display:block;
 font-size:large;
 font-weight:600;
-text-align:left;
+text-align:center;
+}
+.cargo-summary-heading{
+margin:0 0 30px !important;
+color: #666 !important;
 }
 /*
 	future critical positions found further ahead
@@ -228,11 +262,12 @@ text-align:center;
 #breadcrums canvas{
 float:none;
 margin: 0 auto;
+cursor: pointer;
 }
 #breadcrums{
 position:relative;
 }
-.simulation p{
+.simulation p, .cargo-summary-heading{
 color:#025084;
 font-size:1.2em;
 margin-bottom:10px;
@@ -313,6 +348,7 @@ margin:5px 0;
 		</canvas>
 	</div>
 </div>
+<p class="cargo-summary-heading">Conoce las competencias y requisitos de cada cargo haciendo click sobre sus imágenes .</p>
 <div id="breadcrums">
 <span class="boton" style="font-size:1em;"><a href="{% url 'start' %}">Volver a comenzar</a></span>
 </div>
@@ -641,7 +677,7 @@ margin:5px 0;
             $( 'div#breadcrums div' ).addClass('final');
             $( 'span.requirement_tag').show();
 			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
-           $( 'div#breadcrums div ul.requirement-summary-listing, div#breadcrums .boton' ).css( 'display', 'block' );
+           $( 'div#breadcrums .boton, .cargo-summary-heading' ).css( 'display', 'block' );
 		}
 		/*
 		let the user know the simulation can be ended
@@ -1054,6 +1090,10 @@ margin:5px 0;
                                   setTimeout(function(){
                                              fleXenv.updateScrollBars();},600);
                                     });
+      $('.cargo-summary.final').live("click", function (e){
+                                     $('.requirement-summary-listing').slideUp();
+                                     $(this).children('.requirement-summary-listing').slideDown();
+                                     });
 
       });
     </script>
