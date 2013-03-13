@@ -155,11 +155,11 @@ display:none;
 div.cargo-summary.final+div.cargo-summary.final{
 padding-left:80px;
 }
-div.cargo-summary.final:nth-child(5n+1){
+div.cargo-summary.final:nth-child(4n+4){
 padding-left:0px !important;
 clear:both;
 }
-div.cargo-summary.final:nth-child(5n+1):before{
+div.cargo-summary.final:nth-child(4n+4):before{
 content:'' !important;
 }
 div.cargo-summary.final+div.cargo-summary.final:before{
@@ -168,22 +168,31 @@ position: absolute;
 left:0;
 top:90px;
 }
+.breadcrums.boton {
+border: 2px solid rgb(2, 80, 132);
+padding: 4px;
+position: fixed;
+right: 10px;
+top: 550px;
+}
+
 ul.requirement-summary-listing {
 text-align: left;
 font-size: small;
 list-style-image:url({% static "ladder/images/imagenes/lista.png" %});
 }
-div.requirement-container{
+div.requirement-container {
 position: fixed;
 padding: 10px;
-width: 30%;
+width: 270px;
+background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.8);
 z-index: 99;
-left: 35%;
-bottom: 10px;
-right: auto;
-height: 200px;
-display:none;
+right: 10px;
+height: 400px;
+display: none;
+top: 100px;
 }
+
 
 div.cargo-summary.final .cargo-title{
 display:block;
@@ -362,8 +371,9 @@ margin:5px 0;
 </div>
 <p class="cargo-summary-heading">Conoce las competencias y requisitos de cada cargo haciendo click sobre sus imágenes .</p>
 <div id="breadcrums">
-<span class="boton" style="font-size:1em;"><a href="{% url 'start' %}">Volver a comenzar</a></span>
 </div>
+<span class="boton breadcrums" style="font-size:1em; display:none"><a href="{% url 'start' %}">Volver a comenzar</a></span>
+
 <!--Div contenedor de La plantilla final de la ruta o llegaste a la meta-->
 <div id="fin" class="fin">
     <img src="{% static "ladder/images/imagenes/avatares-FIN.png" %}" alt="Esquema Rutas de carrera" style="float:left;" />
@@ -685,11 +695,11 @@ margin:5px 0;
 		function displaySimulationResults(){
             var lista = $(this).children('.lista');
 			$( 'div.fin' ).css( 'display', 'none' );
-			$( 'div#breadcrums div' ).css( 'display', 'block' );
+			$( 'div#breadcrums div.cargo-summary' ).css( 'display', 'block' );
             $( 'div#breadcrums div' ).addClass('final');
             $( 'span.requirement_tag').show();
 			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
-           $( 'div#breadcrums .boton, .cargo-summary-heading' ).css( 'display', 'block' );
+           $( 'span.breadcrums.boton, .cargo-summary-heading' ).css( 'display', 'block' );
             fleXenv.initByClass("flexscroll");
 		}
 		/*
