@@ -4,7 +4,7 @@ import os
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 PROJECT_DIR = os.path.join(PROJECT_ROOT,'../jobladder')
-DEBUG = True
+DEBUG = False
 USING_FOREMAN = os.getenv('USE_FOREMAN', False)
 USE_POSGRES_USER = False
 #USE_POSGRES_USER = os.getenv('USE_POSGRES_USER', False)
@@ -17,6 +17,9 @@ ADMINS = (
     ('Nicolas Diaz Aragon', 'ndiaz@serempre.com'),
     ('David Panesso', 'dpanesso@serempre.com'),
     ('Billy Camargo', 'bcamargo@serempre.com'),
+	('Albina Velasco', 'avelasco@advantika.com.co'),
+	('Luisa Murcia', 'lmurcia@advantika.com.co'),
+
 )
 
 MANAGERS = ADMINS
@@ -260,3 +263,11 @@ if USE_AWS_S3_STORAGE:
 	S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 	STATIC_URL = S3_URL
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'soporte@serempre.com'
+SERVER_EMAIL = 'soporte@serempre.com'
+EMAIL_HOST_PASSWORD = 'serempreAdmin'
+EMAIL_SUBJECT_PREFIX = '[ Rutas de carrera - Pacific 2013 ]'
