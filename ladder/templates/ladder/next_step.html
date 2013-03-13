@@ -144,7 +144,7 @@ div.cargo-summary.final {
 position: relative;
 display: block;
 padding: 10px 0px;
-margin: 40px 0px 10px;
+margin: 80px 0px 10px;
 width: 200px;
 text-align: center;
 float: left;
@@ -169,11 +169,22 @@ left:0;
 top:90px;
 }
 ul.requirement-summary-listing {
-display: none;
 text-align: left;
 font-size: small;
 list-style-image:url({% static "ladder/images/imagenes/lista.png" %});
 }
+div.requirement-container{
+position: fixed;
+padding: 10px;
+width: 30%;
+z-index: 99;
+left: 35%;
+bottom: 10px;
+right: auto;
+height: 200px;
+display:none;
+}
+
 div.cargo-summary.final .cargo-title{
 display:block;
 font-size:large;
@@ -181,8 +192,9 @@ font-weight:600;
 text-align:center;
 }
 .cargo-summary-heading{
-margin:0 0 30px !important;
-color: #666 !important;
+margin:10px 0 40px !important;
+font-size: 1.4em !important;
+
 }
 /*
 	future critical positions found further ahead
@@ -678,6 +690,7 @@ margin:5px 0;
             $( 'span.requirement_tag').show();
 			$( 'body header > div:nth-child(1) > h1:nth-child(1)' ).text( 'Tu ruta' );
            $( 'div#breadcrums .boton, .cargo-summary-heading' ).css( 'display', 'block' );
+            fleXenv.initByClass("flexscroll");
 		}
 		/*
 		let the user know the simulation can be ended
@@ -1022,14 +1035,16 @@ margin:5px 0;
 		builds a list to display requirements when the simulation is done. The list is to be placed inside a timeline item
 		*/
 		function buildRequirementSummaryListFor( positionPK ){
-			var list = $( '<ul class="requirement-summary-listing" style="display: none;"></ul>' );
+			var list = $( '<ul class="requirement-summary-listing"></ul>' );
+            var listContainer = $( '<div class=" requirement-container flexscroll"></div>' );
 			var items = extractRequirementsFromPageFor( positionPK );
 			for( var i = 0; i < items.length; i++ ){
 				var list_item = $( '<li class="requirement-summary-list-item"></li>' );
 				list_item.append( items[ i ] );
 				list.append( list_item );
+                listContainer.append(list);
 			}
-			return list;
+			return listContainer;
 		}
         /*
          Makes a copy of requirement categories
@@ -1091,8 +1106,11 @@ margin:5px 0;
                                              fleXenv.updateScrollBars();},600);
                                     });
       $('.cargo-summary.final').live("click", function (e){
-                                     $('.requirement-summary-listing').slideUp();
-                                     $(this).children('.requirement-summary-listing').slideDown();
+                                     $('.requirement-container').slideUp();
+                                     $(this).children('.requirement-container').slideDown();
+                                     setTimeout(function(){
+                                                fleXenv.initByClass("flexscroll");
+                                                fleXenv.updateScrollBars();},600);
                                      });
 
       });
