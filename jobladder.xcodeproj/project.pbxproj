@@ -102,6 +102,8 @@
 		43B471D2166903B9003EB0DC /* Procfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Procfile; sourceTree = "<group>"; };
 		43B471D3166903B9003EB0DC /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		43B471D4166903B9003EB0DC /* requirements.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = requirements.txt; sourceTree = "<group>"; };
+		43FB11C016F0F47200565BC8 /* 404.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = 404.html; sourceTree = "<group>"; };
+		43FB11C116F0F48600565BC8 /* 500.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = 500.html; sourceTree = "<group>"; };
 		43FC2FE316A60D5A008EE227 /* next_step.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = next_step.html; sourceTree = "<group>"; };
 		5D442F4A16C42B4200021B9F /* bg_item.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_item.png; sourceTree = "<group>"; };
 		5D442F4B16C42B4200021B9F /* icono-camisa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-camisa.png"; sourceTree = "<group>"; };
@@ -200,6 +202,8 @@
 		43B4717A166903B9003EB0DC /* jobladder */ = {
 			isa = PBXGroup;
 			children = (
+				43FB11BF16F0F45200565BC8 /* templates */,
+				43FB11BE16F0F41000565BC8 /* static */,
 				43B4717B166903B9003EB0DC /* __init__.py */,
 				43B4717C166903B9003EB0DC /* settings.py */,
 				43B4717D166903B9003EB0DC /* static */,
@@ -414,6 +418,22 @@
 				5D98268016D7737800507521 /* rutas_de_carrera_2.html */,
 			);
 			path = ladder;
+			sourceTree = "<group>";
+		};
+		43FB11BE16F0F41000565BC8 /* static */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = static;
+			sourceTree = "<group>";
+		};
+		43FB11BF16F0F45200565BC8 /* templates */ = {
+			isa = PBXGroup;
+			children = (
+				43FB11C016F0F47200565BC8 /* 404.html */,
+				43FB11C116F0F48600565BC8 /* 500.html */,
+			);
+			path = templates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
