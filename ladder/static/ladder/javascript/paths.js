@@ -633,11 +633,19 @@ var serempre = new function(){
 			context.fillRect( 0,0, this.width, this.height );
 			for( var i = 0; i < images.length; i++ ){
 				if( images[ i ] != 'empty' && !( images[i] instanceof Array ) ){
-					context.drawImage( images[i], 0, 0, this.width, this.height );
+					try{
+						context.drawImage( images[i], 0, 0, this.width, this.height );
+					} catch( e ){
+						console.log( e );
+					}
 				}else if( images[ i ] instanceof Array ){
 					for( var j = 0; j < images[ i ].length; j++ ){
 						if( images[ i ][ j ] != null ){
-							context.drawImage( images[ i ][ j ], 0, 0, this.width, this.height );
+							try{
+								context.drawImage( images[ i ][ j ], 0, 0, this.width, this.height );
+							} catch( e ){
+								console.log( e );
+							}
 						}
 					}
 				}
