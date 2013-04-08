@@ -62,12 +62,12 @@ height:100%;
 	*/
 	div.flexscroll {
 /* Typical fixed height and fixed width example */
-width: 100%;
+width: 80%;
 height: 500px;
 overflow: auto;
 /* IE overflow fix, position must be relative or absolute*/
 position: relative;
-margin: 0.3em auto;
+margin: 0.3em 0;
 padding: 15px;
 	}
 	/*
@@ -185,7 +185,7 @@ div.requirement-container {
 position: fixed;
 padding: 10px;
 width: 270px;
-background: none repeat scroll 0% 0% rgba(255, 255, 255, 0.8);
+background: none repeat scroll 0% 0% rgba(255, 255, 255, 1);
 z-index: 99;
 right: 10px;
 height: 400px;
@@ -670,10 +670,11 @@ margin:5px 0;
 			var result = $( 
 				 '<div id="position-' + position.pk + '" class="next-position"><h4 class="position-label">'
 					+ position.fields.nombre
-					+'</h4><a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
-						+'Ocupar este cargo'
-					+'</a>'
+					+'</h4>'
 				+'</div>' );
+            var occupyCargo = $('<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+                                +'Ocupar este cargo'
+                                +'</a>');
 			var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
 			for( var i = 0; i < futureCriticalPositions.length; i++ ){
 				if( futureCriticalPositions[ i ] == destinationCargo.pk ){
@@ -683,6 +684,7 @@ margin:5px 0;
 					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
 					positionSummary.find('canvas').remove();
 					result.append( positionSummary );
+                    result.append (occupyCargo);
 				}
 			}
 			return result;
