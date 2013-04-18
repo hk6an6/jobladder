@@ -127,7 +127,8 @@ box-shadow:inset 2px 2px 5px #666 !important;
 		<div>
 			<div class='input-append'>
 				<label for='cargo_inicial_nombre'>Cargo actual: </label>
-				<select id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></select>
+				<input id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></input>
+				<input id="cargo_inicial" type="hidden" value="0"/>
 			</div>
 			<span class='help-block'>* Elige el cargo que tienes en este momento</span>
             <a href="{% url 'nocargo' %}" class="boton2">¿No encuentras tu cargo?</a>
@@ -153,13 +154,49 @@ box-shadow:inset 2px 2px 5px #666 !important;
         
         function navigate_to_simulation_start(blank_url){
             var sex = $('div#div-sexo button.active').attr( 'option' );
-            var origin_cargo = $('#cargo_inicial_nombre option:selected').val();
+            var origin_cargo = $('#cargo_inicial').val();
             var target_cargo = $('#cargo_destino_nombre option:selected').val();
             var target_url = blank_url.replace(/1\/2\/3\/$/gi,origin_cargo+'/'+target_cargo+'/'+sex+'/');
 			sessionStorage.currentCargo = origin_cargo;
 			sessionStorage.targetCargo = target_cargo;
             window.location.href = target_url;
         }
+		
+		function cargo_inicial_chosen(){
+			//get selected element
+			var selected = $('#cargo_inicial');
+			//get selected element label
+			var label = $( 'input#cargo_inicial_nombre' ).text();
+			//get selected element value
+			selected = selected.val();
+			//walk the job ladder
+			serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
+				//this code is run after all endpoints have been calculated from server-side data
+				//graph contents are stored at the futurePaths variable
+				//populate destination dropdown
+				serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
+				//display destination cargos
+				$('.toggled_by_cargo_inicial').css('visibility','visible');
+				//--------- this is temporal
+				var paths = JSON.parse(sessionStorage.futurePaths);
+				var vertexes = serempre.graphs.prepareAbstractGraph(paths);
+				var edges = serempre.graphs.buildEdgeArray(vertexes);
+				var container = $('<div id="rutas">Rutas</div>');
+				$('#rutas').remove();
+				var y = serempre.graphs.dfs(vertexes,edges,0,-1, '', function(vertex){ 
+					var indent = (vertex.depth-1) * 3;
+					var bg_color = (('#' + (indent%99)) + (indent%99)) + (indent%99);
+					var vertex_tag = $("<div style='margin-left: " + indent + "em; color: #FFFFFF; background-color: " + bg_color + "' >" + vertex.fields.nombre + "</div>");
+					container.append(vertex_tag);
+					return vertex.fields.nombre;
+				//----------
+				});
+				$('#main').append(container);
+				
+			}, function waitUpdate(data){
+				$('#dialog-wait span#msg-content').text('Trabajando en: '+ data.fields.nombre);
+			});
+		}
         
 		$(document).ready(function(){
 			if(serempre.cargos.No_HTML5()){
@@ -168,48 +205,12 @@ box-shadow:inset 2px 2px 5px #666 !important;
 			//fix dialogs
 			serempre.cargos.setupWaitDialog();
 			//load cargo list
-			serempre.cargos.loadOffsetCargos("{% url 'get-cargos' %}", "#cargo_inicial_nombre");
+			//serempre.cargos.loadOffsetCargos("{% url 'get-cargos' %}", "#cargo_inicial_nombre");
 			//turn combo boxes into autocomplete combo boxes
-			$('select').combobox();
+			//$('select').combobox();
 			//fix sizes for input fields
 			$('div.input-append button').css('height','2em');
 			$('div.input-append input').css('height','1.3em');
-			
-			$('#cargo_inicial_nombre').change(function(){
-				//get selected element
-				var selected = $('#cargo_inicial_nombre option:selected');
-				//get selected element label
-				var label = selected.text();
-				//get selected element value
-				selected = selected[0].value;
-				//walk the job ladder
-				serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
-					//this code is run after all endpoints have been calculated from server-side data
-					//graph contents are stored at the futurePaths variable
-					//populate destination dropdown
-					serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
-					//display destination cargos
-					$('.toggled_by_cargo_inicial').css('visibility','visible');
-					//--------- this is temporal
-					var paths = JSON.parse(sessionStorage.futurePaths);
-					var vertexes = serempre.graphs.prepareAbstractGraph(paths);
-					var edges = serempre.graphs.buildEdgeArray(vertexes);
-					var container = $('<div id="rutas">Rutas</div>');
-					$('#rutas').remove();
-					var y = serempre.graphs.dfs(vertexes,edges,0,-1, '', function(vertex){ 
-						var indent = (vertex.depth-1) * 3;
-						var bg_color = (('#' + (indent%99)) + (indent%99)) + (indent%99);
-						var vertex_tag = $("<div style='margin-left: " + indent + "em; color: #FFFFFF; background-color: " + bg_color + "' >" + vertex.fields.nombre + "</div>");
-						container.append(vertex_tag);
-						return vertex.fields.nombre;
-                    //----------
-                    });
-					$('#main').append(container);
-					
-                }, function waitUpdate(data){
-                    $('#dialog-wait span#msg-content').text('Trabajando en: '+ data.fields.nombre);
-                });
-			});
 			
 			$('#cargo_destino_nombre').change(function(){
 				//get selected element
@@ -240,6 +241,49 @@ box-shadow:inset 2px 2px 5px #666 !important;
 				}
 			} );
 		});
+		
+			//this turns an input field into a remote data sourced autocomplete
+			$('#cargo_inicial_nombre').autocomplete({
+				source: function(request, response){
+					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					$.ajax({
+						url: "{% url 'get-cargos' %}" + request.term
+						, dataType: "json"
+						, data: {
+							//don't send any data to the service
+						}, success: function(data, textStatus, jqXHR){
+							response( $.map( data, function( item ) {
+								return {
+									label: item.fields.nombre,
+									value: item.pk
+								}
+							}));
+						}, complete: function(jqXHR, textStatus){
+							//done requesting data
+						}, error: function(jqXHR, textStatus, errorThrown){
+							alert(textStatus);
+						}
+					});
+				}, minLength: 2,
+				select: function(event, ui){
+					if(ui.item){
+						console.log(ui.item.value);
+						$('#cargo_inicial_nombre').val(ui.item.label);
+						$('#cargo_inicial').val(ui.item.value);
+						cargo_inicial_chosen();
+						return false;
+					}
+				}, open: function(){
+					$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+				}, close: function(){
+					$(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+				}
+			}).data("autocomplete")._renderItem = function( ul, item ){
+				return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.label + "</a>" )
+                .appendTo( ul );
+			}
 	</script>
 	<script>
 		//hide destination cargo until an offset cargo has been chosen

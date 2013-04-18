@@ -38,7 +38,7 @@ def cargo(request,cargo_name_fragment=None):
 		return HttpResponse(serializers.serialize('json',Cargo.objects.filter(nombre__icontains=cargo_name_fragment, activo=True), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 	else:
 		#logger.debug('output everything')
-		return HttpResponse(serializers.serialize('json',Cargo.objects.all().filter(activo=True), fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
+		return HttpResponse(serializers.serialize('json',Cargo.objects.all().filter(activo=True)[:20], fields=('pk','nombre',)), mimetype='application/json; charset=utf-8')
 		
 def cargo_destino(request, cargo_origen=None):
 	#logger.debug( cargo_origen )
