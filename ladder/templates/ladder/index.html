@@ -42,7 +42,7 @@ static file assets {% endcomment %}
 background:url({% static "ladder/images/imagenes/bg_silouette-01CAMP.png" %}) no-repeat right 0px;
 height:100%;
 }
-.boton2, input, .btn{
+.boton2, input, .btn, select{
 background:#CCC !important;
 box-shadow:2px 2px 5px !important;
 border-radius:0 !important;
@@ -53,7 +53,7 @@ text-decoration:none;
 color:#666;
 padding:1.5px 1em;
 }
-.ui-autocomplete{
+.ui-autocomplete, #cargo_destino_nombre{
 max-width:445px !important;
 max-height:200px !important;
 width:445px !important;
@@ -78,10 +78,22 @@ width:440px !important;
 .btn{
 margin-right:10px;
 }
-.ui-autocomplete-input{
-height:26px !important;
-color:#666;
-width:426px !important;
+#cargo_destino_nombre {
+height: 26px !important;
+width: 450px !important;
+color: rgb(102, 102, 102);
+max-width: 450px !important;
+line-height: 1;
+vertical-align: middle;
+-webkit-appearance:none;
+padding:0 0 0 4px;
+}
+select option{
+padding:4px;
+}
+select option:hover, select option:focus, select option:active, select:hover{
+background:none #666666 !important;
+border-radius:4px;
 }
 label{
 color:#025084;
@@ -138,7 +150,9 @@ box-shadow:inset 2px 2px 5px #666 !important;
 		<div class='input-append'>
 			<label for='cargo_destino_nombre'>¿Cuál es el cargo meta al que deseas
                 llegar en Pacific Rubiales?</label>
+            <div class="select">
 			<select id='cargo_destino_nombre' name='cargo_destino_nombre' type='text'></select>
+                </div>
 		</div>
 		<span class='help-block'>* Elige el cargo al que quieres llegar</span>
 		<div id='start-simulation' style='visibility: hidden'>
