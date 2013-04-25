@@ -259,9 +259,9 @@ box-shadow:inset 2px 2px 5px #666 !important;
 			//this turns an input field into a remote data sourced autocomplete
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
-					console.log("{% url 'get-cargos' %}" + request.term + "/");
+					console.log( "{% url 'get-cargos-filter-by-cargo-name' cargo_name_fragment="test" %}".replace( /(\/cargo\/)([\w\s]*)(\/)$/ig, "$1" + request.term + "$3" ) );
 					$.ajax({
-						url: "{% url 'get-cargos' %}" + request.term
+						url: "{% url 'get-cargos-filter-by-cargo-name' cargo_name_fragment="test" %}".replace( /(\/cargo\/)([\w\s]*)(\/)$/ig, "$1" + request.term + "$3" )
 						, dataType: "json"
 						, data: {
 							//don't send any data to the service

@@ -150,8 +150,10 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'gunicorn',
     'ladder',
-    'storages',
 )
+
+if USE_AWS_S3_STORAGE:
+	INSTALLED_APPS += ( 'storages', )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
