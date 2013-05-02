@@ -28,7 +28,7 @@ sudo chmod -R 755 /opt/bitnami/apps/django/django_projects/jobladder
 abortOnFailure $? "sudo chmod -R 755 /opt/bitnami/apps/django/django_projects/jobladder"
 sudo chown -R daemon:root /opt/bitnami/apps/django/django_projects/jobladder
 abortOnFailure $? "sudo chown -R daemon:root /opt/bitnami/apps/django/django_projects/jobladder"
-sudo python /opt/bitnami/apps/django/django_projects/precursor/manage.py collectstatic
-abortOnFailure $? "sudo python /opt/bitnami/apps/django/django_projects/precursor/manage.py collectstatic"
+sudo python /opt/bitnami/apps/django/django_projects/jobladder/manage.py collectstatic
+abortOnFailure $? "sudo python /opt/bitnami/apps/django/django_projects/jobladder/manage.py collectstatic"
 sudo sh /opt/bitnami/ctlscript.sh restart apache
 abortOnFailure $? "sudo sh /opt/bitnami/ctlscript.sh restart apache"
