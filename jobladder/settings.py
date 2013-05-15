@@ -8,7 +8,7 @@ DEBUG = False
 USING_FOREMAN = os.getenv('USE_FOREMAN', False)
 USE_POSGRES_USER = False
 #USE_POSGRES_USER = os.getenv('USE_POSGRES_USER', False)
-USE_AWS_S3_STORAGE = True
+USE_AWS_S3_STORAGE = False
 TEMPLATE_DEBUG = DEBUG
 #set the following to true to inspect database queries
 DEBUG_DATABASE_QUERIES = False

@@ -1,0 +1,401 @@
+/*
+
+Use this file to override anything from bootstrap. This is the last CSS loaded, so it will have the most specificity (precedence).
+
+This styles may only be overridden by using page style or inline styles
+
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+html{
+height:100%;
+}
+body {
+	line-height: 1;
+    height:75%;
+}
+ul {
+	list-style: none inside;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+@font-face {
+    font-family: 'thesansplain';
+    src: url('thesans_plain-webfont.eot');
+    src: url('thesans_plain-webfont.eot?#iefix') format('embedded-opentype'),
+         url('thesans_plain-webfont.woff') format('woff'),
+         url('thesans_plain-webfont.ttf') format('truetype'),
+         url('thesans_plain-webfont.svg#thesansplain') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}body {
+	font-family: 'thesansplain', arial, sans-serif;
+	background-image:url('../images/imagenes/background.gif');
+	background-repeat: repeat;
+}
+header {
+	background-color: rgba(255, 255, 255, 0.55);
+	padding: 35px;
+	color: #025084;
+	padding:10px 35px;
+	min-height:70px;
+}
+header div{
+	float:left;
+	text-align:right;
+}
+h1{
+	font-size:70px;
+	line-height:0.7;
+	letter-spacing:-6px;
+	margin-top:15px;
+}
+h2{
+	font-size:50px;
+	line-height:1;
+	letter-spacing:-4px;
+}
+#rutas{
+    display:none;
+}
+
+#main{
+	padding: 35px;
+	margin: 0px auto auto;
+	font-size: 15px;
+	line-height: 28px;
+	color: #4D4D4D;
+	text-align: justify;
+    min-width:1010px;
+	
+	/*padding: 25px 25px;*/
+}
+canvas{
+    float:left;
+}
+.boton{
+	border:2px solid #025084;
+	padding:4px;
+	float:right;
+}
+.boton button, .boton a{
+	background:#025084;
+	padding:0.3em 1em;
+	color:#FFF;
+	text-decoration:none;
+	display:block;
+    border:none;
+}
+.col1{
+    float:left;
+    width:48%;
+    padding:0 0 30px 2%;
+}
+.col2{
+float:left;
+width:40%;
+padding:0px;
+text-align:center;
+}
+
+ul.tab-controls{
+    width:60px;
+    display:inline-block;
+}
+.ui-autocomplete-loading {
+	background: white url('../images/ui-anim_basic_16x16.gif') right center no-repeat;
+}
+
+.background_jobs_pending {
+	background: url('../images/ui-anim_basic_16x16.gif') center no-repeat;
+	width: 16px;
+	height: 16px;
+	margin: 3px 3px;
+	float: left;
+}
+span.iconoeyebrows-scrollable-slider{
+    background:url(../images/imagenes/icono-cejas.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconocolor{
+    background:url(../images/imagenes/icono-color.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconoeyes-scrollable-slider{
+    background:url(../images/imagenes/icono-ojos.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconoshoes-scrollable-slider{
+    background:url(../images/imagenes/icono-zapatos.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconohairstyles-scrollable-slider{
+    background:url(../images/imagenes/icono-pelo.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconohelmets-scrollable-slider{
+    background:url(../images/imagenes/icono-cascos.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconobodies-scrollable-slider{
+    background:url(../images/imagenes/icono-cuerpo.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconofaces-scrollable-slider{
+    background:url(../images/imagenes/icono-facciones.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconoshirts-scrollable-slider{
+    background:url(../images/imagenes/icono-camisa.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconopants-scrollable-slider {
+    background:url(../images/imagenes/icono-pantalones.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+span.iconoaccesories-scrollable-slider {
+    background:url(../images/imagenes/icono-accesorios.png) center center no-repeat;
+    display:block;
+    height:50px;
+    width:50px;
+    float:left;
+    clear:both;
+}
+#skin-color-tag{
+    display:none;
+    }
+.bodypart-slider{
+    display:none;
+    }
+.scroll-pane{
+    background:none !important;
+    border:0 !important;
+}
+.scroll-content-item, .jcarousel-skin-ie7 img{
+    border:none !important;
+    width:40px !important;
+    height:40px !important;
+    cursor:pointer;
+}
+.scroll-pane .ui-widget-content{
+    border:none !important;
+    }
+.ui-autocomplete {
+	max-height: 100px;
+	max-width: 250px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100px;
+	width: 250px;
+}
+.ui-combobox {
+	position: relative;
+	display: inline-block;
+}
+.ui-combobox-toggle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin-left: -1px;
+	padding: 0;
+	/* adjust styles for IE 6/7 */
+	*height: 1.7em;
+	*top: 0.1em;
+}
+.ui-combobox-input {
+	margin: 0;
+	padding: 0.3em;
+}
+
+/* /////// ESTILOS PROPUESTA GRÁFICA ADVÁNTIKA /////// */
+
+#logoPRE {
+	float: right;
+}
+ol {
+    counter-reset:li; /* Initiate a counter */
+    margin-left:0; /* Remove the default left margin */
+    padding-left:0; /* Remove the default left padding */
+}
+ol > li {
+    position:relative; /* Create a positioning context */
+    margin:0 0 6px 60px; /* Give each list item a left margin to make room for the numbers */
+    padding:2px 20px; /* Add some spacing around the content */
+    list-style:none; /* Disable the normal item numbering */
+}
+ol > li:before {
+    content:counter(li); /* Use the counter as content */
+    counter-increment:li; /* Increment the counter by 1 */
+    /* Position and style the number */
+    position:absolute;
+    top:0px;
+    left:-60px;
+    width:45px;
+	height:45px;
+    /* Some space between the number and the content in browsers that support
+       generated content but not positioning it (Camino 2 is one example) */
+    margin-right:8px;
+    padding:10px;
+	color:#025084;
+    background: url(../images/imagenes/bg-list.png) no-repeat center center;
+	font-size:30px;
+	line-height:1.2;
+    font-family:'thesansplain', arial, sans-serif;
+    text-align:center;
+    display:block;
+}
+li ol,
+li ul {margin-top:6px;}
+ol ol li:last-child {margin-bottom:0;}
+li h3, h3{
+	color:#990033;
+	font-size:40px;
+	padding-bottom:15px;
+}
+li h4, h4{
+	color:#990033;
+	font-size:24px;
+}
+h4 span{
+    color:#025084;
+}
+li p, p{
+	color:#666;
+	line-height:1.2;
+}
+li p span{
+	font-size:1.2em;
+	color:#025084;
+	line-height:1.5em;
+}
+.contenido{
+	width:60%;
+	min-width:600px;
+}
+#skin-choices .scroll-content-item{
+background:url(../images/imagenes/bg_item.png) no-repeat;
+}
+#skin-choices{
+height:40px;
+padding:5px;
+}
+.color-Blanco{
+background:#fdeddd;
+}
+.color-Canela{
+background:#fec68c;
+}
+.color-Rosado{
+background:#fcdedb;
+}
+.color-Miel{
+background:#fde6c0;
+}
+.color-Morena{
+background:#8b5b40;
+}
+.scrollgeneric {
+line-height: 1px;
+font-size: 1px;
+position: absolute;
+top: 0; left: 0;
+}
+
+.vscrollerbase {
+width: 10px;
+background-color: white;
+}
+.vscrollerbar {
+width: 10px;
+background-color: black;
+}
+.hscrollerbase {
+height: 10px;
+background-color: white;
+}
+.hscrollerbar {
+height: 10px;
+background-color: black;
+}
+
+.scrollerjogbox {
+width: 10px;
+height: 10px;
+top: auto; left: auto;
+bottom: 0px; right: 0px;
+background-color: gray;
+}
