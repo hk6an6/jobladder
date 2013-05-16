@@ -670,6 +670,7 @@ margin:5px 0;
 		builds an HTML view of the given position
 		*/
 		function buildFullPositionDisplay( position ){
+			console.log( 'building display for ' + position );
 			var result = $( 
 				 '<div id="position-' + position.pk + '" class="next-position"><h4 class="position-label">'
 					+ position.fields.nombre
@@ -690,6 +691,8 @@ margin:5px 0;
                     result.append (occupyCargo);
 				}
 			}
+			console.log( 'full display built for ' + position );
+			console.log( result );
 			return result;
             fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
