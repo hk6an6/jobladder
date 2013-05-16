@@ -300,6 +300,15 @@ h4.position-label{
 cursor:pointer;
 font-size:1.3em;
 }
+.best-choice h4.position-label{
+cursor:pointer;
+color:#025084;
+}
+.best-choice h4.position-label span{
+font-size:0.7em;
+color:#666666;
+}
+
 .requirements{
 display:none;
 }
@@ -677,13 +686,11 @@ margin:5px 0;
                                      +'Ocupar este cargo'
                                     +'</a>'
 				+'</div>' );
-            var occupyCargo = $('<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
-                                +'Ocupar este cargo'
-                                +'</a>');
-			var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
+            var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
 			for( var i = 0; i < futureCriticalPositions.length; i++ ){
 				if( futureCriticalPositions[ i ] == destinationCargo.pk ){
 					result.addClass( 'best-choice' );
+                    
 				}else {
 					var positionSummary = buildPositionSummaryDisplay( futureCriticalPositions[ i ] );
 					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
@@ -773,6 +780,8 @@ margin:5px 0;
 			fixBackground( positionPK );
             fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
+            $('.best-choice > .position-label').append('<br/><span>Este es el camino hacía tu meta</span>');
+
 
 		}
 		/*
@@ -1042,8 +1051,6 @@ margin:5px 0;
 		*/
 		function extractRequirementsFromPageFor( positionPK ){
 			return $( 'div#next-steps div#position-' + positionPK + ' div.requirements span.requirement_tag' );
-            fleXenv.initByClass("flexscroll");
-            fleXenv.updateScrollBars();
 		}
 		/*
 		builds a list to display requirements when the simulation is done. The list is to be placed inside a timeline item
@@ -1097,6 +1104,7 @@ margin:5px 0;
             }
             fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
+            
             
         }
         
