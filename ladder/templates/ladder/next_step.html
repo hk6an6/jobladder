@@ -300,6 +300,15 @@ h4.position-label{
 cursor:pointer;
 font-size:1.3em;
 }
+.best-choice h4.position-label{
+cursor:pointer;
+color:#025084;
+}
+.best-choice h4.position-label span{
+font-size:0.7em;
+color:#666666;
+}
+
 .requirements{
 display:none;
 }
@@ -362,7 +371,7 @@ margin:5px 0;
     
     <p>Para acceder a un cargo de nivel superior transforma los
     íconos de la derecha en azul haciendo clic en cada uno de
-    los requisitos que te presentamos a continuación</p>
+    los requisitos que te presentamos a continuación</p><p>Recuerda que los cargos en azul son el camino hacía tu meta</p>
     <div class="flexscroll" style="height:400px;">
 	<div id="next-steps"></div>
         </div>
@@ -673,26 +682,23 @@ margin:5px 0;
 			var result = $( 
 				 '<div id="position-' + position.pk + '" class="next-position"><h4 class="position-label">'
 					+ position.fields.nombre
-					+'</h4>'
+                           +'</h4><a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+                                     +'Ocupar este cargo'
+                                    +'</a>'
 				+'</div>' );
-            var occupyCargo = $('<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
-                                +'Ocupar este cargo'
-                                +'</a>');
-			var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
+            var futureCriticalPositions = getFutureCriticalPositionsFor( position.pk );
 			for( var i = 0; i < futureCriticalPositions.length; i++ ){
 				if( futureCriticalPositions[ i ] == destinationCargo.pk ){
 					result.addClass( 'best-choice' );
+                    
 				}else {
 					var positionSummary = buildPositionSummaryDisplay( futureCriticalPositions[ i ] );
 					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
 					positionSummary.find('canvas').remove();
 					result.append( positionSummary );
-                    result.append (occupyCargo);
 				}
 			}
 			return result;
-            fleXenv.initByClass("flexscroll");
-            fleXenv.updateScrollBars();
 		}
 		/*
 		ends the simulation and displays simulation results
@@ -774,6 +780,8 @@ margin:5px 0;
 			fixBackground( positionPK );
             fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
+            $('.best-choice > .position-label').append('<br/><span>Este es el camino hacía tu meta</span>');
+
 
 		}
 		/*
@@ -1043,8 +1051,6 @@ margin:5px 0;
 		*/
 		function extractRequirementsFromPageFor( positionPK ){
 			return $( 'div#next-steps div#position-' + positionPK + ' div.requirements span.requirement_tag' );
-            fleXenv.initByClass("flexscroll");
-            fleXenv.updateScrollBars();
 		}
 		/*
 		builds a list to display requirements when the simulation is done. The list is to be placed inside a timeline item
@@ -1098,6 +1104,7 @@ margin:5px 0;
             }
             fleXenv.initByClass("flexscroll");
             fleXenv.updateScrollBars();
+            
             
         }
         
