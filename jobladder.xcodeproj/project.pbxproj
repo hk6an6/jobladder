@@ -92,8 +92,8 @@
 		43B471C6166903B9003EB0DC /* space_invaders.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = space_invaders.js; sourceTree = "<group>"; };
 		43B471C7166903B9003EB0DC /* ladder.appcache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ladder.appcache; sourceTree = "<group>"; };
 		43B471CA166903B9003EB0DC /* base.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = base.html; sourceTree = "<group>"; };
-		43B471CB166903B9003EB0DC /* create_avatar.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = create_avatar.html; sourceTree = "<group>"; };
-		43B471CC166903B9003EB0DC /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		43B471CB166903B9003EB0DC /* create_avatar.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; path = create_avatar.html; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
+		43B471CC166903B9003EB0DC /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; path = index.html; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		43B471CD166903B9003EB0DC /* simulation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = simulation.html; sourceTree = "<group>"; };
 		43B471CE166903B9003EB0DC /* tests.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = tests.py; sourceTree = "<group>"; };
 		43B471CF166903B9003EB0DC /* urls.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = urls.py; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		5D442F5416C42B4300021B9F /* icono-pelo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-pelo.png"; sourceTree = "<group>"; };
 		5D442F5516C42B4300021B9F /* icono-zapatos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icono-zapatos.png"; sourceTree = "<group>"; };
 		5D7095E716E151C700C88504 /* jquery.jcarousel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = jquery.jcarousel.js; sourceTree = "<group>"; };
-		5D98267A16D7435F00507521 /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = home.html; sourceTree = "<group>"; };
+		5D98267A16D7435F00507521 /* home.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; lineEnding = 0; path = home.html; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.html; };
 		5D98267B16D7435F00507521 /* instructions.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = instructions.html; sourceTree = "<group>"; };
 		5D98267C16D7435F00507521 /* rutas_de_carrera.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rutas_de_carrera.html; sourceTree = "<group>"; };
 		5D98267D16D746AE00507521 /* bg-list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg-list.png"; sourceTree = "<group>"; };

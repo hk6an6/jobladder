@@ -1,3 +1,4 @@
+var DEBUG = false;
 /**
 	Use native browser JSON support by means of:
 	
@@ -31,27 +32,27 @@ var serempre = new function(){
 			for(var key in this.futurePaths){
 				keys[keys.length] = key;
 			}
-			//console.log(keys);
+			if( DEBUG ) console.log(keys);
 			//for each visited object, build a js statement to get a handle on it's data
 			for(var i = 0; i < keys.length; i++){
 				//plain text js statement that points to a graph object
 				var node = "this.futurePaths['" + keys[i] + "']";
-				//console.log(keys[i]);
-				//console.log(node);
-				//console.log(eval(node));
+				if( DEBUG ) console.log(keys[i]);
+				if( DEBUG ) console.log(node);
+				if( DEBUG ) console.log(eval(node));
 				//evaluate js statement to grab the object
 				node = eval(node);
-				//console.log(node.fields.siguientes);
+				if( DEBUG ) console.log(node.fields.siguientes);
 				//for every node referenced by the current object
 				for(var j = 0; j < node.fields.siguientes.length; j++){
-					//console.log('-->'+ node.fields.siguientes[j]);
+					if( DEBUG ) console.log('-->'+ node.fields.siguientes[j]);
 					//plain text js statement that points to the reference target
 					var reference = "this.futurePaths['" + node.fields.siguientes[j] + "']";
 					//evaluate js statement to grab the reference target
 					reference = eval(reference);
 					//replace target key with actual object reference
 					node.fields.siguientes[j] = reference;
-					//console.log(reference);
+					if( DEBUG ) console.log(reference);
 				}
 			}
 		}
@@ -234,7 +235,7 @@ var serempre = new function(){
 			//if browser lacks required API, then let the user know about it
 			if(abort){
 				alert(user_msg);
-				console.log(log_msg);
+if( DEBUG ) console.log(log_msg);
 			}
 			return abort;
 		}
@@ -249,7 +250,7 @@ var serempre = new function(){
 		//vertexTagCallable: a function that takes a vertex as an argument and returns a string representing the provided vertex
 		this.outputVertex = function(vertexes, vertex, prefix, vertexTagCallable){
 			if(!vertex.visited){
-				//console.log(vertex.depth +':'+ prefix + '-> ' + vertexTagCallable(vertex));
+				if( DEBUG ) console.log(vertex.depth +':'+ prefix + '-> ' + vertexTagCallable(vertex));
 				vertex.visited = true;
 				for(var i = 0; i< vertex.adjacent.length; i++){
 					var ith_vertex_pk = vertex.adjacent[i];
@@ -373,7 +374,7 @@ var serempre = new function(){
                         prefix = tmp;
                     }
 					vertexTagCallable(vertexes[ start ]);
-                    //console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+                    if( DEBUG ) console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
                 }
                 vertexes[ start ].visited = true;
                 path[ path.length ] = start;
@@ -419,7 +420,7 @@ var serempre = new function(){
                         prefix = tmp;
                     }
 					vertexTagCallable(vertexes[ start ]);
-                    //console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
+                    if( DEBUG ) console.log(vertexes[ start ].depth +':'+ prefix + '-> ' + vertexTagCallable(vertexes[ start ]));
                 }
                 vertexes[ start ].visited = true;
                 path[ path.length ] = start;
@@ -439,7 +440,7 @@ var serempre = new function(){
 		/*
 		// sample client for the above API
 		
-			console.log('total nodes: ' + prepareAbstractGraph(futurePaths).length);
+if( DEBUG ) console.log('total nodes: ' + prepareAbstractGraph(futurePaths).length);
 
 			node_pk = $('#cargo_inicial_nombre option:selected').val();
 			
@@ -450,9 +451,9 @@ var serempre = new function(){
 			var vertexes = prepareAbstractGraph(futurePaths);
 			var edges = buildEdgeArray(vertexes);
 			var path = path(vertexes,edges,0,20);
-			console.log(path);
+if( DEBUG ) console.log(path);
 			for(var i = 0; i < path.length; i++){
-				console.log(i + ' ' +edges[ path[ i ] ]);
+if( DEBUG ) console.log(i + ' ' +edges[ path[ i ] ]);
 			}
 			
 			var x = serempre.graphs.dfs(vertexes, edges, 0, 48);
@@ -636,7 +637,7 @@ var serempre = new function(){
 					try{
 						context.drawImage( images[i], 0, 0, this.width, this.height );
 					} catch( e ){
-						console.log( e );
+if( DEBUG ) console.log( e );
 					}
 				}else if( images[ i ] instanceof Array ){
 					for( var j = 0; j < images[ i ].length; j++ ){
@@ -644,7 +645,7 @@ var serempre = new function(){
 							try{
 								context.drawImage( images[ i ][ j ], 0, 0, this.width, this.height );
 							} catch( e ){
-								console.log( e );
+if( DEBUG ) console.log( e );
 							}
 						}
 					}

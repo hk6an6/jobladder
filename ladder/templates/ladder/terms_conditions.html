@@ -125,7 +125,7 @@ display:block;
 			//this turns an input field into a remote data sourced autocomplete
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
-					console.log("{% url 'get-cargos' %}" + request.term + "/");
+if( DEBUG ) console.log("{% url 'get-cargos' %}" + request.term + "/");
 					$.ajax({
 						url: "{% url 'get-cargos' %}" + request.term
 						, dataType: "json"
@@ -147,7 +147,7 @@ display:block;
 				}, minLength: 2,
 				select: function(event, ui){
 					if(ui.item){
-						console.log(ui.item.value);
+if( DEBUG ) console.log(ui.item.value);
 						$('#cargo_inicial_nombre').val(ui.item.label);
 						$('#cargo_inicial').val(ui.item.value);
 						return false;

@@ -573,7 +573,7 @@ background:none !important;
         try{
             $('#scrollable-sliders').tabs('refresh');
         }catch(e){
-            //console.log(e);
+            if( DEBUG ) console.log(e);
             //ignore error and continue
         }
     }
@@ -709,7 +709,7 @@ background:none !important;
 			}
 			avatar.paint( context );
 		}catch(e){
-			console.log( e );
+if( DEBUG ) console.log( e );
 		}
 		onAccesoriesUpdated( );
 		return accesories;
@@ -968,7 +968,7 @@ background:none !important;
 	uses downloaded avatar data to change avatar clothing
 	*/
 	function avatarAvailable( downloaded ){
-		console.log( downloaded );
+if( DEBUG ) console.log( downloaded );
 		if( downloaded.fields.camisa ){
 			downloadShirtData( downloaded.fields.camisa, function( shirt ){
 				$.ajax({
@@ -979,7 +979,7 @@ background:none !important;
 						img.alt = data[0].fields.etiqueta;
 						img.src = imgURL;
 						avatar.shirt = img;
-						console.log( avatar.shirt );
+if( DEBUG ) console.log( avatar.shirt );
 					}
 				});
 			} );
@@ -994,7 +994,7 @@ background:none !important;
 						img.alt = data[0].fields.etiqueta;
 						img.src = imgURL;
 						avatar.pants = img;
-						console.log( avatar.pants );
+if( DEBUG ) console.log( avatar.pants );
 					}
 				});
 			} );
@@ -1010,14 +1010,14 @@ background:none !important;
 			var img = new Image();
 			img.src = imgURL;
 			avatar.helmet = img;
-			console.log( avatar.helmet );
+if( DEBUG ) console.log( avatar.helmet );
 		}
 		if( downloaded.fields.zapatos ){
 			var imgURL = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=1 %}'.replace( /(\/avatar\/zapatos\/)(\d+)(\/)/g, '$1' + downloaded.fields.zapatos + '$3' );
 			var img = new Image();
 			img.src = imgURL;
 			avatar.shoes = img;
-			console.log( avatar.shoes );
+if( DEBUG ) console.log( avatar.shoes );
 		}
 	}
 	//creates a random number using a max value boundary
@@ -1031,7 +1031,7 @@ background:none !important;
  //this turns an input field into a remote data sourced autocomplete
  $('#cargo_inicial_nombre').autocomplete({
  source: function(request, response){
- console.log("{% url 'get-cargos' %}" + request.term + "/");
+if( DEBUG ) console.log("{% url 'get-cargos' %}" + request.term + "/");
  $.ajax({
  url: "{% url 'get-cargos' %}" + request.term
  , dataType: "json"
@@ -1053,7 +1053,7 @@ background:none !important;
  }, minLength: 2,
  select: function(event, ui){
  if(ui.item){
- console.log(ui.item.value);
+if( DEBUG ) console.log(ui.item.value);
  $('#cargo_inicial_nombre').val(ui.item.label);
  $('#cargo_inicial').val(ui.item.value);
  return false;

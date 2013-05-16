@@ -345,7 +345,7 @@ white-space:normal;
 margin:5px 0;
 }
 .best-choice h4 { 
-	color: 'blue' 
+	color: 'blue' !important
 }
 {% endblock %}
 
@@ -580,7 +580,7 @@ margin:5px 0;
 					, success: function( data, textStatus, jqXHR ){
 						requirementAvailableCallback( data[0], results );
 					}, error: function( jqXHR, textStatus, errorThrown ){
-						console.log( errorThrown );
+if( DEBUG ) console.log( errorThrown );
 						alert( textStatus );
 					}, complete: function( jqXHR, textStatus ){
 						
@@ -738,7 +738,7 @@ margin:5px 0;
 			}
 			avatar.background.onload = function(){ pieces_load_stat.background = true; }
 			avatar.background.src = backgroundImageURL;
-			//console.log( avatar.background.src );
+			if( DEBUG ) console.log( avatar.background.src );
 		}
 		/*
 		true if a summary can be built
@@ -767,7 +767,7 @@ margin:5px 0;
 			var requirementSummary = buildRequirementSummaryListFor( positionPK );
 			markFormerPositions( );
 			reset_dataload_status( );
-			//console.log( 'triggering download for avatar on cargo ' + positionPK );
+			if( DEBUG ) console.log( 'triggering download for avatar on cargo ' + positionPK );
 			downloadModelAvatarFor( positionPK, avatarAvailable );
 			currentCargo = serempre.cargos.futurePaths[ positionPK ];
 			displayAvailableChoices( currentCargo );
@@ -851,6 +851,7 @@ margin:5px 0;
 			edges = serempre.graphs.buildEdgeArray( vertexes );
 			if( serempre.graphs.bfs( vertexes, edges, start, destination ) ){
 				result[ result.length ] = destinationCargo.pk;
+if( DEBUG ) console.log( positionPK + '->' +  destinationCargo.pk );
 			}
 			for( var i = 0; i < vertexes.length; i++ ){
 				vertexes[ i ].visited = false;
@@ -862,12 +863,12 @@ margin:5px 0;
 		builds a URL to fetch an avatar using the cargo it belongs to
 		*/
 		function buildURLForAvatarByCargo( cargo_pk ) {
-			//console.log( 'building avatar URL ' + cargo_pk );
+			if( DEBUG ) console.log( 'building avatar URL ' + cargo_pk );
 			var url = '{% url 'avatar_by_cargo' origin_pk sex %}';
 			var regex = new RegExp( '(/avatar/cargo/)(\\d+)(/H/|/M/)', RegExp.g );
-			//console.log( url.match( regex ) );
+			if( DEBUG ) console.log( url.match( regex ) );
 			url = url.replace( regex, '$1' + cargo_pk + '$3' );
-			//console.log( url );
+			if( DEBUG ) console.log( url );
 			return url;
 		}
 		/*
@@ -925,7 +926,7 @@ margin:5px 0;
 		downloads avatar specs for a given position key. Performs a callback when specs become available
 		*/
 		function downloadModelAvatarFor( cargo_pk, modelAvatarCallBack ){
-			//console.log( 'downloading model avatar for ' + cargo_pk );
+			if( DEBUG ) console.log( 'downloading model avatar for ' + cargo_pk );
 			serempre.cargos.toggleWaitDialog( '', 'icon-signal' );
 			$.ajax({
 				url: buildURLForAvatarByCargo( cargo_pk )
@@ -994,7 +995,7 @@ margin:5px 0;
 							img.onload = function(){ pieces_load_stat.shirt = true; }
 							img.src = imgURL;
 							avatar.shirt = img;
-							//console.log( avatar.shirt );
+							if( DEBUG ) console.log( avatar.shirt );
 						}
 					});
 				} );
@@ -1010,7 +1011,7 @@ margin:5px 0;
 							img.onload = function(){ pieces_load_stat.pants = true; }
 							img.src = imgURL;
 							avatar.pants = img;
-							//console.log( avatar.pants );
+							if( DEBUG ) console.log( avatar.pants );
 						}
 					});
 				} );
@@ -1030,7 +1031,7 @@ margin:5px 0;
 
 			}
 			if( downloaded.fields.cabello ){
-				console.log( downloaded.fields.accesorios );
+if( DEBUG ) console.log( downloaded.fields.accesorios );
 			}
 			if( downloaded.fields.sombrero ){
 				var imgURL = '{% url 'get-avatar-sombrero-by-pk' sombrero_pk=1 %}'.replace( /(\/avatar\/sombrero\/)(\d+)(\/)/g, '$1' + downloaded.fields.sombrero + '$3' );
@@ -1038,7 +1039,7 @@ margin:5px 0;
 				img.onload = function(){ pieces_load_stat.helmet = true; }
 				img.src = imgURL;
 				avatar.helmet = img;
-				//console.log( avatar.helmet );
+				if( DEBUG ) console.log( avatar.helmet );
 			}
 			if( downloaded.fields.zapatos ){
 				var imgURL = '{% url 'get-avatar-zapatos-by-pk' zapatos_pk=1 %}'.replace( /(\/avatar\/zapatos\/)(\d+)(\/)/g, '$1' + downloaded.fields.zapatos + '$3' );
@@ -1046,7 +1047,7 @@ margin:5px 0;
 				img.onload = function(){ pieces_load_stat.shoes = true; }
 				img.src = imgURL;
 				avatar.shoes = img;
-				//console.log( avatar.shoes );
+				if( DEBUG ) console.log( avatar.shoes );
 			}
 		}
 		/*
@@ -1091,18 +1092,18 @@ margin:5px 0;
          Marks Categories as fulfilled
          */
         function pre( requirement, evt ){
-            //console.log( requirement.pk, evt );
+            if( DEBUG ) console.log( requirement.pk, evt );
             var categoriaPK = requirement.fields.categoria + '';
             var selection = $('.pre .category_' + categoriaPK );
             var requirementCount = $('.category_' + categoriaPK ).parents('.requirement-item').filter(':visible').length;
             var fulfilledCount = $('span.category_' + categoriaPK ).parents('.requirement-item-fulfilled').filter(':visible').length;
             if( requirementCount == fulfilledCount )
             {
-                //console.log( categoriaPK + 'background: black', evt );
+                if( DEBUG ) console.log( categoriaPK + 'background: black', evt );
                 selection.addClass('fulfilled');
             }
             else{
-                //console.log( categoriaPK + 'background: blue', evt );
+                if( DEBUG ) console.log( categoriaPK + 'background: blue', evt );
                 selection.removeClass('fulfilled');
             }
             fleXenv.initByClass("flexscroll");
@@ -1145,7 +1146,7 @@ margin:5px 0;
 			//this turns an input field into a remote data sourced autocomplete
 			$('#cargo_inicial_nombre').autocomplete({
 				source: function(request, response){
-					console.log("{% url 'get-cargos' %}" + request.term + "/");
+if( DEBUG ) console.log("{% url 'get-cargos' %}" + request.term + "/");
 					$.ajax({
 						url: "{% url 'get-cargos' %}" + request.term
 						, dataType: "json"
@@ -1167,7 +1168,7 @@ margin:5px 0;
 				}, minLength: 2,
 				select: function(event, ui){
 					if(ui.item){
-						console.log(ui.item.value);
+if( DEBUG ) console.log(ui.item.value);
 						$('#cargo_inicial_nombre').val(ui.item.label);
 						$('#cargo_inicial').val(ui.item.value);
 						return false;
