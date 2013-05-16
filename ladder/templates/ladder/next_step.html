@@ -834,7 +834,7 @@ if( DEBUG ) console.log( errorThrown );
 		function getFutureCriticalPositionsFor( positionPK ){
 			var vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
 			var edges = serempre.graphs.buildEdgeArray( vertexes );
-			var criticos = vertexes.filter( function( position ) { return position.fields.cargo_critico; } );
+			var criticos = [];//vertexes.filter( function( position ) { return position.fields.cargo_critico; } );
 			var start = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == positionPK } );
 			var destination = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == destinationCargo.pk } );
 			var result = [];
@@ -843,12 +843,14 @@ if( DEBUG ) console.log( errorThrown );
 				var end = serempre.graphs.indexFor( vertexes, function( testVal ) { return testVal.pk == critico } );
 				vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
 				edges = serempre.graphs.buildEdgeArray( vertexes );
+				markFormerPositions();
 				if( serempre.graphs.bfs( vertexes, edges, start, end ) ){
 					result[ result.length ] = criticos[ i ].pk;
 				}
 			}
 			vertexes = serempre.graphs.prepareAbstractGraph( serempre.cargos.futurePaths );
 			edges = serempre.graphs.buildEdgeArray( vertexes );
+			markFormerPositions();
 			if( serempre.graphs.bfs( vertexes, edges, start, destination ) ){
 				result[ result.length ] = destinationCargo.pk;
 if( DEBUG ) console.log( positionPK + '->' +  destinationCargo.pk );
