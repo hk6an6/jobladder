@@ -362,7 +362,7 @@ margin:5px 0;
     
     <p>Para acceder a un cargo de nivel superior transforma los
     íconos de la derecha en azul haciendo clic en cada uno de
-    los requisitos que te presentamos a continuación</p>
+    los requisitos que te presentamos a continuación</p><p>Recuerda que los cargos en azul son el camino hacía tu meta</p>
     <div class="flexscroll" style="height:400px;">
 	<div id="next-steps"></div>
         </div>
@@ -670,11 +670,12 @@ margin:5px 0;
 		builds an HTML view of the given position
 		*/
 		function buildFullPositionDisplay( position ){
-			console.log( 'building display for ' + position );
 			var result = $( 
 				 '<div id="position-' + position.pk + '" class="next-position"><h4 class="position-label">'
 					+ position.fields.nombre
-					+'</h4>'
+                           +'</h4><a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
+                                     +'Ocupar este cargo'
+                                    +'</a>'
 				+'</div>' );
             var occupyCargo = $('<a href="javascript: pushPosition( ' + position.pk + ' )" id="next-step-' + position.pk + '" style=" visibility : hidden;" class="next-step">'
                                 +'Ocupar este cargo'
@@ -688,14 +689,9 @@ margin:5px 0;
 					positionSummary.removeClass('cargo-summary').addClass('critical-cargo');
 					positionSummary.find('canvas').remove();
 					result.append( positionSummary );
-                    result.append (occupyCargo);
 				}
 			}
-			console.log( 'full display built for ' + position );
-			console.log( result );
 			return result;
-            fleXenv.initByClass("flexscroll");
-            fleXenv.updateScrollBars();
 		}
 		/*
 		ends the simulation and displays simulation results
