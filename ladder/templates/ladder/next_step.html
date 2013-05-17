@@ -600,7 +600,8 @@ if( DEBUG ) console.log( errorThrown );
 				if( !nextPosition.visited ){
 					var nextPositionDiv = buildFullPositionDisplay( nextPosition );
 					var requirementsDiv = $( '<div class="requirements"></div>' );
-					nextPositionDiv.append( requirementsDiv );
+					//nextPositionDiv.append( requirementsDiv );
+					nextPositionDiv.find( '.position-label' ).after( requirementsDiv );
 					next_steps.append( nextPositionDiv );
 					displayRequirementsFor( nextPosition, requirementsDiv );
 				}

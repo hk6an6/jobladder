@@ -183,7 +183,6 @@ box-shadow:inset 2px 2px 5px #666 !important;
 			var label = $( 'input#cargo_inicial_nombre' ).text();
 			//get selected element value
 			selected = selected.val();
-			alert( aLabel );
 			$( '#tagged' ).text( aLabel );
 			//walk the job ladder
 			serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
