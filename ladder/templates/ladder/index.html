@@ -138,7 +138,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 		</div>
 		<div>
 			<div class='input-append'>
-				<label for='cargo_inicial_nombre'>Cargo actual: </label>
+				<label for='cargo_inicial_nombre'>Cargo actual: <span id="tagged"></span></label>
 				<input id='cargo_inicial_nombre' name='cargo_inicial_nombre' type='text' class='dropdown'></input>
 				<input id="cargo_inicial" type="hidden" value="0"/>
 			</div>
@@ -165,7 +165,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 
 {% block pagefooter %}
 	<script>
-        
+        DEBUG = false;
         function navigate_to_simulation_start(blank_url){
             var sex = $('div#div-sexo button.active').attr( 'option' );
             var origin_cargo = $('#cargo_inicial').val();
@@ -176,13 +176,15 @@ box-shadow:inset 2px 2px 5px #666 !important;
             window.location.href = target_url;
         }
 		
-		function cargo_inicial_chosen(){
+		function cargo_inicial_chosen( aLabel, aValue){
 			//get selected element
 			var selected = $('#cargo_inicial');
 			//get selected element label
 			var label = $( 'input#cargo_inicial_nombre' ).text();
 			//get selected element value
 			selected = selected.val();
+			alert( aLabel );
+			$( '#tagged' ).text( aLabel );
 			//walk the job ladder
 			serempre.cargos.calculateRouteEndpoints(selected, "{% url 'get-cargo-by-pk' 1 %}", function(){
 				//this code is run after all endpoints have been calculated from server-side data
@@ -267,6 +269,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 							//don't send any data to the service
 						}, success: function(data, textStatus, jqXHR){
 							response( $.map( data, function( item ) {
+								if( DEBUG ) console.log( item.fields.nombre );
 								return {
 									label: item.fields.nombre,
 									value: item.pk
@@ -275,17 +278,20 @@ box-shadow:inset 2px 2px 5px #666 !important;
 						}, complete: function(jqXHR, textStatus){
 							//done requesting data
 						}, error: function(jqXHR, textStatus, errorThrown){
-							alert(textStatus);
 if( DEBUG ) console.log( errorThrown );
 						}
 					});
 				}, minLength: 2,
-				select: function(event, ui){
+				focus: function( event, ui ){
+if( DEBUG ) console.log( ui.item.label );
+					$('#cargo_inicial_nombre').val( ui.item.label );
+					return false;
+				}, select: function(event, ui){
 					if(ui.item){
 if( DEBUG ) console.log(ui.item.value);
 						$('#cargo_inicial_nombre').val(ui.item.label);
 						$('#cargo_inicial').val(ui.item.value);
-						cargo_inicial_chosen();
+						cargo_inicial_chosen( ui.item.label, ui.item.value );
 						return false;
 					}
 				}, open: function(){
