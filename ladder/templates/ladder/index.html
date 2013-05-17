@@ -192,6 +192,7 @@ box-shadow:inset 2px 2px 5px #666 !important;
 				serempre.cargos.populateDropdownOptions(serempre.cargos.futurePaths, '#cargo_destino_nombre');
 				//display destination cargos
 				$('.toggled_by_cargo_inicial').css('visibility','visible');
+				$('#start-simulation').css('visibility','hidden')
 				//--------- this is temporal
 				var paths = JSON.parse(sessionStorage.futurePaths);
 				var vertexes = serempre.graphs.prepareAbstractGraph(paths);
