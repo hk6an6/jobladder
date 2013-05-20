@@ -23,6 +23,7 @@
 		4322A175169F4A3900CDA646 /* run_django_on_sandbox.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = run_django_on_sandbox.sh; sourceTree = "<group>"; };
 		433BADB2169CD0560083E268 /* scrollableslider.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = scrollableslider.js; sourceTree = "<group>"; };
 		435B443A16D3C94900C8AAD1 /* timeline.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = timeline.js; sourceTree = "<group>"; };
+		43763728174A812B00B992B6 /* style.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = style.css; sourceTree = "<group>"; };
 		43B47175166903B9003EB0DC /* 01_setup_heroku.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 01_setup_heroku.sh; sourceTree = "<group>"; };
 		43B47176166903B9003EB0DC /* 02_fix_local_keys.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 02_fix_local_keys.sh; sourceTree = "<group>"; };
 		43B47177166903B9003EB0DC /* 03_fix_heroku_aws_keyx.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = 03_fix_heroku_aws_keyx.sh; sourceTree = "<group>"; };
@@ -171,6 +172,14 @@
 			path = imagenes;
 			sourceTree = "<group>";
 		};
+		43763727174A812B00B992B6 /* jcarousel */ = {
+			isa = PBXGroup;
+			children = (
+				43763728174A812B00B992B6 /* style.css */,
+			);
+			path = jcarousel;
+			sourceTree = "<group>";
+		};
 		43B471671669026C003EB0DC = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +306,7 @@
 		43B47192166903B9003EB0DC /* css */ = {
 			isa = PBXGroup;
 			children = (
+				43763727174A812B00B992B6 /* jcarousel */,
 				431E6F1616A6EACD004177CC /* thesans_plain-webfont.eot */,
 				431E6F1716A6EACD004177CC /* thesans_plain-webfont.svg */,
 				431E6F1816A6EACD004177CC /* thesans_plain-webfont.ttf */,
