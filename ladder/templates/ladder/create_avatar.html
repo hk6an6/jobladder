@@ -253,6 +253,7 @@ background:none !important;
 
 {% block pagefooter %}
 <script>
+	DEBUG = false;
     var colors = [];
     var allFaces = [];
     var	allHairStyles = [];
@@ -741,7 +742,7 @@ if( DEBUG ) console.log( e );
         updateTabControls();
         jQuery('#accesories-scrollable-slider > ul').jcarousel({
                                                                itemFallbackDimension: 40,
-                                                               wrap: 'circular'
+                                                               
                                                                });
 
 		return scrollablePane;
@@ -1087,11 +1088,11 @@ if( DEBUG ) console.log(ui.item.value);
         $("#accesories-scrollable-slider").before('<span class="iconoaccesories-scrollable-slider"></span>');
         jQuery('#accesories-scrollable-slider > ul').jcarousel({
                                                                itemFallbackDimension: 40,
-                                                               wrap: 'circular'
+                                                               
                                                                });
         jQuery('#hairstyles-scrollable-slider > ul').jcarousel({
                                                                itemFallbackDimension: 40,
-                                                               wrap: 'circular'
+                                                               
                                                                });
         
     }
